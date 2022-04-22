@@ -1,6 +1,7 @@
 package br.com.meli.dhprojetointegrador.entity;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,4 +37,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private Seller seller;
+
+    @OneToMany
+    private List<BatchStock> batchStockList;
+
 }

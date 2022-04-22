@@ -29,7 +29,7 @@ public class InboundOrder {
     @JoinColumn(name="section_id", nullable=false)
     private Section section;
 
-    @OneToMany(mappedBy="inboundOrder")
+    @OneToMany
     private List<BatchStock> batchStockList;
 
 }
