@@ -4,6 +4,7 @@ import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
+@Table(uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
 public class Category {
 
     @Id
@@ -19,7 +21,9 @@ public class Category {
 
     @Enumerated(EnumType.STRING)
     private CategoryEnum name;
-
     private float minimumTemperature;
     private float maximumTemperature;
+
+    @OneToMany
+    private List<Product> categories;
 }
