@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  mysqlserver:
+    image: mysql:8.0.23
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_DATABASE=meli-frescos
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - mysql_config:/etc/mysql/conf.d
+
+volumes:
+  mysql_data:
+  mysql_config:

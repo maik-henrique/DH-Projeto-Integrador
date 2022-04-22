@@ -8,7 +8,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL55Dialect
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/dh-projeto-integrador?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true}
-    username: ${MYSQL_USER:root}
-    password: ${MUDA_EMAIL_PASSWORD:password}
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
 

@@ -4,7 +4,7 @@ spring:
       ddl-auto: create
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/dh-projeto-integrador?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true}
-    username: ${MYSQL_USER:root}
-    password: ${MUDA_EMAIL_PASSWORD:}
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3307/meli-frescos?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true}
+    username: ${DATABASE_USER:root}
+    password: ${DATABASE_PASSWORD:password}
 
