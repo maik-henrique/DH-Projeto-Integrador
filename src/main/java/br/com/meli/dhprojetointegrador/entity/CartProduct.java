@@ -1,9 +1,20 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import lombok.*;
 
+import javax.persistence.*;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "cartProduct")
 public class CartProduct {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "purchaseOrder_id")

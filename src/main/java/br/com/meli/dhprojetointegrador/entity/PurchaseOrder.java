@@ -1,15 +1,23 @@
 package br.com.meli.dhprojetointegrador.entity;
 
 import br.com.meli.dhprojetointegrador.enums.StatusEnum;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "purchaseOrder")
 public class PurchaseOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "buyer_id")
