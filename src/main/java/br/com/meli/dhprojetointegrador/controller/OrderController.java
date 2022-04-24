@@ -10,9 +10,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 
+
 @RestController
 @RequestMapping(OrderController.baseUri)
 public class OrderController {
+
 
     public static final String baseUri = "/api/v1/fresh-products/orders/";
 
@@ -22,15 +24,17 @@ public class OrderController {
 
 
     @PostMapping("")
-    public PurchaseOrder<PurchaseOrderDTO> PurchaseOrderProductRegistration(@Valid @RequestBody PurchaseOrderDTO dto, UriComponentsBuilder uriBuilder){
+    public PurchaseOrder<PurchaseOrderInput> PurchaseOrderProductRegistration(@Valid @RequestBody PurchaseOrderInput dto, UriComponentsBuilder uriBuilder){
 
     }
 
     @PutMapping
-    public PurchaseOrder<PurchaseOrderDTO> ModifyExistingOrder(@Valid @RequestBody PurchaseOrderDTO dto){
+    public PurchaseOrder<PurchaseOrderInput> ModifyExistingOrder(@Valid @RequestBody PurchaseOrderInput dto){
         PurchaseOrder purchaseorder = dto.map();
         PurchaseOrder newStatus = OrderService.atualizar(purchaseorder);
-        return ResponseEntity.ok(PurchaseOrderDTO.map(newStatus));
+
+
+        return ResponseEntity.ok(PurchaseOrderInput.map(newStatus));
 
     }
 }

@@ -12,8 +12,8 @@ public class OrderService {
 
         PurchaseOrder updateStatus = OrderRepository.findbyStatus(purchaseorder.setStatus(StatusEnum.ABERTO));
 
-        if(updateStatus == StatusEnum.ABERTO) {
-            throw new RuntimeException("Status ainda aberto!);
+        if(updateStatus == "aberto") {
+            throw new RuntimeException("Status ainda aberto!");
         }
 
         updateStatus.setStatus(purchaseorder.setStatus(StatusEnum.FINALIZADO));
