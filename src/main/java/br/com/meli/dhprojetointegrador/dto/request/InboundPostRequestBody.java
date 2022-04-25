@@ -3,7 +3,7 @@ package br.com.meli.dhprojetointegrador.dto.request;
 import java.util.Date;
 import java.util.List;
 
-import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.dto.BatchStockDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +18,6 @@ public class InboundPostRequestBody {
   private Integer agentId;
   private Integer sectionId;
 
-  private List<BatchStock> batchStock;
+  private List<BatchStockDTO> batchStock;
 
 }

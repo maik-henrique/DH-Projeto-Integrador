@@ -30,7 +30,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
     private CategoryEnum name;
