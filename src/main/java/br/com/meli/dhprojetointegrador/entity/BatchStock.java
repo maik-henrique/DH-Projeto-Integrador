@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +23,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@Table(name = "batch_stock")
 public class BatchStock {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long batchNumber;
 
     private int currentQuantity;
@@ -35,7 +37,7 @@ public class BatchStock {
     private float currentTemperature;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product products;
 
     @ManyToOne

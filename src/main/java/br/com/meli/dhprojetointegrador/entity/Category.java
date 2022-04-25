@@ -1,10 +1,23 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
-import lombok.*;
+import java.util.Set;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
@@ -12,11 +25,11 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@Table(uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "name" }))
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -24,6 +37,6 @@ public class Category {
     private float minimumTemperature;
     private float maximumTemperature;
 
-    @OneToMany
-    private List<Product> categories;
+    @OneToMany(mappedBy = "category")
+    private Set<Product> categories;
 }
