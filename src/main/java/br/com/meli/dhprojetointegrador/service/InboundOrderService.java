@@ -23,7 +23,7 @@ public class InboundOrderService {
     private final ProductService productService;
     private List<IInboundOrderValidator> validators;
 
-    public void update(InboundOrder inboundOrder) throws BusinessValidatorException {
+    public InboundOrder update(InboundOrder inboundOrder) throws BusinessValidatorException {
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
         Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());
         inboundOrder.getBatchStockList().forEach(batchStock -> {
@@ -41,11 +41,12 @@ public class InboundOrderService {
         oldInboundOrder.setAgent(agent);
         oldInboundOrder.setBatchStockList(inboundOrder.getBatchStockList());
 
-        inboundOrderRepository.save(oldInboundOrder);
+        return inboundOrderRepository.save(oldInboundOrder);
     }
 
     private InboundOrder findInboundOrderByOrderNumber(Integer orderNumber) {
-        return inboundOrderRepository.findByOrderNumber(orderNumber)
+        return inboundOrderRepository
+                .findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new RuntimeException("Recurso nao encontrado"));
     }
 

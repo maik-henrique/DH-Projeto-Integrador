@@ -1,6 +1,8 @@
 package br.com.meli.dhprojetointegrador.config;
 
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
+import br.com.meli.dhprojetointegrador.dto.response.BatchStockResponse;
+import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
 import br.com.meli.dhprojetointegrador.entity.*;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -18,7 +20,20 @@ public class ModelMapperConfig {
     public ModelMapper getModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
 
-        Converter<InboundOrderUpdateRequest, InboundOrder> converter = context -> {
+        Converter<InboundOrderUpdateRequest, InboundOrder> converter = getInboundOrderUpdateRequestToInboundOrderConverter();
+        Converter<InboundOrder, InboundOrderResponse> inboundOrderToInboundOrderResponseConverter =
+                gedtInboundOrderUpdateRequestToInboundOrderConverter();
+
+        modelMapper.createTypeMap(InboundOrderUpdateRequest.class, InboundOrder.class)
+                .setConverter(converter);
+        modelMapper.createTypeMap(InboundOrder.class, InboundOrderResponse.class)
+                .setConverter(inboundOrderToInboundOrderResponseConverter);
+
+        return modelMapper;
+    }
+
+    private Converter<InboundOrderUpdateRequest, InboundOrder> getInboundOrderUpdateRequestToInboundOrderConverter() {
+        return context -> {
             InboundOrderUpdateRequest source = context.getSource();
 
             Agent agent = Agent.builder().id(source.getAgentId()).build();
@@ -45,12 +60,29 @@ public class ModelMapperConfig {
                     .batchStockList(batchStock)
                     .build();
         };
+    }
 
-        modelMapper.createTypeMap(InboundOrderUpdateRequest.class, InboundOrder.class)
-                .setConverter(converter);
+    private Converter<InboundOrder, InboundOrderResponse> gedtInboundOrderUpdateRequestToInboundOrderConverter() {
+        return context -> {
+            InboundOrder source = context.getSource();
 
+            List<BatchStockResponse> batchStock = source.getBatchStockList().stream().map(
+                    batchStockSource -> BatchStockResponse.builder()
+                            .batchNumber(batchStockSource.getBatchNumber())
+                            .currentQuantity(batchStockSource.getCurrentQuantity())
+                            .currentTemperature(batchStockSource.getCurrentTemperature())
+                            .dueDate(batchStockSource.getDueDate())
+                            .initialQuantity(batchStockSource.getInitialQuantity())
+                            .manufacturingDate(batchStockSource.getManufacturingDate())
+                            .manufacturingTime(batchStockSource.getManufacturingTime())
+                            .productId(batchStockSource.getProducts().getId())
+                            .build()
+            ).collect(Collectors.toList());
 
-
-        return modelMapper;
+            return InboundOrderResponse
+                    .builder()
+                    .batchStock(batchStock)
+                    .build();
+        };
     }
 }

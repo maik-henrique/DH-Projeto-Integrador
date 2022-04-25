@@ -1,4 +1,4 @@
-package br.com.meli.dhprojetointegrador.dto.request;
+package br.com.meli.dhprojetointegrador.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -18,36 +18,23 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @AllArgsConstructor
-public class BatchStockUpdateRequest {
-    @NotNull
+public class BatchStockResponse {
+
     private Long batchNumber;
-
-    @NotNull
     private Long productId;
-
-    @NotNull
     private Float currentTemperature;
-
-    @NotNull
     private Float minimumTemperature;
-
-    @NotNull
     private Integer initialQuantity;
-
-    @NotNull
     private Integer currentQuantity;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull
     private LocalDate dueDate;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull
     private LocalDate manufacturingDate;
 
-    @NotNull
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

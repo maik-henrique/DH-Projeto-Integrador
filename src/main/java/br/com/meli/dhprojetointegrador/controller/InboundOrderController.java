@@ -1,6 +1,7 @@
 package br.com.meli.dhprojetointegrador.controller;
 
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
+import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
 import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.service.InboundOrderService;
 import lombok.AllArgsConstructor;
@@ -22,8 +23,9 @@ public class InboundOrderController {
     @PutMapping
     public ResponseEntity<?> update(@RequestBody InboundOrderUpdateRequest inboundOrderUpdateRequest) {
         InboundOrder inboundOrder = modelMapper.map(inboundOrderUpdateRequest, InboundOrder.class);
-        inboundOrderService.update(inboundOrder);
+        InboundOrder updatedInboundOrder = inboundOrderService.update(inboundOrder);
+        InboundOrderResponse inboundOrderResponse = modelMapper.map(updatedInboundOrder, InboundOrderResponse.class);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(inboundOrderResponse);
     }
 }

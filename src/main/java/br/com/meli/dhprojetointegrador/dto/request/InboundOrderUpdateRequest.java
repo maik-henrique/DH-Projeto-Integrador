@@ -1,5 +1,9 @@
 package br.com.meli.dhprojetointegrador.dto.request;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.*;
 
 import javax.validation.Valid;
@@ -17,6 +21,8 @@ public class InboundOrderUpdateRequest {
     @NotNull
     private Integer orderNumber;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     @NotNull
     private LocalDate orderDate;
 

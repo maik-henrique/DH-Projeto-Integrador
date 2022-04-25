@@ -29,7 +29,9 @@ public class InboundOrder {
     @JoinColumn(name="section_id", nullable=false)
     private Section section;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<BatchStock> batchStockList;
+
+
 
 }
