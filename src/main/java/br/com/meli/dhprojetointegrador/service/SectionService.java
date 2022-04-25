@@ -15,6 +15,7 @@ public class SectionService {
 
     public Section findSectionById(Integer id) {
         Optional<Section> sectionOptional = sectionRepository.findById(id);
+
         if (sectionOptional.isEmpty()) {
             throw new RuntimeException();
         }

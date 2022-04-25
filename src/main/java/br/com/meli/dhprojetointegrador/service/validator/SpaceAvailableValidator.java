@@ -4,15 +4,15 @@ import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.entity.Section;
+import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
 @AllArgsConstructor
 public class SpaceAvailableValidator implements IInboundOrderValidator {
 
-    private final Section section;
-    private final InboundOrder inboundOrder;
+    private Section section;
+    private InboundOrder inboundOrder;
 
     @Override
     public void validate() throws RuntimeException {
@@ -22,7 +22,7 @@ public class SpaceAvailableValidator implements IInboundOrderValidator {
                 .reduce(0.0f, Float::sum);
 
         if (inboundOrderTotalVolume > section.getCapacity()) {
-            throw new RuntimeException("Setor nao possui espaco disponivel");
+            throw new BusinessValidatorException("Setor nao possui espaco disponivel");
         }
     }
 }
