@@ -1,9 +1,6 @@
 package br.com.meli.dhprojetointegrador.dto.request;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,11 +9,12 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 public class InboundOrderUpdateRequest {
 
     private Integer orderNumber;
     private LocalDate orderDate;
-    private AgentUpdateRequest agent;
-    private SectionUpdateRequest section;
-    private List<BatchStockUpdateRequest> batchStockList;
+    private Integer sectionId;
+    private Integer agentId;
+    private List<BatchStockUpdateRequest> batchStock;
 }

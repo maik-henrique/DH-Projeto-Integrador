@@ -29,6 +29,9 @@ public class InboundOrderService {
         validators.forEach(IInboundOrderValidator::validate);
 
         inboundOrder.setOrderDate(inboundOrder.getOrderDate());
+        inboundOrder.setSection(inboundOrder.getSection());
+        inboundOrder.setAgent(inboundOrder.getAgent());
+        inboundOrder.setBatchStockList(inboundOrder.getBatchStockList());
         
         inboundOrderRepository.save(inboundOrder);
     }

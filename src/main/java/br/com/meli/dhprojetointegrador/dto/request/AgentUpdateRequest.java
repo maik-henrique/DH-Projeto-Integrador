@@ -1,14 +1,12 @@
 package br.com.meli.dhprojetointegrador.dto.request;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 public class AgentUpdateRequest {
     private Integer id;
     private String name;
