@@ -4,7 +4,7 @@ services:
   mysqlserver:
     image: mysql:8.0.23
     ports:
-      - 3306:3306
+      - 3307:3306
       - 80:80
     environment:
       - MYSQL_ROOT_PASSWORD=password

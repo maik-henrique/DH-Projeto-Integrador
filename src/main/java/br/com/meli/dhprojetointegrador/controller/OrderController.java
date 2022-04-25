@@ -22,7 +22,7 @@ public class OrderController {
 
 
     @PutMapping("{idorder}")
-    public ResponseEntity<PurchaseOrder> ModifyExistingOrder(@RequestParam Long idorder){
+    public ResponseEntity<PurchaseOrder> ModifyExistingOrder(@PathVariable Long idorder){
 
         PurchaseOrder newOrderStatus = orderService.atualizar(idorder);
 
