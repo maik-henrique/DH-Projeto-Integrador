@@ -1,11 +1,21 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-
-import lombok.*;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,14 +32,14 @@ public class InboundOrder {
     private LocalDate orderDate;
 
     @ManyToOne
-    @JoinColumn(name="agent_id", nullable=false)
+    @JoinColumn(name = "agent_id", nullable = false)
     private Agent agent;
 
     @ManyToOne
-    @JoinColumn(name="section_id", nullable=false)
+    @JoinColumn(name = "section_id", nullable = false)
     private Section section;
 
-    @OneToMany
+    @OneToMany()
     private List<BatchStock> batchStockList;
 
 }
