@@ -6,14 +6,12 @@ import br.com.meli.dhprojetointegrador.entity.Section;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
-
 
 @AllArgsConstructor
 public class SectionCategoryValidator implements IInboundOrderValidator {
 
-    private Section section;
-    private InboundOrder inboundOrder;
+    private final Section section;
+    private final InboundOrder inboundOrder;
 
     @Override
     public void validate() {
@@ -23,7 +21,8 @@ public class SectionCategoryValidator implements IInboundOrderValidator {
                 .filter(product -> !product.getCategory().getName().equals(expectedCategory))
                 .findAny()
                 .ifPresent(product -> {
-                    throw new BusinessValidatorException("Categoria do produto X é inválida");
+                    throw new BusinessValidatorException(String.format("Categoria do produto de id %d é inválida, o esperado é %s",
+                            product.getId(), expectedCategory.name()));
                 });
     }
 }

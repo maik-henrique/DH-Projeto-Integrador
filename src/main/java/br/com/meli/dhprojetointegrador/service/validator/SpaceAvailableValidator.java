@@ -6,16 +6,15 @@ import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.entity.Section;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
 public class SpaceAvailableValidator implements IInboundOrderValidator {
 
-    private Section section;
-    private InboundOrder inboundOrder;
+    private final Section section;
+    private final InboundOrder inboundOrder;
 
     @Override
-    public void validate() throws RuntimeException {
+    public void validate() throws BusinessValidatorException {
         Float inboundOrderTotalVolume = inboundOrder.getBatchStockList().stream()
                 .map(BatchStock::getProducts)
                 .map(Product::getVolume)
