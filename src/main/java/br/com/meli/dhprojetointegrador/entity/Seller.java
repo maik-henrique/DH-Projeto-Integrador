@@ -1,7 +1,8 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +29,6 @@ public class Seller {
 
   private String name;
 
-  @OneToMany
-  private List<Product> products;
+  @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+  private Set<Product> products;
 }

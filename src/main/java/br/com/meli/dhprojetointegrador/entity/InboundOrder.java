@@ -1,7 +1,7 @@
 package br.com.meli.dhprojetointegrador.entity;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,13 +22,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-
-@Entity(name = "inboundOrder")
+@Entity
 public class InboundOrder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer orderNumber;
+
     private LocalDate orderDate;
 
     @ManyToOne
@@ -39,7 +39,7 @@ public class InboundOrder {
     @JoinColumn(name = "section_id", nullable = false)
     private Section section;
 
-    @OneToMany()
-    private List<BatchStock> batchStockList;
+    @OneToMany(mappedBy = "inboundOrder")
+    private Set<BatchStock> batchStockList;
 
 }
