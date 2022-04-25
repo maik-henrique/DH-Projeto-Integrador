@@ -1,5 +1,9 @@
 package br.com.meli.dhprojetointegrador.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import br.com.meli.dhprojetointegrador.entity.Agent;
 import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.entity.Product;
@@ -10,9 +14,6 @@ import br.com.meli.dhprojetointegrador.service.validator.IInboundOrderValidator;
 import br.com.meli.dhprojetointegrador.service.validator.SectionCategoryValidator;
 import br.com.meli.dhprojetointegrador.service.validator.SpaceAvailableValidator;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -53,7 +54,6 @@ public class InboundOrderService {
     private void initializeIInboundOrderValidators(Section section, InboundOrder inboundOrder) {
         validators = List.of(
                 new SectionCategoryValidator(section, inboundOrder),
-                new SpaceAvailableValidator(section, inboundOrder)
-        );
+                new SpaceAvailableValidator(section, inboundOrder));
     }
 }

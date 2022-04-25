@@ -1,10 +1,11 @@
 package br.com.meli.dhprojetointegrador.repository;
 
-import br.com.meli.dhprojetointegrador.entity.InboundOrder;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 
 @Repository
 public interface InboundOrderRepository extends JpaRepository<InboundOrder, Integer> {
