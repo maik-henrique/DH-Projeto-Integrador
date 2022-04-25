@@ -29,6 +29,6 @@ public class Seller {
 
   private String name;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "seller")
   private List<Product> products;
 }
