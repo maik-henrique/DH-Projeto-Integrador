@@ -1,10 +1,6 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +17,7 @@ import lombok.Setter;
 public class Agent {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   private String name;
