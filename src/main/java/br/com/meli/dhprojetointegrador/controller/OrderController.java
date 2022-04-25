@@ -1,12 +1,11 @@
 package br.com.meli.dhprojetointegrador.controller;
 
-
+import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
 import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
 import br.com.meli.dhprojetointegrador.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 
@@ -22,19 +21,12 @@ public class OrderController {
     private OrderService orderService;
 
 
+    @PutMapping("{idorder}")
+    public ResponseEntity<PurchaseOrder> ModifyExistingOrder(@RequestParam Long idorder){
 
-    @PostMapping("")
-    public PurchaseOrder<PurchaseOrderInput> PurchaseOrderProductRegistration(@Valid @RequestBody PurchaseOrderInput dto, UriComponentsBuilder uriBuilder){
+        PurchaseOrder newOrderStatus = orderService.atualizar(idorder);
 
-    }
-
-    @PutMapping
-    public PurchaseOrder<PurchaseOrderInput> ModifyExistingOrder(@Valid @RequestBody PurchaseOrderInput dto){
-        PurchaseOrder purchaseorder = dto.map();
-        PurchaseOrder newStatus = OrderService.atualizar(purchaseorder);
-
-
-        return ResponseEntity.ok(PurchaseOrderInput.map(newStatus));
+        return ResponseEntity.ok(newOrderStatus);
 
     }
 }

@@ -3,16 +3,12 @@ package br.com.meli.dhprojetointegrador.enums;
 
 public enum StatusEnum {
 
-        ABERTO ("Aberto"),
-        FINALIZADO ("finalizado");
+        ABERTO ("cart"),
+        FINALIZADO ("order");
 
     private String status;
 
     StatusEnum(String status) {
         this.status = status;
-    }
-
-    public String getStatus() {
-        return status;
     }
 }
