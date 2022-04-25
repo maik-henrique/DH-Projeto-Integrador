@@ -16,11 +16,20 @@ public class OrderController {
 
 
     @Autowired
+    private OrderService orderService;
+
+
+    @PostMapping("")
+    public PurchaseOrder<PurchaseOrderDTO> PurchaseOrderProductRegistration(@Valid @RequestBody PurchaseOrderDTO dto, UriComponentsBuilder uriBuilder){
+
+
+    @Autowired
     private CartProductService cartProductService;
 
     @GetMapping("/")
     public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {
         return new ResponseEntity<>(cartProductService.getProductsByOrderId(idOrder), HttpStatus.OK);
+
     }
 
 }
