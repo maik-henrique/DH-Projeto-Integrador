@@ -12,6 +12,11 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class OrderExceptions extends ResponseEntityExceptionHandler {
 
+    /**
+     *
+     * @param exception
+     * @return
+     */
     @ExceptionHandler(value = {PurchaseOrderNotFoundException.class})
     protected ResponseEntity<Object> handlePurchaseOrderNotFoundException(PurchaseOrderNotFoundException exception) {
         ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
