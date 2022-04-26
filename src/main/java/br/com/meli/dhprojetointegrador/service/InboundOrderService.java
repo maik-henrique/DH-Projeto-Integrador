@@ -85,13 +85,14 @@ public class InboundOrderService {
     public InboundOrder create(InboundOrder inboundOrder) {
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
         Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());
-        inboundOrder.getBatchStockList().forEach(batchStock -> {
 
+        inboundOrder.getBatchStockList().forEach(batchStock -> {
             Product product = productService.findProductById(batchStock.getProducts().getId());
             batchStock.setProducts(product);
         });
 
         initializeIInboundOrderValidators(section, inboundOrder, agent);
+        System.out.println("OBA");
         validators.forEach(IInboundOrderValidator::validate);
 
         inboundOrder.setAgent(agent);

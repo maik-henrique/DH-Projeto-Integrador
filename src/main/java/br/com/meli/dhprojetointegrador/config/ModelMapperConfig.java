@@ -28,7 +28,7 @@ public class ModelMapperConfig {
 
                 Converter<InboundOrderUpdateRequest, InboundOrder> converter = getInboundOrderUpdateRequestToInboundOrderConverter();
                 Converter<InboundOrder, InboundOrderResponse> inboundOrderToInboundOrderResponseConverter = gedtInboundOrderUpdateRequestToInboundOrderConverter();
-                Converter<InboundOrderUpdateRequest, InboundOrder> inboundOrderPostToInboundOrder = getInboundOrderPostRequestToInboundOrderConverter();
+                Converter<InboundOrderPostRequest, InboundOrder> inboundOrderPostToInboundOrder = getInboundOrderPostRequestToInboundOrderConverter();
 
                 modelMapper.createTypeMap(InboundOrderUpdateRequest.class, InboundOrder.class)
                                 .setConverter(converter);
@@ -81,7 +81,7 @@ public class ModelMapperConfig {
 
                         Agent agent = Agent.builder().id(source.getAgentId()).build();
                         Section section = Section.builder().id(source.getSectionId()).build();
-                        List<BatchStock> batchStock = source.getBatchStock().stream().map(
+                        Set<BatchStock> batchStock = source.getBatchStock().stream().map(
                                         batchStockUpdateRequest -> BatchStock.builder()
                                                         .batchNumber(batchStockUpdateRequest.getBatchNumber())
                                                         .currentQuantity(batchStockUpdateRequest.getCurrentQuantity())
@@ -93,11 +93,13 @@ public class ModelMapperConfig {
                                                                         batchStockUpdateRequest.getManufacturingDate())
                                                         .manufacturingTime(
                                                                         batchStockUpdateRequest.getManufacturingTime())
+                                                        .minimumTemperature(
+                                                                        batchStockUpdateRequest.getMinimumTemperature())
                                                         .products(Product.builder()
                                                                         .id(batchStockUpdateRequest.getProductId())
                                                                         .build())
                                                         .build())
-                                        .collect(Collectors.toList());
+                                        .collect(Collectors.toSet());
 
                         return InboundOrder
                                         .builder()

@@ -1,7 +1,7 @@
 package br.com.meli.dhprojetointegrador.entity;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -42,13 +42,13 @@ public class InboundOrder {
     @JoinColumn(name = "section_id", nullable = false)
     private Section section;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "inboundOrder")
-    private List<BatchStock> batchStockList;
+    @OneToMany(mappedBy = "inboundOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<BatchStock> batchStockList;
 
     @PrePersist
-    private void prePersist() {
+    public void prePersist() {
         if (batchStockList != null) {
-            batchStockList.forEach(e -> e.setInboundOrder(this));
+            batchStockList.forEach(b -> b.setInboundOrder(this));
         }
     }
 

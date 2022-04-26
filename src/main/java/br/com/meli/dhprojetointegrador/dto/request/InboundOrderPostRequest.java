@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InboundOrderPostRequest {
   @NotNull
-  private Integer orderNumber;
+  private Long orderNumber;
 
   @JsonDeserialize(using = LocalDateDeserializer.class)
   @JsonSerialize(using = LocalDateSerializer.class)
@@ -30,10 +30,10 @@ public class InboundOrderPostRequest {
   private LocalDate orderDate;
 
   @NotNull
-  private Integer sectionId;
+  private Long sectionId;
 
   @NotNull
-  private Integer agentId;
+  private Long agentId;
   @NotNull
   private List<@Valid BatchStockPostRequest> batchStock;
 
