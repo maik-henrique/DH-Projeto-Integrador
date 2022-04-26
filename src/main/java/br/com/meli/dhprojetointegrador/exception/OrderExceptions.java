@@ -45,4 +45,21 @@ public class OrderExceptions extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(exceptionPayload, HttpStatus.BAD_REQUEST);
     }
+
+    /**
+     * Author: Bruno Mendes
+     * Method: handleProductNotFoundException
+     * Description: Handler para a exeption Product Not Found
+     */
+    @ExceptionHandler(value = {ProductNotFoundException.class})
+    protected ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException exception) {
+        ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+                .timestamp(LocalDateTime.now())
+                .title("Product Not Found")
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .description(exception.getMessage())
+                .build();
+
+        return new ResponseEntity<>(exceptionPayload, HttpStatus.BAD_REQUEST);
+    }
 }

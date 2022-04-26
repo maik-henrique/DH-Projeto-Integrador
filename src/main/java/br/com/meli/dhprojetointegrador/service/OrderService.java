@@ -1,5 +1,6 @@
 package br.com.meli.dhprojetointegrador.service;
 
+import br.com.meli.dhprojetointegrador.dto.request.ProductInput;
 import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
 import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
 import br.com.meli.dhprojetointegrador.entity.*;
@@ -19,6 +20,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -48,7 +50,7 @@ public class OrderService {
      * Method: createCartProduct
      * Description: salva um produto do carrinho na tabela cartProduct
      */
-    private CartProduct createCartProduct(Integer qtd, Long id, PurchaseOrder order) {
+    private void createCartProduct(Integer qtd, Long id, PurchaseOrder order) {
         Product product = productRepository.getById(id);
         CartProduct cartProduct = CartProduct.builder()
                 .product(product)
@@ -56,7 +58,6 @@ public class OrderService {
                 .quantity(qtd)
                 .build();
         cartProductRepository.save(cartProduct);
-        return cartProduct;
     }
 
     /**
@@ -84,28 +85,57 @@ public class OrderService {
 
     /**
      * Author: Bruno Mendes
+     * Method: calculateTotalCart
+     * Description: recebe uma lista de produtos e quantodades e retorna o valor total do carrinho
+     */
+    private Double calculateTotalCart(List<ProductInput> productInputList, List<Product> productList) {
+        AtomicReference<BigDecimal> totalPrice = new AtomicReference<>(new BigDecimal(0.00));
+
+        productInputList.forEach(cartProduct -> {
+            BigDecimal price = productList.stream().filter(p -> p.getId().equals(cartProduct.getProductId())).findFirst().get().getPrice();
+            totalPrice.updateAndGet(v -> v.add(price.multiply(BigDecimal.valueOf(cartProduct.getQuantity()))));
+        });
+
+        return totalPrice.get().doubleValue();
+    }
+
+    /**
+     * Author: Bruno Mendes
+     * Method: createPurchaseOrder
+     * Description: Recebe um Buyer e cria uma purchaseOrder
+     */
+    private PurchaseOrder createPurchaseOrder(Buyer buyer) {
+        PurchaseOrder purchaseOrder = PurchaseOrder.builder().buyer(buyer).status(StatusEnum.FECHADO).date(LocalDate.now()).build();
+        purchaseOrderRepository.save(purchaseOrder);
+        return purchaseOrder;
+    }
+
+    /**
+     * Author: Bruno Mendes
      * Method: createOrder
-     * Description: Recebe uma ordem de compras, realiza as validações e implementa a compra e calcula o preço total do carrinho
+     * Description: Recebe uma ordem de compras, realiza as validações e implementa a compra e retorna o preço total do carrinho
      */
     public OrderIntermediateDTO createOrder(PurchaseOrderInput input){
 
-        AtomicReference<BigDecimal> totalPrice = new AtomicReference<>(new BigDecimal(0.00));
+        List<ProductInput> productInputList = input.getProducts();
 
         Buyer buyer = validateBuyer.getBuyer(input.getBuyerId());
-        input.getProducts().forEach(o -> {validadeProduct.validateQuantity(o.getQuantity(), o.getProductId());} );
+        List<Product> productList = productInputList.stream().map(o -> validadeProduct.validateQuantity(o.getQuantity(), o.getProductId())
+        ).collect(Collectors.toList());
 
-        PurchaseOrder purchaseOrder = PurchaseOrder.builder().buyer(buyer).status(StatusEnum.FECHADO).date(LocalDate.now()).build();
-        purchaseOrderRepository.save(purchaseOrder);
+        PurchaseOrder purchaseOrder = this.createPurchaseOrder(buyer);
 
-        input.getProducts().forEach( o -> {
-            CartProduct cartProduct = this.createCartProduct(o.getQuantity(), o.getProductId(), purchaseOrder);
+        productInputList.forEach( o -> {
+            this.createCartProduct(o.getQuantity(), o.getProductId(), purchaseOrder);
             this.updateCurrentQuantity(o.getQuantity(), o.getProductId());
-            totalPrice.updateAndGet(v -> v.add(cartProduct.getProduct().getPrice().multiply(BigDecimal.valueOf(o.getQuantity()))));
         } );
+
+        Double totalPrice = this.calculateTotalCart(productInputList, productList);
+
 
         return  OrderIntermediateDTO.builder()
                 .createdID(purchaseOrder.getId())
-                .totalPrice(totalPrice.get().doubleValue())
+                .totalPrice(totalPrice)
                 .build();
     }
 }
