@@ -6,7 +6,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'feature/PI-33', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git/src/test'
+                git branch: 'feature/PI-33', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git'
             }
         }
 
@@ -27,7 +27,7 @@ pipeline {
 
         stage('Integration tests'){
             steps {
-                git credentialsId: 'github', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git/src/test'
+                git url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git'
                 sh 'mvn clean install'
                 cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: 'target/*.json', pendingStepsNumber: -1, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1                       
             }
