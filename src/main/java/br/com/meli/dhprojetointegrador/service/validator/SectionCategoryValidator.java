@@ -21,7 +21,7 @@ public class SectionCategoryValidator implements IInboundOrderValidator {
                 .filter(product -> !product.getCategory().getName().equals(expectedCategory))
                 .findAny()
                 .ifPresent(product -> {
-                    throw new BusinessValidatorException(String.format("Categoria do produto de id %d é inválida, o esperado é %s",
+                    throw new BusinessValidatorException(String.format("Product's category from product %d is invalid, the expected was %s",
                             product.getId(), expectedCategory.name()));
                 });
     }
