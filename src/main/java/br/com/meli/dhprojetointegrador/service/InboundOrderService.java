@@ -10,6 +10,7 @@ import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.entity.Section;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
+import br.com.meli.dhprojetointegrador.service.validator.AgentWarehouseValidator;
 import br.com.meli.dhprojetointegrador.service.validator.IInboundOrderValidator;
 import br.com.meli.dhprojetointegrador.service.validator.SectionCategoryValidator;
 import br.com.meli.dhprojetointegrador.service.validator.SectionValidator;
@@ -24,6 +25,7 @@ public class InboundOrderService {
     private final AgentService agentService;
     private final ProductService productService;
     private List<IInboundOrderValidator> validators;
+    private WarehouseService warehouseService;
 
     public InboundOrder update(InboundOrder inboundOrder) throws BusinessValidatorException {
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
@@ -35,7 +37,7 @@ public class InboundOrderService {
 
         InboundOrder oldInboundOrder = findInboundOrderByOrderNumber(inboundOrder.getOrderNumber());
 
-        initializeIInboundOrderValidators(section, inboundOrder);
+        initializeIInboundOrderValidators(section, inboundOrder, agent);
         validators.forEach(IInboundOrderValidator::validate);
 
         oldInboundOrder.setOrderDate(inboundOrder.getOrderDate());
@@ -52,11 +54,12 @@ public class InboundOrderService {
                 .orElseThrow(() -> new RuntimeException("Recurso nao encontrado"));
     }
 
-    private void initializeIInboundOrderValidators(Section section, InboundOrder inboundOrder) {
+    private void initializeIInboundOrderValidators(Section section, InboundOrder inboundOrder, Agent agent) {
         validators = List.of(
                 new SectionCategoryValidator(section, inboundOrder),
                 new SpaceAvailableValidator(section, inboundOrder),
-                new SectionValidator(sectionService, section.getId()));
+                new SectionValidator(sectionService, section.getId()),
+                new AgentWarehouseValidator(section.getId(), agent.getId(), warehouseService));
     }
 
     public InboundOrder create(InboundOrder inboundOrder) {
@@ -68,7 +71,7 @@ public class InboundOrderService {
             batchStock.setProducts(product);
         });
 
-        initializeIInboundOrderValidators(section, inboundOrder);
+        initializeIInboundOrderValidators(section, inboundOrder, agent);
         validators.forEach(IInboundOrderValidator::validate);
 
         inboundOrder.setAgent(agent);
