@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,14 +73,21 @@ public class InboundOrderControllerTests {
 	public void update_shouldUpdateInboundOrderField_whenProperRequestIsSent() throws Exception {
 		setupBaseData(2.0f);
 
-		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder().batchNumber(1L)
-				.currentQuantity(4).initialQuantity(4).currentTemperature(24.0f).minimumTemperature(19f)
+		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder()
+				.batchNumber(1L)
+				.currentQuantity(4)
+				.initialQuantity(4)
+				.currentTemperature(24.0f)
+				.minimumTemperature(19f)
 				.manufacturingDate(LocalDate.of(2022, 5, 23))
-				.manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25)).dueDate(LocalDate.of(2022, 4, 22))
+				.manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25))
+				.dueDate(LocalDate.of(2022, 4, 22))
 				.productId(2L).build();
 
 		InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1)
-				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock)).sectionId(1)
+				.orderDate(LocalDate.of(2020, 3, 3))
+				.orderNumber(1L)
+				.batchStock(List.of(expectedBatchStock)).sectionId(1)
 				.build();
 
 		String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
@@ -114,7 +122,6 @@ public class InboundOrderControllerTests {
 		setupBaseData(2.0f);
 		setupBaseDataExtraProduct(CategoryEnum.CONGELADOS, 2.0f);
 
-		List<Category> all = categoryRepository.findAll();
 		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder().batchNumber(123L)
 				.currentQuantity(4).initialQuantity(4).currentTemperature(24.0f).minimumTemperature(19f)
 				.manufacturingDate(LocalDate.of(2022, 5, 23))
@@ -148,8 +155,12 @@ public class InboundOrderControllerTests {
 	public void update_shouldReturnUnprossebleEntityResponse_whenProductsVolumeExceedTheSectionCapacity() throws Exception {
 		setupBaseData(42.0f);
 
-		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder().batchNumber(123L)
-				.currentQuantity(4).initialQuantity(4).currentTemperature(24.0f).minimumTemperature(19f)
+		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder()
+				.batchNumber(123L)
+				.currentQuantity(4)
+				.initialQuantity(4)
+				.currentTemperature(24.0f)
+				.minimumTemperature(19f)
 				.manufacturingDate(LocalDate.of(2022, 5, 23))
 				.manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25))
 				.dueDate(LocalDate.of(2022, 4, 22))
@@ -239,7 +250,9 @@ public class InboundOrderControllerTests {
 			Section managedSection) {
 		
 		InboundOrder inboundOrder = InboundOrder.builder().orderNumber(0L).batchStockList(Set.of(managedBatchStock))
-				.section(managedSection).orderDate(LocalDate.of(2020, 3, 4)).agent(managedWarehouse.getAgent()).build();
+				.section(managedSection).orderDate(LocalDate.of(2020, 3, 4))
+				.agent(managedWarehouse.getAgent())
+				.build();
 
 		return inboundOrderRepository.save(inboundOrder);
 	}
