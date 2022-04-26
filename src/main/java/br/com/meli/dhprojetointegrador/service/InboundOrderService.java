@@ -12,6 +12,7 @@ import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
 import br.com.meli.dhprojetointegrador.service.validator.IInboundOrderValidator;
 import br.com.meli.dhprojetointegrador.service.validator.SectionCategoryValidator;
+import br.com.meli.dhprojetointegrador.service.validator.SectionValidator;
 import br.com.meli.dhprojetointegrador.service.validator.SpaceAvailableValidator;
 import lombok.AllArgsConstructor;
 
@@ -54,7 +55,8 @@ public class InboundOrderService {
     private void initializeIInboundOrderValidators(Section section, InboundOrder inboundOrder) {
         validators = List.of(
                 new SectionCategoryValidator(section, inboundOrder),
-                new SpaceAvailableValidator(section, inboundOrder));
+                new SpaceAvailableValidator(section, inboundOrder),
+                new SectionValidator(sectionService, section.getId()));
     }
 
     public InboundOrder create(InboundOrder inboundOrder) {
@@ -65,6 +67,9 @@ public class InboundOrderService {
             Product product = productService.findProductById(batchStock.getProducts().getId());
             batchStock.setProducts(product);
         });
+
+        initializeIInboundOrderValidators(section, inboundOrder);
+        validators.forEach(IInboundOrderValidator::validate);
 
         inboundOrder.setAgent(agent);
         inboundOrder.setSection(section);
