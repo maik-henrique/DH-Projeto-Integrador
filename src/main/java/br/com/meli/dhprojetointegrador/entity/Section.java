@@ -17,7 +17,7 @@ import lombok.Setter;
 public class Section {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   private String name;
@@ -28,8 +28,8 @@ public class Section {
   @JoinColumn(name = "warehouse", nullable = false)
   private Warehouse warehouse;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "category", nullable = false)
+  @ManyToOne
+  @JoinColumn(name = "category_id", nullable = false)
   private Category category;
 
 }

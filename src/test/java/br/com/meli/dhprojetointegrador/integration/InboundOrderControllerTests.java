@@ -79,7 +79,7 @@ public class InboundOrderControllerTests {
 				.productId(2L).build();
 
 		InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1)
-				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock)).sectionId(2)
+				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock)).sectionId(1)
 				.build();
 
 		String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
@@ -112,16 +112,17 @@ public class InboundOrderControllerTests {
 	@DisplayName("Inbound Order Update Integration - Mismatch of product and section category")
 	public void update_shouldReturnUnprossebleEntityResponse_whenCategoyOfTheProductDoesNotMatch() throws Exception {
 		setupBaseData(2.0f);
-		setupBaseDataExtraProduct(CategoryEnum.CONGELADOS, 2.0f);
-		
-		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder().batchNumber(1L)
+		setupBaseDataExtraProduct(CategoryEnum.FRIOS, 2.0f);
+
+		List<Product> all = productRepository.findAll();
+		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder().batchNumber(123L)
 				.currentQuantity(4).initialQuantity(4).currentTemperature(24.0f).minimumTemperature(19f)
 				.manufacturingDate(LocalDate.of(2022, 5, 23))
 				.manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25)).dueDate(LocalDate.of(2022, 4, 22))
 				.productId(3L).build();
 
 		InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1)
-				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock)).sectionId(2)
+				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock)).sectionId(1)
 				.build();
 
 		String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
@@ -146,15 +147,17 @@ public class InboundOrderControllerTests {
 	@DisplayName("Inbound Order Update Integration - Volume of inbound order exceeds the section capacity")
 	public void update_shouldReturnUnprossebleEntityResponse_whenProductsVolumeExceedTheSectionCapacity() throws Exception {
 		setupBaseData(42.0f);
-		
-		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder().batchNumber(1L)
+
+		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder().batchNumber(123L)
 				.currentQuantity(4).initialQuantity(4).currentTemperature(24.0f).minimumTemperature(19f)
 				.manufacturingDate(LocalDate.of(2022, 5, 23))
-				.manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25)).dueDate(LocalDate.of(2022, 4, 22))
+				.manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25))
+				.dueDate(LocalDate.of(2022, 4, 22))
 				.productId(2L).build();
 
 		InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1)
-				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock)).sectionId(2)
+				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock))
+				.sectionId(1)
 				.build();
 
 		String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
@@ -201,19 +204,19 @@ public class InboundOrderControllerTests {
 	}
 
 	private Category setupCategory(CategoryEnum categoryEnum) {
-		Category category = Category.builder().name(categoryEnum).build();
+		Category category = Category.builder().id(1).name(categoryEnum).build();
 		return categoryRepository.save(category);
 	}
 
 	private Section setupSection(Category managedCategory, Warehouse managedWarehouse) {
-		Section section = Section.builder().id(2).category(managedCategory).name("Cold section").capacity(32.0f)
+		Section section = Section.builder().category(managedCategory).name("Cold section").capacity(32.0f)
 				.warehouse(managedWarehouse).build();
 
 		return sectionRepository.save(section);
 	}
 
 	private Warehouse setupWarehouse() {
-		Agent agent = Agent.builder().id(1).name("007").build();
+		Agent agent = Agent.builder().name("007").build();
 		Warehouse warehouse = Warehouse.builder().id(1).name("Galpao do joao").agent(agent).build();
 		agent.setWarehouse(warehouse);
 
@@ -221,7 +224,7 @@ public class InboundOrderControllerTests {
 	}
 
 	private BatchStock setupBatchStock(Product managedProduct) {
-		BatchStock batchStock = BatchStock.builder().currentQuantity(3).initialQuantity(4)
+		BatchStock batchStock = BatchStock.builder().batchNumber(123L).currentQuantity(3).initialQuantity(4)
 				.currentTemperature(24f)
 
 				.manufacturingDate(LocalDate.of(2020, 4, 22))

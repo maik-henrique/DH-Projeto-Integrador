@@ -62,7 +62,7 @@ public class InboundOrderService {
     private InboundOrder findInboundOrderByOrderNumber(Long orderNumber) {
         return inboundOrderRepository
                 .findByOrderNumber(orderNumber)
-                .orElseThrow(() -> new RuntimeException("Recurso nao encontrado"));
+                .orElseThrow(() -> new BusinessValidatorException("Inbound order not found with the provider order number"));
     }
 
     private void initializeIInboundOrderValidators(Section section, InboundOrder inboundOrder) {
