@@ -6,7 +6,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'feature/PI-33', credentialsId: 'github', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git/src/test'
+                git branch: 'feature/PI-33', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git/src/test'
             }
         }
 
