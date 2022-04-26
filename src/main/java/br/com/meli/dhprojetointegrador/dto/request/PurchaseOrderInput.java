@@ -18,19 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 public class PurchaseOrderInput {
 
-    @NotNull
-    @NotBlank
-    @DateTimeFormat
-    private LocalDate date;
-
     @NotBlank
     @NotNull
     @NumberFormat
     private Long buyerId;
-
-    @NotNull
-    @NotBlank
-    private StatusEnum orderStatus;
 
     private List<@Valid ProductInput> products;
 }
