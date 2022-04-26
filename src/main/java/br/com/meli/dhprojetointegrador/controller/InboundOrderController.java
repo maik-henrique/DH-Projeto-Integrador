@@ -1,6 +1,7 @@
 package br.com.meli.dhprojetointegrador.controller;
 
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
+import br.com.meli.dhprojetointegrador.dto.request.InboundPostRequestBody;
 import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
 import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.service.InboundOrderService;
@@ -9,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +29,7 @@ public class InboundOrderController {
 	 * them, it will throw a BusinessValidationException, which will then translate
 	 * into a status 422 response.
 	 * 
-	 * @param inboundOrderUpdateRequest constract of the inbound order that needs to
+	 * @param inboundOrderUpdateRequest contract of the inbound order that needs to
 	 *                                  be updated
 	 * @return inboud order updated or exception in case it does not fulfill the
 	 *         request

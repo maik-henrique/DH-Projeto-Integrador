@@ -4,6 +4,9 @@ import org.springframework.http.HttpStatus;
 
 import lombok.Getter;
 
+/**
+ * Base exception for business validation errors
+ */
 @Getter
 public class BusinessValidatorException extends RuntimeException {
 

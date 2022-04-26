@@ -10,10 +10,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 
+/**
+ *  Used to catch and return the proper response payload for exceptions thrown at the layers bellow the controllers.
+ */
 @RestControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
-	
-	   @ExceptionHandler(BusinessValidatorException.class)
+
+	/**
+	 *
+	 * @param exception BusinessValidator thrown at the service layer
+	 * @return ExceptionPayloadResponse filled with the exception data
+	 */
+	@ExceptionHandler(BusinessValidatorException.class)
 	    protected ResponseEntity<?> handleAuthException(BusinessValidatorException exception) {
 			ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
 					.timestamp(LocalDateTime.now())
