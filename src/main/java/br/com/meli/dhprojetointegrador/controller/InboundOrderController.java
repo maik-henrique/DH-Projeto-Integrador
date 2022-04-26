@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.meli.dhprojetointegrador.dto.request.InboundPostRequestBody;
 import br.com.meli.dhprojetointegrador.service.InboundOrderService;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping("/api/v1/fresh-products/inboundorder/")
 @AllArgsConstructor
-@Log4j2
 public class InboundOrderController {
 
   private final InboundOrderService inboundOrderService;

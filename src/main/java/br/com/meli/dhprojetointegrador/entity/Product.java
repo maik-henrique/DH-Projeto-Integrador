@@ -2,8 +2,7 @@ package br.com.meli.dhprojetointegrador.entity;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-
+import java.util.Set;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,8 +28,8 @@ import lombok.Setter;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer id;
     private String name;
     private BigDecimal price;
     private float volume;
@@ -42,7 +41,7 @@ public class Product {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    @OneToMany
-    private List<BatchStock> batchStockList;
+    @OneToMany(mappedBy = "products")
+    private Set<BatchStock> batchStockList;
 
 }
