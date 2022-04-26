@@ -37,143 +37,128 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AutoConfigureMockMvc
 public class InboundOrderControllerTests {
 
-    @Autowired
-    private MockMvc mock;
+	@Autowired
+	private MockMvc mock;
 
-    @Autowired
-    private SectionRepository sectionRepository;
+	@Autowired
+	private SectionRepository sectionRepository;
 
-    @Autowired
-    private AgentRepository agentRepository;
+	@Autowired
+	private AgentRepository agentRepository;
 
-    @Autowired
-    private WarehouseRepository warehouseRepository;
+	@Autowired
+	private WarehouseRepository warehouseRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+	@Autowired
+	private CategoryRepository categoryRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
+	@Autowired
+	private ProductRepository productRepository;
 
-    @Autowired
-    private InboundOrderRepository inboundOrderRepository;
+	@Autowired
+	private InboundOrderRepository inboundOrderRepository;
 
-    @Autowired
-    private BatchStockRepository batchStockRepository;
+	@Autowired
+	private BatchStockRepository batchStockRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @Test
-    public void update_shouldUpdateInboundOrder_when() throws Exception {
-        setup();
-        BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder()
-                .batchNumber(1L)
-                .currentQuantity(4)
-                .initialQuantity(4)
-                .currentTemperature(24.0f)
-                .minimumTemperature(19f)
-                .manufacturingDate(LocalDate.of(2022, 5, 23))
-                .manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25))
-                .dueDate(LocalDate.of(2022, 4, 22))
-                .productId(1L).build();
+	@Test
+	public void update_shouldUpdateInboundOrder_when() throws Exception {
+		setupBaseData();
+		
+		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder().batchNumber(1L)
+				.currentQuantity(4).initialQuantity(4).currentTemperature(24.0f).minimumTemperature(19f)
+				.manufacturingDate(LocalDate.of(2022, 5, 23))
+				.manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25)).dueDate(LocalDate.of(2022, 4, 22))
+				.productId(1L).build();
 
-        InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest
-                .builder()
-                .agentId(1)
-                .orderDate(LocalDate.of(2020, 3, 3))
-                .orderNumber(1)
-                .batchStock(List.of(expectedBatchStock))
-                .sectionId(2)
-                .build();
+		InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1)
+				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1).batchStock(List.of(expectedBatchStock)).sectionId(2)
+				.build();
 
-        String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
+		String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
 
-        MvcResult result = mock.perform(MockMvcRequestBuilders
-                .put("/api/v1/fresh-products/inboundorder")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(payload)).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+		MvcResult result = mock
+				.perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
+						.contentType(MediaType.APPLICATION_JSON).content(payload))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        String responsePaylaod = result.getResponse().getContentAsString();
-        InboundOrderResponse inboundOrderResponse = objectMapper.readValue(responsePaylaod, InboundOrderResponse.class);
+		String responsePaylaod = result.getResponse().getContentAsString();
+		InboundOrderResponse inboundOrderResponse = objectMapper.readValue(responsePaylaod, InboundOrderResponse.class);
 
-        assertNotNull(inboundOrderResponse);
+		assertNotNull(inboundOrderResponse);
 
-        BatchStockResponse batchStockResponse = inboundOrderResponse.getBatchStock().get(0);
+		BatchStockResponse batchStockResponse = inboundOrderResponse.getBatchStock().get(0);
 
-        assertNotNull(batchStockResponse);
-        assertEquals(expectedBatchStock.getBatchNumber(), batchStockResponse.getBatchNumber());
-        assertEquals(expectedBatchStock.getCurrentQuantity(), batchStockResponse.getCurrentQuantity());
-        assertEquals(expectedBatchStock.getCurrentTemperature(), batchStockResponse.getCurrentTemperature());
-        assertEquals(expectedBatchStock.getCurrentQuantity(), batchStockResponse.getCurrentQuantity());
-        assertEquals(expectedBatchStock.getDueDate(), batchStockResponse.getDueDate());
-        assertEquals(expectedBatchStock.getInitialQuantity(), batchStockResponse.getInitialQuantity());
-        assertEquals(expectedBatchStock.getProductId(), batchStockResponse.getProductId());
-        assertEquals(expectedBatchStock.getManufacturingTime(), batchStockResponse.getManufacturingTime());
-        assertEquals(expectedBatchStock.getManufacturingDate(), batchStockResponse.getManufacturingDate());
-        var all = inboundOrderRepository.findAll().get(0).getBatchStockList();
-    }
+		assertNotNull(batchStockResponse);
+		assertEquals(expectedBatchStock.getBatchNumber(), batchStockResponse.getBatchNumber());
+		assertEquals(expectedBatchStock.getCurrentQuantity(), batchStockResponse.getCurrentQuantity());
+		assertEquals(expectedBatchStock.getCurrentTemperature(), batchStockResponse.getCurrentTemperature());
+		assertEquals(expectedBatchStock.getCurrentQuantity(), batchStockResponse.getCurrentQuantity());
+		assertEquals(expectedBatchStock.getDueDate(), batchStockResponse.getDueDate());
+		assertEquals(expectedBatchStock.getInitialQuantity(), batchStockResponse.getInitialQuantity());
+		assertEquals(expectedBatchStock.getProductId(), batchStockResponse.getProductId());
+		assertEquals(expectedBatchStock.getManufacturingTime(), batchStockResponse.getManufacturingTime());
+		assertEquals(expectedBatchStock.getManufacturingDate(), batchStockResponse.getManufacturingDate());
+	}
 
-    private void setup() {
-        Category friosCategory = Category.builder().name(CategoryEnum.FRIOS).build();
-        Agent agent = Agent.builder()
-                .id(1)
-                .name("007")
-                .build();
-        Warehouse warehouse = Warehouse.builder()
-                .id(1)
-                .name("Galpao do joao")
-                .agent(agent)
-                .build();
-        agent.setWarehouse(warehouse);
+	private void setupBaseData() {
+		Category managedCategory = setupCategory(CategoryEnum.FRIOS);
+		Warehouse managedWarehouse = setupWarehouse();
+		Section managedSection = setupSection(managedCategory, managedWarehouse);
+		Product managedProduct = setupProduct(managedCategory);
+		BatchStock managedBatchStock = setupBatchStock(managedProduct);
+		InboundOrder managedInboundOrder = setupInboundOrder(managedBatchStock, managedWarehouse, managedSection);
+	}
 
-        Warehouse managedWarehouse = warehouseRepository.save(warehouse);
-        Category managedCategory = categoryRepository.save(friosCategory);
+	private Product setupProduct(Category managedCategory) {
+		Product product = Product.builder().id(1L).name("Bauru").category(managedCategory).volume(2.0f)
+				.price(BigDecimal.valueOf(32)).build();
 
-        Section section = Section.builder()
-                .id(2)
-                .category(managedCategory)
-                .name("Cold section")
-                .capacity(32.0f)
-                .warehouse(managedWarehouse)
-                .build();
+		productRepository.save(product);
+		return product;
+	}
 
-        Section managedSection = sectionRepository.save(section);
-        agentRepository.findAll();
+	private Category setupCategory(CategoryEnum categoryEnum) {
+		Category category = Category.builder().name(categoryEnum).build();
+		return categoryRepository.save(category);
+	}
 
-        Product product = Product.builder()
-                .id(1L)
-                .name("Bauru")
-                .category(managedCategory)
-                .volume(2.0f)
-                .price(BigDecimal.valueOf(32))
-                .build();
+	private Section setupSection(Category managedCategory, Warehouse managedWarehouse) {
+		Section section = Section.builder().id(2).category(managedCategory).name("Cold section").capacity(32.0f)
+				.warehouse(managedWarehouse).build();
 
-        productRepository.save(product);
+		return sectionRepository.save(section);
+	}
 
-        BatchStock batchStock = BatchStock.builder()
-                .batchNumber(1L)
-                .currentQuantity(3)
-                .initialQuantity(4)
-                .currentTemperature(24f)
+	private Warehouse setupWarehouse() {
+		Agent agent = Agent.builder().id(1).name("007").build();
+		Warehouse warehouse = Warehouse.builder().id(1).name("Galpao do joao").agent(agent).build();
+		agent.setWarehouse(warehouse);
 
-                .manufacturingDate(LocalDate.of(2020, 4, 22))
-                .manufacturingTime(LocalDateTime.of(2016, 10, 30, 14, 23, 25))
-                .dueDate(LocalDate.of(2022, 4, 22))
-                .products(product)
-                .build();
+		return warehouseRepository.save(warehouse);
+	}
 
-        BatchStock managedBatchStock = batchStockRepository.save(batchStock);
+	private BatchStock setupBatchStock(Product managedProduct) {
+		BatchStock batchStock = BatchStock.builder().batchNumber(1L).currentQuantity(3).initialQuantity(4)
+				.currentTemperature(24f)
 
-        InboundOrder inboundOrder = InboundOrder.builder()
-                .orderNumber(123)
-                .agent(agent)
-                .batchStockList(List.of(managedBatchStock))
-                .section(managedSection)
-                .orderDate(LocalDate.of(2020, 3, 4))
-                .agent(managedWarehouse.getAgent()).build();
+				.manufacturingDate(LocalDate.of(2020, 4, 22))
+				.manufacturingTime(LocalDateTime.of(2016, 10, 30, 14, 23, 25)).dueDate(LocalDate.of(2022, 4, 22))
+				.products(managedProduct).build();
 
-        inboundOrderRepository.save(inboundOrder);
+		return batchStockRepository.save(batchStock);
+	}
 
-    }
+	private InboundOrder setupInboundOrder(BatchStock managedBatchStock, Warehouse managedWarehouse,
+			Section managedSection) {
+		InboundOrder inboundOrder = InboundOrder.builder().orderNumber(123).batchStockList(List.of(managedBatchStock))
+				.section(managedSection).orderDate(LocalDate.of(2020, 3, 4)).agent(managedWarehouse.getAgent()).build();
+
+		return inboundOrderRepository.save(inboundOrder);
+	}
+
+
 }
