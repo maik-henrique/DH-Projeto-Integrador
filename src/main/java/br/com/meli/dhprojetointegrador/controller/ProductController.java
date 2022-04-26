@@ -34,7 +34,7 @@ public class ProductController {
      * @return lista de produtos
      */
 
-    @GetMapping("/fresh-products")
+    @GetMapping("fresh-products")
     public ResponseEntity<?> returnAllProducts() {
         List<Product> products = productService.returnAllProducts();
             return products == null || products.isEmpty()?ResponseEntity.notFound().build():

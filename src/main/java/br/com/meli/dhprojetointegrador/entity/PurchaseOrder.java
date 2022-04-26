@@ -4,6 +4,7 @@ import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -13,7 +14,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "purchaseOrder")
-public class PurchaseOrder {
+public class PurchaseOrder implements Serializable{
+
+    private static final long serialVersionUID = 7156526077883281623L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
