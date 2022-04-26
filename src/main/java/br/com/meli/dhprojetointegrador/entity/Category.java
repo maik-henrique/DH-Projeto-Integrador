@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class Category {
     private float maximumTemperature;
 
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private Set<Product> products;
 
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "category")
