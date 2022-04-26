@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "cart_Product")
+@Entity
 public class CartProduct {
 
     @Id

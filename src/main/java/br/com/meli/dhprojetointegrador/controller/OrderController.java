@@ -18,7 +18,7 @@ public class OrderController {
     @Autowired
     private CartProductService cartProductService;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {
         return new ResponseEntity<>(cartProductService.getProductsByOrderId(idOrder), HttpStatus.OK);
     }
