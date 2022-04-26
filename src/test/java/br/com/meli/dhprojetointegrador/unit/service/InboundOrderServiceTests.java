@@ -54,11 +54,11 @@ public class InboundOrderServiceTests {
         when(sectionService.findSectionById(anyInt())).thenReturn(section);
         when(agentService.findAgentById(anyInt())).thenReturn(Agent.builder().build());
 
-        InboundOrder oldInboundOrder = InboundOrder.builder().orderNumber(12).build();
-        when(inboundOrderRepository.findByOrderNumber(anyInt())).thenReturn(Optional.of(oldInboundOrder));
+        InboundOrder oldInboundOrder = InboundOrder.builder().orderNumber(12L).build();
+        when(inboundOrderRepository.findByOrderNumber(anyLong())).thenReturn(Optional.of(oldInboundOrder));
 
         InboundOrder inboundOrderRequest = InboundOrder.builder()
-                .orderNumber(123)
+                .orderNumber(123L)
                 .section(section)
                 .agent(agent)
                 .batchStockList(batchStockList)

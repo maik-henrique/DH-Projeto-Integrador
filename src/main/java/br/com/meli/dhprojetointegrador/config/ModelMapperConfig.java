@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -38,7 +39,7 @@ public class ModelMapperConfig {
 
             Agent agent = Agent.builder().id(source.getAgentId()).build();
             Section section = Section.builder().id(source.getSectionId()).build();
-            List<BatchStock> batchStock = source.getBatchStock().stream().map(
+            Set<BatchStock> batchStock = source.getBatchStock().stream().map(
                     batchStockUpdateRequest -> BatchStock.builder()
                             .batchNumber(batchStockUpdateRequest.getBatchNumber())
                             .currentQuantity(batchStockUpdateRequest.getCurrentQuantity())
@@ -49,7 +50,7 @@ public class ModelMapperConfig {
                             .manufacturingTime(batchStockUpdateRequest.getManufacturingTime())
                             .products(Product.builder().id(batchStockUpdateRequest.getProductId()).build())
                             .build()
-            ).collect(Collectors.toList());
+            ).collect(Collectors.toSet());
 
             return InboundOrder
                     .builder()

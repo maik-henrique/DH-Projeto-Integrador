@@ -79,7 +79,7 @@ public class InboundOrderControllerTests {
 				.productId(2L).build();
 
 		InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1)
-				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1).batchStock(List.of(expectedBatchStock)).sectionId(2)
+				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock)).sectionId(2)
 				.build();
 
 		String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
@@ -121,7 +121,7 @@ public class InboundOrderControllerTests {
 				.productId(3L).build();
 
 		InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1)
-				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1).batchStock(List.of(expectedBatchStock)).sectionId(2)
+				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock)).sectionId(2)
 				.build();
 
 		String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
@@ -154,7 +154,7 @@ public class InboundOrderControllerTests {
 				.productId(2L).build();
 
 		InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1)
-				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1).batchStock(List.of(expectedBatchStock)).sectionId(2)
+				.orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock)).sectionId(2)
 				.build();
 
 		String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
@@ -234,7 +234,7 @@ public class InboundOrderControllerTests {
 	private InboundOrder setupInboundOrder(BatchStock managedBatchStock, Warehouse managedWarehouse,
 			Section managedSection) {
 		
-		InboundOrder inboundOrder = InboundOrder.builder().orderNumber(0).batchStockList(Set.of(managedBatchStock))
+		InboundOrder inboundOrder = InboundOrder.builder().orderNumber(0L).batchStockList(Set.of(managedBatchStock))
 				.section(managedSection).orderDate(LocalDate.of(2020, 3, 4)).agent(managedWarehouse.getAgent()).build();
 
 		return inboundOrderRepository.save(inboundOrder);

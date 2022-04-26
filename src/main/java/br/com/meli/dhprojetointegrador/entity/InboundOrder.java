@@ -21,7 +21,7 @@ public class InboundOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer orderNumber;
+    private Long orderNumber;
 
     private LocalDate orderDate;
 

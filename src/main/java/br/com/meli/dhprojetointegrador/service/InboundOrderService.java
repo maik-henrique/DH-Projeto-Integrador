@@ -59,7 +59,7 @@ public class InboundOrderService {
         return inboundOrderRepository.save(oldInboundOrder);
     }
 
-    private InboundOrder findInboundOrderByOrderNumber(Integer orderNumber) {
+    private InboundOrder findInboundOrderByOrderNumber(Long orderNumber) {
         return inboundOrderRepository
                 .findByOrderNumber(orderNumber)
                 .orElseThrow(() -> new RuntimeException("Recurso nao encontrado"));

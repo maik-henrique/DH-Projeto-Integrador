@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface InboundOrderRepository extends JpaRepository<InboundOrder, Integer> {
-    Optional<InboundOrder> findByOrderNumber(Integer orderNumber);
+public interface InboundOrderRepository extends JpaRepository<InboundOrder, Long> {
+    Optional<InboundOrder> findByOrderNumber(Long orderNumber);
 }

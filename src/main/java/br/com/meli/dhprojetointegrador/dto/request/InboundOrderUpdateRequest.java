@@ -19,7 +19,7 @@ import java.util.List;
 public class InboundOrderUpdateRequest {
 
     @NotNull
-    private Integer orderNumber;
+    private Long orderNumber;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
