@@ -48,11 +48,11 @@ public class InboundOrderServiceTests {
     @Test
     public void update_shouldProperlyCallSaveWithUpdatedObject_whenAllNestedObjectsAreRetrievedProperly() {
         Set<BatchStock> batchStockList = Set.of();
-        Section section = Section.builder().id(1).category(Category.builder().name(CategoryEnum.FRIOS).build()).build();
-        Agent agent = Agent.builder().id(1).build();
+        Section section = Section.builder().id(1L).category(Category.builder().name(CategoryEnum.FRIOS).build()).build();
+        Agent agent = Agent.builder().id(1L).build();
 
-        when(sectionService.findSectionById(anyInt())).thenReturn(section);
-        when(agentService.findAgentById(anyInt())).thenReturn(Agent.builder().build());
+        when(sectionService.findSectionById(anyLong())).thenReturn(section);
+        when(agentService.findAgentById(anyLong())).thenReturn(Agent.builder().build());
 
         InboundOrder oldInboundOrder = InboundOrder.builder().orderNumber(12L).build();
         when(inboundOrderRepository.findByOrderNumber(anyLong())).thenReturn(Optional.of(oldInboundOrder));
