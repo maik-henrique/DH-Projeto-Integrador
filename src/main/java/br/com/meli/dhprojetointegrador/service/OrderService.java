@@ -5,10 +5,7 @@ import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
 import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
 import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.StatusEnum;
-import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
-import br.com.meli.dhprojetointegrador.repository.CartProductRepository;
-import br.com.meli.dhprojetointegrador.repository.ProductRepository;
-import br.com.meli.dhprojetointegrador.repository.PurchaseOrderRepository;
+import br.com.meli.dhprojetointegrador.repository.*;
 import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
 import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
 import lombok.AllArgsConstructor;
@@ -104,10 +101,9 @@ public class OrderService {
      * Method: createPurchaseOrder
      * Description: Recebe um Buyer e cria uma purchaseOrder
      */
-    private PurchaseOrder createPurchaseOrder(Buyer buyer) {
-        PurchaseOrder purchaseOrder = PurchaseOrder.builder().buyer(buyer).status(StatusEnum.FECHADO).date(LocalDate.now()).build();
-        purchaseOrderRepository.save(purchaseOrder);
-        return purchaseOrder;
+    private PurchaseOrder createPurchaseOrder(Buyer buyer, LocalDate date) {
+        PurchaseOrder purchaseOrder = PurchaseOrder.builder().buyer(buyer).status(StatusEnum.FECHADO).date(date).build();
+        return purchaseOrderRepository.save(purchaseOrder);
     }
 
     /**
@@ -119,11 +115,12 @@ public class OrderService {
 
         List<ProductInput> productInputList = input.getProducts();
 
+
         Buyer buyer = validateBuyer.getBuyer(input.getBuyerId());
         List<Product> productList = productInputList.stream().map(o -> validadeProduct.validateQuantity(o.getQuantity(), o.getProductId())
         ).collect(Collectors.toList());
 
-        PurchaseOrder purchaseOrder = this.createPurchaseOrder(buyer);
+        PurchaseOrder purchaseOrder = this.createPurchaseOrder(buyer, input.getDate());
 
         productInputList.forEach( o -> {
             this.createCartProduct(o.getQuantity(), o.getProductId(), purchaseOrder);

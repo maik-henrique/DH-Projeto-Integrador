@@ -19,7 +19,7 @@ public class ValidateBuyer {
      */
     public Buyer getBuyer(Long id) {
         try {
-            return buyerRepository.findById(id).get();
+            return buyerRepository.getById(id);
         } catch (Exception e) {
             System.out.println(e);
             throw new BuyerNotFoundException("This buyer is not on the database");

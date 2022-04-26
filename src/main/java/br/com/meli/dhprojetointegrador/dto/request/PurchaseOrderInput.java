@@ -6,6 +6,7 @@ import org.springframework.format.annotation.NumberFormat;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -19,6 +20,10 @@ public class PurchaseOrderInput {
     @NotNull
     @NumberFormat
     private Long buyerId;
+
+    @NotBlank
+    @NotNull
+    private LocalDate date;
 
     private List<@Valid ProductInput> products;
 }
