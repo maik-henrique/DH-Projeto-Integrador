@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 public class SectionUpdateRequest {
-    private Integer id;
+    private Long id;
     private String name;
     private float capacity;
 }

@@ -27,10 +27,10 @@ public class InboundOrderUpdateRequest {
     private LocalDate orderDate;
 
     @NotNull
-    private Integer sectionId;
+    private Long sectionId;
 
     @NotNull
-    private Integer agentId;
+    private Long agentId;
     @NotNull
     private List<@Valid BatchStockUpdateRequest> batchStock;
 }

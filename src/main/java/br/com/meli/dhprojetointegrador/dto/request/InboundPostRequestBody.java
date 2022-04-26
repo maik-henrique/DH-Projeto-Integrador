@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InboundPostRequestBody {
   private Date orderDate;
-  private Integer agentId;
-  private Integer sectionId;
+  private Long agentId;
+  private Long sectionId;
 
   private List<BatchStockDTO> batchStock;
 

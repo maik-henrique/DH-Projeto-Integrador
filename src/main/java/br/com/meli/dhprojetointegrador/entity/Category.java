@@ -22,7 +22,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private CategoryEnum name;
@@ -32,6 +32,6 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private Set<Product> products;
 
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "category")
     private Set<Section> sections;
 }
