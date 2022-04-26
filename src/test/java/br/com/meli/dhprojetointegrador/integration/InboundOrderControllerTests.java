@@ -112,9 +112,9 @@ public class InboundOrderControllerTests {
 	@DisplayName("Inbound Order Update Integration - Mismatch of product and section category")
 	public void update_shouldReturnUnprossebleEntityResponse_whenCategoyOfTheProductDoesNotMatch() throws Exception {
 		setupBaseData(2.0f);
-		setupBaseDataExtraProduct(CategoryEnum.FRIOS, 2.0f);
+		setupBaseDataExtraProduct(CategoryEnum.CONGELADOS, 2.0f);
 
-		List<Product> all = productRepository.findAll();
+		List<Category> all = categoryRepository.findAll();
 		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder().batchNumber(123L)
 				.currentQuantity(4).initialQuantity(4).currentTemperature(24.0f).minimumTemperature(19f)
 				.manufacturingDate(LocalDate.of(2022, 5, 23))
@@ -174,7 +174,8 @@ public class InboundOrderControllerTests {
 		assertNotNull(payloadResponse);
 		assertEquals("An error occurred during business validation processing", payloadResponse.getTitle());
 		assertEquals(422, payloadResponse.getStatusCode());
-		assertEquals("Section has capacity of 32,00, which is incompatible with the inbound order total volume which is 42,00", payloadResponse.getDescription());
+
+		assertEquals(String.format("Section has capacity of %.2f, which is incompatible with the inbound order total volume which is %.2f", 32.0f, 42.0f), payloadResponse.getDescription());
 	}
 
 	private void setupBaseData(float newPoductVolume) {
@@ -204,7 +205,7 @@ public class InboundOrderControllerTests {
 	}
 
 	private Category setupCategory(CategoryEnum categoryEnum) {
-		Category category = Category.builder().id(1).name(categoryEnum).build();
+		Category category = Category.builder().name(categoryEnum).build();
 		return categoryRepository.save(category);
 	}
 
