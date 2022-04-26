@@ -1,17 +1,19 @@
 package br.com.meli.dhprojetointegrador.service;
 
-import br.com.meli.dhprojetointegrador.entity.Agent;
-import br.com.meli.dhprojetointegrador.entity.InboundOrder;
-import br.com.meli.dhprojetointegrador.entity.Product;
-import br.com.meli.dhprojetointegrador.entity.Section;
+import br.com.meli.dhprojetointegrador.dto.request.InboundPostRequestBody;
+import br.com.meli.dhprojetointegrador.entity.*;
+import br.com.meli.dhprojetointegrador.exception.BadRequestException;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
-import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
+import br.com.meli.dhprojetointegrador.mapper.BatchStockMapper;
+import br.com.meli.dhprojetointegrador.repository.*;
 import br.com.meli.dhprojetointegrador.service.validator.IInboundOrderValidator;
 import br.com.meli.dhprojetointegrador.service.validator.SectionCategoryValidator;
 import br.com.meli.dhprojetointegrador.service.validator.SpaceAvailableValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -31,7 +33,7 @@ public class InboundOrderService {
     /**
      * Given an InboundOrder request it updates it's related fields if they do exist.
      * 
-     * @param an instance of InboundOrder to be updated
+     * @param inboundOrder an instance of InboundOrder to be updated
      * @return instance of InboundOrder updated
      * @throws BusinessValidatorException in case it fails to update the InboundOrder properly
      */
@@ -39,6 +41,7 @@ public class InboundOrderService {
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
         Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());
         inboundOrder.getBatchStockList().forEach(batchStock -> {
+
             Product product = productService.findProductById(batchStock.getProducts().getId());
             batchStock.setProducts(product);
         });
