@@ -5,13 +5,59 @@ services:
     image: mysql:8.0.23
     ports:
       - 3307:3306
+      - 80:80
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_DATABASE=meli-frescos
+      - DATADOG_HOST=datadog
     volumes:
       - mysql_data:/var/lib/mysql
       - mysql_config:/etc/mysql/conf.d
+  redis:
+    image: redis
+  datadog:
+    build: datadog
+    links:
+     # - web
+      #- redis
+      - dd-agent:dd-agent
+    depends_on:
+      - dd-agent
+    environment:
+      - DD_API_KEY=24feeb6cb274de498bde7f0e143a0e2b
+      - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /proc/:/host/proc/:ro
+        - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+  dd-agent:
+    container_name: dd-agent
+    image: datadog/agent:7
+    environment:
+        - DD_API_KEY=24feeb6cb274de498bde7f0e143a0e2b
+        - DD_APM_ENABLED=true
+        - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+        - DD_LOGS_ENABLED=true
+        - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+        - DD_AC_EXCLUDE="name:dd-agent"
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /proc/:/host/proc/:ro
+        - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+    ports:
+        - "8125:8125/udp"
+        - "5002:5002/tcp"
+  jenkins:
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
+    ports:
+        - 8080:8080
+    container_name: jenkins
+    volumes:
+        #- /home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home
+        - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   mysql_data:
