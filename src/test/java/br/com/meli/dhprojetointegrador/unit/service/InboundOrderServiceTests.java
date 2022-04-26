@@ -21,12 +21,14 @@ import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.entity.Category;
 import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.entity.Section;
+import br.com.meli.dhprojetointegrador.entity.Warehouse;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
 import br.com.meli.dhprojetointegrador.service.AgentService;
 import br.com.meli.dhprojetointegrador.service.InboundOrderService;
 import br.com.meli.dhprojetointegrador.service.ProductService;
 import br.com.meli.dhprojetointegrador.service.SectionService;
+import br.com.meli.dhprojetointegrador.service.WarehouseService;
 import br.com.meli.dhprojetointegrador.service.validator.IInboundOrderValidator;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,6 +52,9 @@ public class InboundOrderServiceTests {
     @Mock
     private List<IInboundOrderValidator> validators;
 
+    @Mock
+    private WarehouseService warehouseService;
+
     @Test
     public void update_shouldProperlyCallSaveWithUpdatedObject_whenAllNestedObjectsAreRetrievedProperly() {
         Set<BatchStock> batchStockList = Set.of();
@@ -59,6 +64,7 @@ public class InboundOrderServiceTests {
 
         when(sectionService.findSectionById(anyLong())).thenReturn(section);
         when(agentService.findAgentById(anyLong())).thenReturn(Agent.builder().build());
+        when(warehouseService.findWarehouseIdBySection(any(Section.class))).thenReturn(Warehouse.builder().build());
 
         InboundOrder oldInboundOrder = InboundOrder.builder().orderNumber(12L).build();
         when(inboundOrderRepository.findByOrderNumber(anyLong())).thenReturn(Optional.of(oldInboundOrder));
