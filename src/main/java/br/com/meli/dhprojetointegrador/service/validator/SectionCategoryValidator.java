@@ -7,14 +7,22 @@ import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import lombok.AllArgsConstructor;
 
+/**
+ * Validates if the category of an inbound order matches the section category 
+ *
+ */
 @AllArgsConstructor
 public class SectionCategoryValidator implements IInboundOrderValidator {
 
     private final Section section;
     private final InboundOrder inboundOrder;
 
+    /**
+     * Validates for each product in the batch stock if their category matches the section's category, if it does not
+     * it'll then throw a BusinessValidatorException
+     */
     @Override
-    public void validate() {
+    public void validate() throws BusinessValidatorException {
         CategoryEnum expectedCategory = section.getCategory().getName();
 
         inboundOrder.getBatchStockList().stream().map(BatchStock::getProducts)

@@ -23,6 +23,13 @@ public class InboundOrderService {
     private final ProductService productService;
     private List<IInboundOrderValidator> validators;
 
+    /**
+     * Given an InboundOrder request it updates it's related fields if they do exist.
+     * 
+     * @param an instance of InboundOrder to be updated
+     * @return instance of InboundOrder updated
+     * @throws BusinessValidatorException in case it fails to update the InboundOrder properly
+     */
     public InboundOrder update(InboundOrder inboundOrder) throws BusinessValidatorException {
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
         Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());
