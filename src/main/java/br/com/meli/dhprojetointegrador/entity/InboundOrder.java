@@ -1,35 +1,49 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-
-import lombok.*;
+import java.time.LocalDate;
+import java.util.Set;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-
-@Entity(name = "inboundOrder")
+@Entity
 public class InboundOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer orderNumber;
+    private Long orderNumber;
+
     private LocalDate orderDate;
 
     @ManyToOne
-    @JoinColumn(name="agent_id", nullable=false)
+    @JoinColumn(name = "agent_id", nullable = false)
     private Agent agent;
 
     @ManyToOne
-    @JoinColumn(name="section_id", nullable=false)
+    @JoinColumn(name = "section_id", nullable = false)
     private Section section;
 
-    @OneToMany
-    private List<BatchStock> batchStockList;
+    @OneToMany(mappedBy = "inboundOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<BatchStock> batchStockList;
+
+
+    @PrePersist
+    public void prePersist() {
+        if (batchStockList != null) {
+            batchStockList.forEach(b -> b.setInboundOrder(this));
+        }
+    }
+
+
 
 }

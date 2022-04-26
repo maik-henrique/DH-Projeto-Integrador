@@ -29,6 +29,18 @@ public class OrderExceptions extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionPayload, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(value = {PurchaseOrderNotFoundException.class})
+    protected ResponseEntity<Object> handlePurchaseOrderNotFoundException(PurchaseOrderNotFoundException exception) {
+        ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+                .timestamp(LocalDateTime.now())
+                .title("PurchaseOrder Not Found")
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .description(exception.getMessage())
+                .build();
+
+        return new ResponseEntity<>(exceptionPayload, HttpStatus.NOT_FOUND);
+    }
+
     /**
      * Author: Bruno Mendes
      * Method: handleNotEnoughProductsException

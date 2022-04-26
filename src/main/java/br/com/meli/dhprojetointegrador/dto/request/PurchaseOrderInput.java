@@ -1,6 +1,7 @@
 package br.com.meli.dhprojetointegrador.dto.request;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.Valid;
@@ -16,14 +17,16 @@ import java.util.List;
 @NoArgsConstructor
 public class PurchaseOrderInput {
 
+    @NotNull
+    @NotBlank
+    @DateTimeFormat
+    private LocalDate date;
+
     @NotBlank
     @NotNull
     @NumberFormat
     private Long buyerId;
 
-    @NotBlank
-    @NotNull
-    private LocalDate date;
-
     private List<@Valid ProductInput> products;
+
 }

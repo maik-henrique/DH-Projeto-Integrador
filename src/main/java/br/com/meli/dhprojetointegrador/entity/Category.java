@@ -1,10 +1,16 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
-import lombok.*;
+import java.util.Set;
 
 import javax.persistence.*;
-import java.util.List;
+
+import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
@@ -12,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@Table(uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "name" }))
 public class Category {
 
     @Id
@@ -24,6 +30,10 @@ public class Category {
     private float minimumTemperature;
     private float maximumTemperature;
 
-    @OneToMany
-    private List<Product> categories;
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    private Set<Product> products;
+
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "category")
+    private Set<Section> sections;
 }

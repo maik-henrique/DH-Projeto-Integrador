@@ -11,4 +11,11 @@ spring:
     url: ${DATABASE_URL}
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+    password: Redis!
+
 

@@ -12,10 +12,16 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
+import br.com.meli.dhprojetointegrador.exception.PurchaseOrderNotFoundException;
+import br.com.meli.dhprojetointegrador.repository.OrderRepository;
+import org.springframework.cache.annotation.CachePut;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -42,6 +48,28 @@ public class OrderService {
     @Autowired
     private BatchStockRepository batchStockRepository;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @CachePut(value = "UpdateStatusOrder", key="#idorder")
+    public PurchaseOrder atualizar(Long idorder) {
+
+        try{
+            PurchaseOrder updateStatus = orderRepository.getById(idorder);
+
+            if(updateStatus.getStatus().equals(StatusEnum.ABERTO)) {
+                updateStatus.setStatus(StatusEnum.FINALIZADO);
+            }else {
+                updateStatus.setStatus(StatusEnum.ABERTO);
+            }
+
+            return orderRepository.save(updateStatus);
+
+        }catch (EntityNotFoundException e){
+            throw new PurchaseOrderNotFoundException("Esta ordem nao foi encontrada na base de dados!");
+        }
+    }
+
     /**
      * Author: Bruno Mendes
      * Method: createCartProduct
@@ -65,7 +93,7 @@ public class OrderService {
     private void updateCurrentQuantity(Integer qtd, Long id) {
         AtomicReference<Integer> acc = new AtomicReference<>(qtd);
         Product product = productRepository.getById(id);
-        List<BatchStock> batchStockList = product.getBatchStockList();
+        Set<BatchStock> batchStockList = product.getBatchStockList();
         batchStockList.stream().forEach(b -> {
             if (b.getCurrentQuantity() > 0) {
                 Integer stock = b.getCurrentQuantity();
@@ -102,7 +130,7 @@ public class OrderService {
      * Description: Recebe um Buyer e cria uma purchaseOrder
      */
     private PurchaseOrder createPurchaseOrder(Buyer buyer, LocalDate date) {
-        PurchaseOrder purchaseOrder = PurchaseOrder.builder().buyer(buyer).status(StatusEnum.FECHADO).date(date).build();
+        PurchaseOrder purchaseOrder = PurchaseOrder.builder().buyer(buyer).status(StatusEnum.FINALIZADO).date(date).build();
         return purchaseOrderRepository.save(purchaseOrder);
     }
 

@@ -16,7 +16,7 @@ import org.mockito.Mockito;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 import static org.mockito.Mockito.*;
 
@@ -27,8 +27,9 @@ public class OrderServiceTest {
     BatchStockRepository batchStockRepository = mock(BatchStockRepository.class);
     ValidateBuyer validateBuyer = mock(ValidateBuyer.class);
     ValidadeProduct validadeProduct = mock(ValidadeProduct.class);
+    OrderRepository orderRepository = mock(OrderRepository.class);
 
-    private final OrderService orderService = new OrderService(validateBuyer, validadeProduct, cartProductRepository, purchaseOrderRepository, productRepository, batchStockRepository);
+    private final OrderService orderService = new OrderService(validateBuyer, validadeProduct, cartProductRepository, purchaseOrderRepository, productRepository, batchStockRepository, orderRepository);
 
     LocalDate date = LocalDate.of(2021, 04, 25);
 
@@ -61,14 +62,14 @@ public class OrderServiceTest {
 
     Product product1 = Product.builder()
             .id(1L)
-            .batchStockList(List.of(batch1))
+            .batchStockList(Set.of(batch1))
             .name("Banana")
             .price(new BigDecimal("2.50"))
             .build();
 
     Product product2 = Product.builder()
             .id(2L)
-            .batchStockList(List.of(batch2))
+            .batchStockList(Set.of(batch2))
             .name("Cenoura")
             .price(new BigDecimal("4.50"))
             .build();
@@ -77,13 +78,13 @@ public class OrderServiceTest {
             .id(1L)
             .date(date)
             .buyer(buyer)
-            .status(StatusEnum.FECHADO)
+            .status(StatusEnum.FINALIZADO)
             .build();
 
     PurchaseOrder order0 = PurchaseOrder.builder()
             .buyer(buyer)
             .date(date)
-            .status(StatusEnum.FECHADO)
+            .status(StatusEnum.FINALIZADO)
             .build();
 
     CartProduct cartProduct1 = CartProduct.builder()
