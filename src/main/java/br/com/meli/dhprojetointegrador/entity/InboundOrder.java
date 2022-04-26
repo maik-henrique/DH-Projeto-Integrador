@@ -37,5 +37,13 @@ public class InboundOrder {
     private Set<BatchStock> batchStockList;
 
 
+    @PrePersist
+    public void prePersist() {
+        if (batchStockList != null) {
+            batchStockList.forEach(b -> b.setInboundOrder(this));
+        }
+    }
+
+
 
 }
