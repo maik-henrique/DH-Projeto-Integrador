@@ -24,17 +24,22 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+
     @Autowired
     private CartProductService cartProductService;
   
 
+    @Autowired
+    private CartProductService cartProductService;
+
+   
     @PutMapping("{idorder}")
     public ResponseEntity<PurchaseOrder> ModifyExistingOrder(@PathVariable Long idorder){
         PurchaseOrder newOrderStatus = orderService.atualizar(idorder);
         return ResponseEntity.ok(newOrderStatus);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {
         return new ResponseEntity<>(cartProductService.getProductsByOrderId(idOrder), HttpStatus.OK);
 
