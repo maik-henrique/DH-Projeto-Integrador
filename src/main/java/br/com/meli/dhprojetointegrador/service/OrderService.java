@@ -5,9 +5,11 @@ import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import br.com.meli.dhprojetointegrador.exception.PurchaseOrderNotFoundException;
 import br.com.meli.dhprojetointegrador.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.Serializable;
 
 @Service
 public class OrderService {

@@ -1,1 +1,0 @@
-FROM datadog/agent:latest

@@ -6,9 +6,11 @@ import br.com.meli.dhprojetointegrador.service.OrderService;
 import br.com.meli.dhprojetointegrador.entity.CartProduct;
 import br.com.meli.dhprojetointegrador.service.CartProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 
@@ -22,18 +24,12 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-  
-
-    @PostMapping("")
-    public PurchaseOrder<PurchaseOrderDTO> PurchaseOrderProductRegistration(@Valid @RequestBody PurchaseOrderDTO dto, UriComponentsBuilder uriBuilder){
-
-
-
     @Autowired
     private CartProductService cartProductService;
-
+  
 
     @PutMapping("{idorder}")
+    //@CachePut(cacheNames = "UpdateStatusOrder", key="#root.method.name")
     public ResponseEntity<PurchaseOrder> ModifyExistingOrder(@PathVariable Long idorder){
 
         PurchaseOrder newOrderStatus = orderService.atualizar(idorder);
