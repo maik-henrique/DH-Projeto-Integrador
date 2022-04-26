@@ -21,7 +21,8 @@ public class SpaceAvailableValidator implements IInboundOrderValidator {
                 .reduce(0.0f, Float::sum);
 
         if (inboundOrderTotalVolume > section.getCapacity()) {
-            throw new BusinessValidatorException("Setor nao possui espaco disponivel");
+            throw new BusinessValidatorException(String.format("Section has capacity of %.2f, which is incompatible with the inbound order total volume which is %.2f",
+            		section.getCapacity(), inboundOrderTotalVolume));
         }
     }
 }
