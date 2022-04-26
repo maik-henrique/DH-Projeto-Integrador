@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -233,7 +234,7 @@ public class InboundOrderControllerTests {
 	private InboundOrder setupInboundOrder(BatchStock managedBatchStock, Warehouse managedWarehouse,
 			Section managedSection) {
 		
-		InboundOrder inboundOrder = InboundOrder.builder().orderNumber(0).batchStockList(List.of(managedBatchStock))
+		InboundOrder inboundOrder = InboundOrder.builder().orderNumber(0).batchStockList(Set.of(managedBatchStock))
 				.section(managedSection).orderDate(LocalDate.of(2020, 3, 4)).agent(managedWarehouse.getAgent()).build();
 
 		return inboundOrderRepository.save(inboundOrder);

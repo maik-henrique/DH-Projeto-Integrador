@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -46,7 +47,7 @@ public class InboundOrderServiceTests {
 
     @Test
     public void update_shouldProperlyCallSaveWithUpdatedObject_whenAllNestedObjectsAreRetrievedProperly() {
-        List<BatchStock> batchStockList = List.of();
+        Set<BatchStock> batchStockList = Set.of();
         Section section = Section.builder().id(1).category(Category.builder().name(CategoryEnum.FRIOS).build()).build();
         Agent agent = Agent.builder().id(1).build();
 

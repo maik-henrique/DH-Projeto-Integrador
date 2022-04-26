@@ -7,6 +7,7 @@ import br.com.meli.dhprojetointegrador.service.validator.SectionCategoryValidato
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,7 +23,7 @@ public class SectionCategoryValidatorTests {
 
         Product productFrios = Product.builder().category(frios).volume(12.0f).build();
         BatchStock batchStockCongelados = BatchStock.builder().products(productFrios).build();
-        InboundOrder inboundOrder = InboundOrder.builder().batchStockList(List.of(batchStockCongelados)).build();
+        InboundOrder inboundOrder = InboundOrder.builder().batchStockList(Set.of(batchStockCongelados)).build();
 
         sectionCategoryValidator = new SectionCategoryValidator(section, inboundOrder);
 
@@ -38,7 +39,7 @@ public class SectionCategoryValidatorTests {
 
         Product productFrios = Product.builder().category(frios).build();
         BatchStock batchStockCongelados = BatchStock.builder().products(productFrios).build();
-        InboundOrder inboundOrder = InboundOrder.builder().batchStockList(List.of(batchStockCongelados)).build();
+        InboundOrder inboundOrder = InboundOrder.builder().batchStockList(Set.of(batchStockCongelados)).build();
 
         sectionCategoryValidator = new SectionCategoryValidator(sectionCongelados, inboundOrder);
 
