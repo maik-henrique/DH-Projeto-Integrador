@@ -9,7 +9,11 @@ pipeline {
                 git branch: 'feature/PI-33', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git'
             }
         }
-
+        stage('build'){
+                withMaven(maven: 'mvn') {
+                    sh "mvn clean package"
+                }
+            }
         stage('Build + Unit tests') {
             steps {
                     sh 'mvn clean test'
