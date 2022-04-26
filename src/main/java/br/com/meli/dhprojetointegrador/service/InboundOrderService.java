@@ -56,4 +56,21 @@ public class InboundOrderService {
                 new SectionCategoryValidator(section, inboundOrder),
                 new SpaceAvailableValidator(section, inboundOrder));
     }
+
+    public InboundOrder create(InboundOrder inboundOrder) {
+        Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
+        Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());
+        inboundOrder.getBatchStockList().forEach(batchStock -> {
+
+            Product product = productService.findProductById(batchStock.getProducts().getId());
+            batchStock.setProducts(product);
+        });
+
+        inboundOrder.setAgent(agent);
+        inboundOrder.setSection(section);
+
+        return inboundOrderRepository.save(inboundOrder);
+
+    }
+
 }
