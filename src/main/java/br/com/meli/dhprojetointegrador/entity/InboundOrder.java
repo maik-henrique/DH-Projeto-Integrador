@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,5 +44,12 @@ public class InboundOrder {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "inboundOrder")
     private List<BatchStock> batchStockList;
+
+    @PrePersist
+    private void prePersist() {
+        if (batchStockList != null) {
+            batchStockList.forEach(e -> e.setInboundOrder(this));
+        }
+    }
 
 }
