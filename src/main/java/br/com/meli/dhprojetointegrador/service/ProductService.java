@@ -18,7 +18,6 @@ public class ProductService {
     public Product findProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new BusinessValidatorException(String.format("Product with id %d not found", id)));
-
     }
 
     /**

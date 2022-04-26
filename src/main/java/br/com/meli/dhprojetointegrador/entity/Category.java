@@ -2,15 +2,7 @@ package br.com.meli.dhprojetointegrador.entity;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import lombok.AllArgsConstructor;
@@ -29,8 +21,8 @@ import lombok.Setter;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private CategoryEnum name;
@@ -38,5 +30,8 @@ public class Category {
     private float maximumTemperature;
 
     @OneToMany(mappedBy = "category")
-    private Set<Product> categories;
+    private Set<Product> products;
+
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "category")
+    private Set<Section> sections;
 }

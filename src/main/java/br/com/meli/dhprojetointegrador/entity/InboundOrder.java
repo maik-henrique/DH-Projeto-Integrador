@@ -29,8 +29,8 @@ import lombok.Setter;
 public class InboundOrder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer orderNumber;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderNumber;
 
     private LocalDate orderDate;
 

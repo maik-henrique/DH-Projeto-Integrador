@@ -8,6 +8,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 public class WarehouseRequest {
-    private Integer id;
+    private Long id;
     private String name;
 }

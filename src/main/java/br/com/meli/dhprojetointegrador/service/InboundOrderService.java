@@ -9,7 +9,11 @@ import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.entity.Section;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
+import br.com.meli.dhprojetointegrador.repository.AgentRepository;
+import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
 import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
+import br.com.meli.dhprojetointegrador.repository.ProductRepository;
+import br.com.meli.dhprojetointegrador.repository.SectionRepository;
 import br.com.meli.dhprojetointegrador.service.validator.AgentWarehouseValidator;
 import br.com.meli.dhprojetointegrador.service.validator.IInboundOrderValidator;
 import br.com.meli.dhprojetointegrador.service.validator.SectionCategoryValidator;
@@ -27,10 +31,25 @@ public class InboundOrderService {
     private List<IInboundOrderValidator> validators;
     private WarehouseService warehouseService;
 
+    private final SectionRepository sectionRepository;
+    private final AgentRepository agentRepository;
+    private final BatchStockRepository batchStockRepository;
+    private final ProductRepository productRepository;
+
+    /**
+     * Given an InboundOrder request it updates it's related fields if they do
+     * exist.
+     * 
+     * @param inboundOrder an instance of InboundOrder to be updated
+     * @return instance of InboundOrder updated
+     * @throws BusinessValidatorException in case it fails to update the
+     *                                    InboundOrder properly
+     */
     public InboundOrder update(InboundOrder inboundOrder) throws BusinessValidatorException {
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
         Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());
         inboundOrder.getBatchStockList().forEach(batchStock -> {
+
             Product product = productService.findProductById(batchStock.getProducts().getId());
             batchStock.setProducts(product);
         });
@@ -48,10 +67,11 @@ public class InboundOrderService {
         return inboundOrderRepository.save(oldInboundOrder);
     }
 
-    private InboundOrder findInboundOrderByOrderNumber(Integer orderNumber) {
+    private InboundOrder findInboundOrderByOrderNumber(Long orderNumber) {
         return inboundOrderRepository
                 .findByOrderNumber(orderNumber)
-                .orElseThrow(() -> new RuntimeException("Recurso nao encontrado"));
+                .orElseThrow(
+                        () -> new BusinessValidatorException("Inbound order not found with the provider order number"));
     }
 
     private void initializeIInboundOrderValidators(Section section, InboundOrder inboundOrder, Agent agent) {

@@ -9,6 +9,7 @@ import br.com.meli.dhprojetointegrador.service.validator.SpaceAvailableValidator
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,7 +27,7 @@ public class SpaceAvailableValidatorTests {
         Product congelados = Product.builder().volume(12.0f).build();
         BatchStock batchStockCongelados = BatchStock.builder().products(congelados).build();
 
-        InboundOrder inbo = InboundOrder.builder().batchStockList(List.of(batchStockFrios, batchStockCongelados)).build();
+        InboundOrder inbo = InboundOrder.builder().batchStockList(Set.of(batchStockFrios, batchStockCongelados)).build();
         spaceAvailableValidator = new SpaceAvailableValidator(section, inbo);
 
         assertThrows(BusinessValidatorException.class, () -> spaceAvailableValidator.validate());
@@ -37,7 +38,7 @@ public class SpaceAvailableValidatorTests {
         Section section = Section.builder().capacity(32.0f).build();
         Product congelados = Product.builder().volume(12.0f).build();
         BatchStock batchStockCongelados = BatchStock.builder().products(congelados).build();
-        InboundOrder inbo = InboundOrder.builder().batchStockList(List.of(batchStockCongelados)).build();
+        InboundOrder inbo = InboundOrder.builder().batchStockList(Set.of(batchStockCongelados)).build();
         spaceAvailableValidator = new SpaceAvailableValidator(section, inbo);
 
         assertDoesNotThrow(() -> spaceAvailableValidator.validate());

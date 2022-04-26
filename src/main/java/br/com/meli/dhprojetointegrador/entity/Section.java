@@ -1,12 +1,8 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import javax.persistence.*;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -16,20 +12,20 @@ import lombok.Setter;
 @Entity(name = "section")
 public class Section {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String name;
+    private String name;
 
-  private float capacity;
+    private float capacity;
 
-  @ManyToOne
-  @JoinColumn(name = "warehouse", nullable = false)
-  private Warehouse warehouse;
+    @ManyToOne
+    @JoinColumn(name = "warehouse", nullable = false)
+    private Warehouse warehouse;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "category", nullable = false)
-  private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 }

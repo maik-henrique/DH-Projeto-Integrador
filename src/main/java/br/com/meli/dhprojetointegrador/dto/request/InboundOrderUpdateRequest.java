@@ -19,7 +19,7 @@ import java.util.List;
 public class InboundOrderUpdateRequest {
 
     @NotNull
-    private Integer orderNumber;
+    private Long orderNumber;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -27,10 +27,10 @@ public class InboundOrderUpdateRequest {
     private LocalDate orderDate;
 
     @NotNull
-    private Integer sectionId;
+    private Long sectionId;
 
     @NotNull
-    private Integer agentId;
+    private Long agentId;
     @NotNull
     private List<@Valid BatchStockUpdateRequest> batchStock;
 }

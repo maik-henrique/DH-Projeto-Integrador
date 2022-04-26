@@ -1,6 +1,7 @@
 package br.com.meli.dhprojetointegrador.config;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.Converter;
@@ -26,8 +27,8 @@ public class ModelMapperConfig {
                 ModelMapper modelMapper = new ModelMapper();
 
                 Converter<InboundOrderUpdateRequest, InboundOrder> converter = getInboundOrderUpdateRequestToInboundOrderConverter();
-                Converter<InboundOrderPostRequest, InboundOrder> inboundOrderPostToInboundOrder = getInboundOrderPostRequestToInboundOrderConverter();
                 Converter<InboundOrder, InboundOrderResponse> inboundOrderToInboundOrderResponseConverter = gedtInboundOrderUpdateRequestToInboundOrderConverter();
+                Converter<InboundOrderUpdateRequest, InboundOrder> inboundOrderPostToInboundOrder = getInboundOrderPostRequestToInboundOrderConverter();
 
                 modelMapper.createTypeMap(InboundOrderUpdateRequest.class, InboundOrder.class)
                                 .setConverter(converter);
@@ -45,7 +46,7 @@ public class ModelMapperConfig {
 
                         Agent agent = Agent.builder().id(source.getAgentId()).build();
                         Section section = Section.builder().id(source.getSectionId()).build();
-                        List<BatchStock> batchStock = source.getBatchStock().stream().map(
+                        Set<BatchStock> batchStock = source.getBatchStock().stream().map(
                                         batchStockUpdateRequest -> BatchStock.builder()
                                                         .batchNumber(batchStockUpdateRequest.getBatchNumber())
                                                         .currentQuantity(batchStockUpdateRequest.getCurrentQuantity())
@@ -61,7 +62,7 @@ public class ModelMapperConfig {
                                                                         .id(batchStockUpdateRequest.getProductId())
                                                                         .build())
                                                         .build())
-                                        .collect(Collectors.toList());
+                                        .collect(Collectors.toSet());
 
                         return InboundOrder
                                         .builder()

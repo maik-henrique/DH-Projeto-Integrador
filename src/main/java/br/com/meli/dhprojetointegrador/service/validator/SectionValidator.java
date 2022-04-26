@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class SectionValidator implements IInboundOrderValidator {
     private SectionService sectionService;
-    private Integer sectionId;
+    private Long sectionId;
 
     @Override
     public void validate() throws BusinessValidatorException {

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import br.com.meli.dhprojetointegrador.entity.Section;
 
 @Repository
-public interface SectionRepository extends JpaRepository<Section, Integer> {
+public interface SectionRepository extends JpaRepository<Section, Long> {
 }

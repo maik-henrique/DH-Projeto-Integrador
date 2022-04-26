@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 public class AgentWarehouseValidator implements IInboundOrderValidator {
 
     private Section section;
-    private Integer agentId;
+    private Long agentId;
     private WarehouseService warehouseService;
 
     @Override

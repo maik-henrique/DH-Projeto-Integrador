@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 
 @Repository
-public interface InboundOrderRepository extends JpaRepository<InboundOrder, Integer> {
-    Optional<InboundOrder> findByOrderNumber(Integer orderNumber);
+public interface InboundOrderRepository extends JpaRepository<InboundOrder, Long> {
+    Optional<InboundOrder> findByOrderNumber(Long orderNumber);
 }

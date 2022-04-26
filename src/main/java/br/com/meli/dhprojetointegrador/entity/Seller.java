@@ -1,6 +1,6 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,11 +24,11 @@ import lombok.Setter;
 public class Seller {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Integer id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   private String name;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "seller")
-  private List<Product> products;
+  @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+  private Set<Product> products;
 }

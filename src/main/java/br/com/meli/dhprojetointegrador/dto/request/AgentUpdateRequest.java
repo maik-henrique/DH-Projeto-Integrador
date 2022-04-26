@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 public class AgentUpdateRequest {
-    private Integer id;
+    private Long id;
     private String name;
     private String password;
 

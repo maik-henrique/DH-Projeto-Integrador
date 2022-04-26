@@ -26,8 +26,8 @@ import lombok.Setter;
 public class Warehouse {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Integer id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   private String name;
 
