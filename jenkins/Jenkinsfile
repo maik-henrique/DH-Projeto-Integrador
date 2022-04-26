@@ -4,12 +4,11 @@ pipeline {
     agent any
     stages {
 
-        step {
-            tools {
+        tools {
                 maven 'MAVEN_HOME'
                 jdk 'JAVA_HOME'
-            }
         }
+
 
         stage('Checkout') {
             steps {
