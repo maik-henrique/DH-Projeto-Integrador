@@ -2,6 +2,7 @@ package br.com.meli.dhprojetointegrador.service;
 
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
+import br.com.meli.dhprojetointegrador.exception.NotImplementedException;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 
@@ -16,6 +17,10 @@ public class ProductService {
 
     public Product findProductById(Long id) {
         return productRepository.findById(id).orElseThrow(() -> new BusinessValidatorException(String.format("Product with id %d not found", id)));
+    }
+
+    public Product findProductByIdSorted(Long id, String sortBy) {
+        throw new NotImplementedException();
     }
 
     /**
