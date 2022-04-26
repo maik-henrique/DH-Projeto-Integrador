@@ -59,7 +59,7 @@ public class InboundOrderService {
                 new SectionCategoryValidator(section, inboundOrder),
                 new SpaceAvailableValidator(section, inboundOrder),
                 new SectionValidator(sectionService, section.getId()),
-                new AgentWarehouseValidator(section.getId(), agent.getId(), warehouseService));
+                new AgentWarehouseValidator(section, agent.getId(), warehouseService));
     }
 
     public InboundOrder create(InboundOrder inboundOrder) {
