@@ -1,6 +1,6 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -24,6 +24,6 @@ public class Seller {
 
   private String name;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  private List<Product> products;
+  @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+  private Set<Product> products;
 }

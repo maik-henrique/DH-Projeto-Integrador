@@ -23,6 +23,11 @@ public class InboundOrderService {
     private final ProductService productService;
     private List<IInboundOrderValidator> validators;
 
+    private final SectionRepository sectionRepository;
+    private final AgentRepository agentRepository;
+    private final BatchStockRepository batchStockRepository;
+    private final ProductRepository productRepository;
+
     /**
      * Given an InboundOrder request it updates it's related fields if they do exist.
      * 
@@ -63,4 +68,36 @@ public class InboundOrderService {
                 new SpaceAvailableValidator(section, inboundOrder)
         );
     }
+
+  public InboundOrder create(InboundPostRequestBody inboundPostRequestBody) {
+    InboundOrder inboundOrder = new InboundOrder();
+
+    Section section = sectionRepository.findById(inboundPostRequestBody.getSectionId())
+        .orElseThrow(() -> new BadRequestException("Section id not found"));
+
+    Agent agent = agentRepository.findById(inboundPostRequestBody.getAgentId())
+        .orElseThrow(() -> new BadRequestException("Agent id not found"));
+
+    LocalDate convertedDate = inboundPostRequestBody.getOrderDate().toInstant().atZone(ZoneId.systemDefault())
+        .toLocalDate();
+
+    inboundOrder.setSection(section);
+    inboundOrder.setOrderDate(convertedDate);
+    inboundOrder.setAgent(agent);
+
+    InboundOrder savedInboundOrder = inboundOrderRepository.save(inboundOrder);
+
+    inboundPostRequestBody.getBatchStock().forEach(item -> {
+      item.setInboundOrder(savedInboundOrder);
+      Product product = productRepository.findById(item.getProduct_id())
+          .orElseThrow(() -> new BadRequestException("Agent id not found"));
+      item.setProducts(product);
+    });
+
+    List<BatchStock> batchStocks = BatchStockMapper.INSTANCE.toBatchStock(inboundPostRequestBody.getBatchStock());
+
+    batchStockRepository.saveAll(batchStocks);
+
+    return savedInboundOrder;
+  }
 }
