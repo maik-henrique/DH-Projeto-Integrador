@@ -28,7 +28,6 @@ public class OrderController {
     @Autowired
     private CartProductService cartProductService;
 
-   
     @PutMapping("{idorder}")
     public ResponseEntity<PurchaseOrder> ModifyExistingOrder(@PathVariable Long idorder){
         PurchaseOrder newOrderStatus = orderService.atualizar(idorder);

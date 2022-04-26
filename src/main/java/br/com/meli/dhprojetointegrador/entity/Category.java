@@ -22,8 +22,8 @@ import lombok.Setter;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private CategoryEnum name;
@@ -32,6 +32,8 @@ public class Category {
 
     @OneToMany(mappedBy = "category")
     @JsonIgnore
-    private Set<Product> categories;
+    private Set<Product> products;
 
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "category")
+    private Set<Section> sections;
 }

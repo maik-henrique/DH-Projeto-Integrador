@@ -1,6 +1,8 @@
 package br.com.meli.dhprojetointegrador.enums;
 
 public enum CategoryEnum {
+  FRIOS("FRIOS"),
+  CONGELADOS("CONGELADOS"),
   FF("Congelado"),
   RF("Refrigerado"),
   FS("Fresco");
