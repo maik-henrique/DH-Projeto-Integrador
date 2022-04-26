@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class BatchStockDTO {
 
     private Integer batchNumber;
-    private Integer product_id;
+    private Long product_id;
     private float minimumTemperature;
     private float currentTemperature;
     private int initialQuantity;

@@ -20,11 +20,10 @@
             **/config/**/*,
             **/exception/*,
             **/repository/**/*,
-            **/DesafioQualityApplication.java
+            **/DhProjetoIntegradorApplication.java
         </sonar.exclusions>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
-        <lombok.version>1.18.16</lombok.version>
     </properties>
     <dependencies>
         <dependency>
@@ -58,12 +57,6 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.datadoghq</groupId>
-            <artifactId>datadog-api-client</artifactId>
-            <version>1.5.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
@@ -91,6 +84,16 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+            <version>2.6.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>2.6.7</version>
         </dependency>
     </dependencies>
     <build>
@@ -135,7 +138,7 @@
                                 <exclude>br/com/meli/DH-Projeto-Integrador/config/**/*</exclude>
                                 <exclude>br/com/meli/DH-Projeto-Integrador/exception/**/*</exclude>
                                 <exclude>br/com/meli/DH-Projeto-Integrador/repository/**/*</exclude>
-                                <exclude>br/com/meli/DH-Projeto-Integrador/DesafioQualityApplication.class</exclude>
+                                <exclude>br/com/meli/DH-Projeto-Integrador/DhProjetoIntegradorApplication.class</exclude>
                             </excludes>
                         </configuration>
 
