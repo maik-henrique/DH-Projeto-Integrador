@@ -1,7 +1,10 @@
 package br.com.meli.dhprojetointegrador.exception;
 
-import java.io.Serializable;
-import java.util.function.Supplier;
+/**
+ * Author: Bruno Mendes
+ * Method: BuyerNotFoundException
+ * Description: Exception personalizada para quando um comprador não for encontrado
+ */
 
 public class BuyerNotFoundException extends RuntimeException {
 

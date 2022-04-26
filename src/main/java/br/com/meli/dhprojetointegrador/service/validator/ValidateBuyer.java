@@ -12,6 +12,11 @@ public class ValidateBuyer {
     @Autowired
     private BuyerRepository buyerRepository;
 
+    /**
+     * Author: Bruno Mendes
+     * Method: getBuyer
+     * Description: Valida se determinado comprador existe no banco de dados
+     */
     public Buyer getBuyer(Long id) {
         try {
             return buyerRepository.findById(id).get();

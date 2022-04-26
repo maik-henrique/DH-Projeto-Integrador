@@ -26,6 +26,11 @@ public class OrderController {
 
 
 
+    /**
+     * Author: Bruno Mendes
+     * Method: PurchaseOrderProductRegistration
+     * Description: Controller para realizar a operação de criar uma ordem de compra
+     */
     @PostMapping("")
     public ResponseEntity<TotalPrice> PurchaseOrderProductRegistration(@Valid @RequestBody PurchaseOrderInput input, UriComponentsBuilder uriBuilder){
         OrderIntermediateDTO result = orderService.createOrder(input);

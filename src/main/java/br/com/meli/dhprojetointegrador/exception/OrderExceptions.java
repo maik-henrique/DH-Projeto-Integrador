@@ -12,6 +12,11 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class OrderExceptions extends ResponseEntityExceptionHandler {
 
+    /**
+     * Author: Bruno Mendes
+     * Method: handleBuyerNotFoundException
+     * Description: Handler para a exeption buyer not found
+     */
     @ExceptionHandler(value = {BuyerNotFoundException.class})
     protected ResponseEntity<Object> handleBuyerNotFoundException(BuyerNotFoundException exception) {
         ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
@@ -24,6 +29,11 @@ public class OrderExceptions extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionPayload, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Author: Bruno Mendes
+     * Method: handleNotEnoughProductsException
+     * Description: Handler para a exeption not enough products
+     */
     @ExceptionHandler(value = {NotEnoughProductsException.class})
     protected ResponseEntity<Object> handleNotEnoughProductsException(NotEnoughProductsException exception) {
         ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()

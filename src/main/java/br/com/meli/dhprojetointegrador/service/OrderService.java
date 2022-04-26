@@ -43,6 +43,11 @@ public class OrderService {
     @Autowired
     private BatchStockRepository batchStockRepository;
 
+    /**
+     * Author: Bruno Mendes
+     * Method: createCartProduct
+     * Description: salva um produto do carrinho na tabela cartProduct
+     */
     private CartProduct createCartProduct(Integer qtd, Long id, PurchaseOrder order) {
         Product product = productRepository.getById(id);
         CartProduct cartProduct = CartProduct.builder()
@@ -54,6 +59,11 @@ public class OrderService {
         return cartProduct;
     }
 
+    /**
+     * Author: Bruno Mendes
+     * Method: updateCurrentQuantity
+     * Description: Atualiza a quantidade de produtos em cada batchstock após a compra
+     */
     private void updateCurrentQuantity(Integer qtd, Long id) {
         AtomicReference<Integer> acc = new AtomicReference<>(qtd);
         Product product = productRepository.getById(id);
@@ -72,17 +82,22 @@ public class OrderService {
         });
     }
 
+    /**
+     * Author: Bruno Mendes
+     * Method: createOrder
+     * Description: Recebe uma ordem de compras, realiza as validações e implementa a compra e calcula o preço total do carrinho
+     */
     public OrderIntermediateDTO createOrder(PurchaseOrderInput input){
 
         AtomicReference<BigDecimal> totalPrice = new AtomicReference<>(new BigDecimal(0.00));
+
         Buyer buyer = validateBuyer.getBuyer(input.getBuyerId());
+        input.getProducts().forEach(o -> {validadeProduct.validateQuantity(o.getQuantity(), o.getProductId());} );
 
         PurchaseOrder purchaseOrder = PurchaseOrder.builder().buyer(buyer).status(StatusEnum.FECHADO).date(LocalDate.now()).build();
         purchaseOrderRepository.save(purchaseOrder);
 
-        input.getProducts().stream().forEach( o -> {validadeProduct.validateQuantity(o.getQuantity(), o.getProductId());} );
-
-        input.getProducts().stream().forEach( o -> {
+        input.getProducts().forEach( o -> {
             CartProduct cartProduct = this.createCartProduct(o.getQuantity(), o.getProductId(), purchaseOrder);
             this.updateCurrentQuantity(o.getQuantity(), o.getProductId());
             totalPrice.updateAndGet(v -> v.add(cartProduct.getProduct().getPrice().multiply(BigDecimal.valueOf(o.getQuantity()))));
