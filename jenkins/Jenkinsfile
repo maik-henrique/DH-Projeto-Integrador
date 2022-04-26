@@ -4,9 +4,11 @@ pipeline {
     agent any
     stages {
 
-        stage('tools') {
-            maven 'MAVEN_HOME'
-            jdk 'JAVA_HOME'
+        step {
+            tools {
+                maven 'MAVEN_HOME'
+                jdk 'JAVA_HOME'
+            }
         }
 
         stage('Checkout') {
