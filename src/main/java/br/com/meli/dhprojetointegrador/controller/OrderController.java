@@ -32,7 +32,7 @@ public class OrderController {
     @Autowired
     private CartProductService cartProductService;
 
-
+   
     @PutMapping("{idorder}")
     public ResponseEntity<PurchaseOrder> ModifyExistingOrder(@PathVariable Long idorder){
 
@@ -41,7 +41,7 @@ public class OrderController {
         return ResponseEntity.ok(newOrderStatus);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {
         return new ResponseEntity<>(cartProductService.getProductsByOrderId(idOrder), HttpStatus.OK);
 

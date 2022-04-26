@@ -5,7 +5,7 @@ public enum CategoryEnum {
   RF("Refrigerado"),
   FS("Fresco");
 
-  private String value;
+  private final String value;
 
   CategoryEnum(String valor) {
     this.value = valor;
