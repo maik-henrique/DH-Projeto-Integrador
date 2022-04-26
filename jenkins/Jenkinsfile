@@ -1,17 +1,13 @@
 def COLOR_MAP = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
 
 pipeline {
-    agent {
-        docker {
-            image 'maven'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
+    agent any
     stages {
+
         stage('Checkout') {
             steps {
                 slackSend channel: 'jenkins-ci', color: '#33AFFF', message: "*STARTED*: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'\n *More info at:* ${env.BUILD_URL}", teamDomain: 'devteam', tokenCredentialId: 'slack'
-                git branch: 'develop', credentialsId: 'github', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git/src/test'
+                git branch: 'feature/PI-33', credentialsId: 'github', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git/src/test'
             }
         }
 
@@ -20,6 +16,7 @@ pipeline {
                     sh 'mvn clean test'
             }   
         }
+
         stage('Archiving Reports') {
             steps {
                 dir(path: '.') {
@@ -28,6 +25,7 @@ pipeline {
                 }
             }   
         }
+
         stage('Integration tests'){
             steps {
                 git credentialsId: 'github', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git/src/test'
@@ -35,15 +33,15 @@ pipeline {
                 cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: 'target/*.json', pendingStepsNumber: -1, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1                       
             }
          }     
-    }
+
           stage("build & SonarQube analysis") {
-            agent any
             steps {
               withSonarQubeEnv('My SonarQube Server') {
                 sh 'mvn sonar:sonar -Dsonar.login=a11c99f38095ecc1bcf1be517a24961fe1b31261'
               }
             }
           }
+
           stage("Quality Gate") {
             steps {
               timeout(time: 1, unit: 'HOURS') {
@@ -51,7 +49,7 @@ pipeline {
               }
             }
           }
-    }
+
     post {
         always {
 
@@ -61,3 +59,7 @@ pipeline {
             
         }
     }
+
+  }
+
+}
