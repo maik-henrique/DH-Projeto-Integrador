@@ -5,8 +5,6 @@ import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
 import br.com.meli.dhprojetointegrador.service.OrderService;
 import br.com.meli.dhprojetointegrador.service.CartProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +22,6 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-
-    @Autowired
-    private CartProductService cartProductService;
-  
 
     @Autowired
     private CartProductService cartProductService;
