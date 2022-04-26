@@ -17,5 +17,5 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Build and run tests
-      run: mvn clean test
+    - name: Maven verify flow
+      run: mvn --batch-mode --update-snapshots verify
