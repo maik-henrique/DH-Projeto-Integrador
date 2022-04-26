@@ -1,8 +1,10 @@
 package br.com.meli.dhprojetointegrador.entity;
 
 import lombok.*;
+import org.springframework.core.serializer.Serializer;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -10,7 +12,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "buyer")
-public class Buyer {
+public class Buyer implements Serializable{
+
+    private static final long serialVersionUID = 7156526077883281623L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

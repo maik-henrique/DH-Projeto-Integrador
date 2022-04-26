@@ -18,10 +18,10 @@ public class InboundOrderController {
 
   private final InboundOrderService inboundOrderService;
 
-/*  @PostMapping
+  @PostMapping
   public ResponseEntity<Void> create(@RequestBody InboundPostRequestBody body) {
     inboundOrderService.create(body);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-  }*/
+  }
 
 }

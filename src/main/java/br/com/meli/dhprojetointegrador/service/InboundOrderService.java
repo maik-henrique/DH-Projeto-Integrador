@@ -31,7 +31,7 @@ public class InboundOrderService {
   private final BatchStockRepository batchStockRepository;
   private final ProductRepository productRepository;
 
-  /*public InboundOrder create(InboundPostRequestBody inboundPostRequestBody) {
+  public InboundOrder create(InboundPostRequestBody inboundPostRequestBody) {
     InboundOrder inboundOrder = new InboundOrder();
 
     Section section = sectionRepository.findById(inboundPostRequestBody.getSectionId())
@@ -61,5 +61,5 @@ public class InboundOrderService {
     batchStockRepository.saveAll(batchStocks);
 
     return savedInboundOrder;
-  }*/
+  }
 }
