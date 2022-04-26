@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -29,7 +29,7 @@ public class ValidateProductTest {
 
     Product product1 = Product.builder()
             .id(1L)
-            .batchStockList(List.of(batch1))
+            .batchStockList(Set.of(batch1))
             .name("Banana")
             .price(new BigDecimal("2.50"))
             .build();
