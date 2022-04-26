@@ -3,6 +3,8 @@ package br.com.meli.dhprojetointegrador.mapper.freshproducts;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockResponse;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.SectionResponse;
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import org.modelmapper.AbstractConverter;
 import org.springframework.stereotype.Component;
@@ -35,7 +37,9 @@ public class ProductToFreshProductsQueryResponseConverter extends AbstractConver
     }
 
     private Set<SectionResponse> extractSection(Product source) {
-        return source.getCategory().getSections().stream()
+        return source.getBatchStockList()
+                .stream().map(BatchStock::getInboundOrder)
+                .map(InboundOrder::getSection)
                 .map(section -> SectionResponse.builder()
                         .sectionCode(String.valueOf(section.getId()))
                         .warehouseCode(String.valueOf(section.getWarehouse().getId()))
