@@ -6,7 +6,6 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                slackSend channel: 'jenkins-ci', color: '#33AFFF', message: "*STARTED*: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'\n *More info at:* ${env.BUILD_URL}", teamDomain: 'devteam', tokenCredentialId: 'slack'
                 git branch: 'feature/PI-33', credentialsId: 'github', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git/src/test'
             }
         }
@@ -50,15 +49,6 @@ pipeline {
             }
           }
 
-    post {
-        always {
-
-            slackSend channel: 'jenkins-ci', teamDomain: 'devteam', tokenCredentialId: 'slack',
-                color: COLOR_MAP[currentBuild.currentResult],
-                message: "*${currentBuild.currentResult}:* Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'\n *More info at:* ${env.BUILD_URL}"
-            
-        }
-    }
 
   }
 
