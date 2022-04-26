@@ -49,16 +49,16 @@ public class InboundOrderService {
 
     InboundOrder savedInboundOrder = inboundOrderRepository.save(inboundOrder);
 
-    inboundPostRequestBody.getBatchStock().forEach(item -> {
-      item.setInboundOrder(savedInboundOrder);
-      Product product = productRepository.findById(item.getProduct_id())
-          .orElseThrow(() -> new BadRequestException("Agent id not found"));
-      item.setProducts(product);
-    });
+//    inboundPostRequestBody.getBatchStock().forEach(item -> {
+//      item.setInboundOrder(savedInboundOrder);
+//      Product product = productRepository.findById(item.getProduct_id())
+//          .orElseThrow(() -> new BadRequestException("Agent id not found"));
+//      item.setProducts(product);
+//    });
 
-    List<BatchStock> batchStocks = BatchStockMapper.INSTANCE.toBatchStock(inboundPostRequestBody.getBatchStock());
-
-    batchStockRepository.saveAll(batchStocks);
+//    List<BatchStock> batchStocks = BatchStockMapper.INSTANCE.toBatchStock(inboundPostRequestBody.getBatchStock());
+//
+//    batchStockRepository.saveAll(batchStocks);
 
     return savedInboundOrder;
   }

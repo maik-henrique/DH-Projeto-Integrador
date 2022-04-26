@@ -24,27 +24,28 @@ public class OrderController {
 
   
 
-    @PostMapping("")
-    public PurchaseOrder<PurchaseOrderDTO> PurchaseOrderProductRegistration(@Valid @RequestBody PurchaseOrderDTO dto, UriComponentsBuilder uriBuilder){
+//    @PostMapping("")
+//    public PurchaseOrder<PurchaseOrderDTO> PurchaseOrderProductRegistration(@Valid @RequestBody PurchaseOrderDTO dto, UriComponentsBuilder uriBuilder)
+//    {
 
 
 
-    @Autowired
-    private CartProductService cartProductService;
+//    @Autowired
+//    private CartProductService cartProductService;
+//
+//
+//    @PutMapping("{idorder}")
+//    public ResponseEntity<PurchaseOrder> ModifyExistingOrder(@PathVariable Long idorder){
+//
+//        PurchaseOrder newOrderStatus = orderService.atualizar(idorder);
+//
+//        return ResponseEntity.ok(newOrderStatus);
+//    }
 
-
-    @PutMapping("{idorder}")
-    public ResponseEntity<PurchaseOrder> ModifyExistingOrder(@PathVariable Long idorder){
-
-        PurchaseOrder newOrderStatus = orderService.atualizar(idorder);
-
-        return ResponseEntity.ok(newOrderStatus);
-    }
-
-    @GetMapping("/")
-    public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {
-        return new ResponseEntity<>(cartProductService.getProductsByOrderId(idOrder), HttpStatus.OK);
-
-    }
+//    @GetMapping("/")
+//    public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {
+//        return new ResponseEntity<>(cartProductService.getProductsByOrderId(idOrder), HttpStatus.OK);
+//
+//    }
 
 }

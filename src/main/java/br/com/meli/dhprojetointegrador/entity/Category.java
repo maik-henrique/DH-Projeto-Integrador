@@ -2,17 +2,10 @@ package br.com.meli.dhprojetointegrador.entity;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,5 +31,7 @@ public class Category {
     private float maximumTemperature;
 
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private Set<Product> categories;
+
 }
