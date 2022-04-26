@@ -1,9 +1,12 @@
 package br.com.meli.dhprojetointegrador.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import br.com.meli.dhprojetointegrador.entity.InboundOrder;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface InboundOrderRepository extends JpaRepository<InboundOrder, Integer> {
+import java.util.Optional;
 
+@Repository
+public interface InboundOrderRepository extends JpaRepository<InboundOrder, Long> {
+    Optional<InboundOrder> findByOrderNumber(Long orderNumber);
 }
