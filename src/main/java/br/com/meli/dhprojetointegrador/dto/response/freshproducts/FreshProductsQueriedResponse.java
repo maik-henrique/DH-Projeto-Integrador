@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FreshProductsQueriedResponse {
-    private Set<SectionResponse> sections;
+    private String warehouseCode;
     private String productId;
     private List<BatchStockResponse> batchStock;
 }

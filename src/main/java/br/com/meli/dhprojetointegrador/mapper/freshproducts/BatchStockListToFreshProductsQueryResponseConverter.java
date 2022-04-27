@@ -21,6 +21,7 @@ public class BatchStockListToFreshProductsQueryResponseConverter extends Abstrac
         List<BatchStock> batchStockList = source.getBatchStock();
         BatchStock batchStock = batchStockList.stream().findAny().orElseThrow(() -> new RuntimeException("No Batchstock found"));
         Product product = batchStock.getProducts();
+        String warehouseCode = String.valueOf(batchStock.getInboundOrder().getSection().getWarehouse().getId());
 
         List<BatchStockResponse> batchStockResponses = extractBatchStock(batchStockList);
         Set<SectionResponse> section = extractSection(batchStockList);
@@ -28,7 +29,7 @@ public class BatchStockListToFreshProductsQueryResponseConverter extends Abstrac
         return FreshProductsQueriedResponse.builder()
                 .productId(String.valueOf(product.getId()))
                 .batchStock(batchStockResponses)
-                .sections(section)
+                .warehouseCode(warehouseCode)
                 .build();
     }
 
@@ -38,6 +39,7 @@ public class BatchStockListToFreshProductsQueryResponseConverter extends Abstrac
                         .batchNumber(String.valueOf(batchStock.getBatchNumber()))
                         .currentQuantity(batchStock.getCurrentQuantity())
                         .dueDate(batchStock.getDueDate())
+                        .sectionCode(String.valueOf(batchStock.getInboundOrder().getSection().getId()))
                         .build()
                 ).collect(Collectors.toList());
     }

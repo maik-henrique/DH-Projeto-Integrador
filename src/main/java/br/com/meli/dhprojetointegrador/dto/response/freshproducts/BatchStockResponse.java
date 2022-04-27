@@ -15,4 +15,5 @@ public class BatchStockResponse {
     private String batchNumber;
     private Integer currentQuantity;
     private LocalDate dueDate;
+    private String sectionCode;
 }

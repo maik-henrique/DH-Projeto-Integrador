@@ -1,9 +1,15 @@
 package br.com.meli.dhprojetointegrador.controller;
 
 
+import br.com.meli.dhprojetointegrador.dto.request.freshproducts.FetchFreshProductsSortByRequest;
+import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockCollection;
+import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.entity.Product;
+import br.com.meli.dhprojetointegrador.service.BatchStockService;
 import br.com.meli.dhprojetointegrador.service.ProductService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,6 +25,8 @@ public class ProductController {
 
     public static final String baseUri = "/api/v1/";
     private final ProductService productService;
+    private final ModelMapper modelMapper;
+    private final BatchStockService batchStockService;
 
     /**
      * Author: Mariana Galdino
@@ -32,6 +40,16 @@ public class ProductController {
         List<Product> products = productService.returnAllProducts();
             return products == null || products.isEmpty()?ResponseEntity.notFound().build():
                     ResponseEntity.ok(products);
+    }
+
+    @GetMapping("fresh-products/list")
+    public ResponseEntity<?> findAllProducts(@RequestParam(name = "sortBy", defaultValue = "L") FetchFreshProductsSortByRequest sortBy,
+                                             @RequestParam(name = "productId") Long id) {
+        List<BatchStock> batchStockSorted = batchStockService.findByProductId(id, sortBy.getFieldName());
+
+        FreshProductsQueriedResponse response = modelMapper.map(BatchStockCollection.builder().batchStock(batchStockSorted).build(),
+                FreshProductsQueriedResponse.class);
+        return ResponseEntity.ok(response);
     }
 
 }
