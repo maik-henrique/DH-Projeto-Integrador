@@ -43,7 +43,7 @@ public class SectionValidatorTests {
         BDDMockito.when(sectionRepository.save(ArgumentMatchers.any(Section.class)))
                 .thenReturn(SectionCreator.createValidSection());
 
-        BDDMockito.when(sectionRepository.findById(ArgumentMatchers.anyInt()))
+        BDDMockito.when(sectionRepository.findById(ArgumentMatchers.anyLong()))
                 .thenReturn(Optional.of(SectionCreator.createValidSection()));
     }
 
@@ -56,7 +56,7 @@ public class SectionValidatorTests {
         Warehouse warehouse = warehouseRepository.save(Warehouse.builder().name("Warehouse 1").build());
 
         Section section = Section.builder().category(frios).name("Section 2")
-                .warehouse(warehouse).capacity(10).id(1).build();
+                .warehouse(warehouse).capacity(10).id(1L).build();
 
         sectionRepository.save(section);
 
