@@ -1,14 +1,12 @@
 package br.com.meli.dhprojetointegrador.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
 @AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class TotalPrice {
 
     private Double totalPrice;

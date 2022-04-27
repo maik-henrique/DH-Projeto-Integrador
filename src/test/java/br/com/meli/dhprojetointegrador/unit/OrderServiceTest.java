@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.mockito.Mockito.*;
@@ -128,12 +129,12 @@ public class OrderServiceTest {
     @Test
     @DisplayName("TestPI-8 - createOrder")
    public void createOrder_should_return_correct_OrderIntermediateDTO() {
-        when(productRepository.getById(1L)).thenReturn(product1);
-        when(productRepository.getById(2L)).thenReturn(product2);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
+        when(productRepository.findById(2L)).thenReturn(Optional.of(product2));
         when(cartProductRepository.save(cartProduct1)).thenReturn(cartProduct1);
         when(cartProductRepository.save(cartProduct2)).thenReturn(cartProduct2);
-        when(batchStockRepository.getById(1L)).thenReturn(batch1);
-        when(batchStockRepository.getById(2L)).thenReturn(batch2);
+        when(batchStockRepository.findById(1L)).thenReturn(Optional.of(batch1));
+        when(batchStockRepository.findById(2L)).thenReturn(Optional.of(batch2));
         when(batchStockRepository.save(batch1Updated)).thenReturn(batch1Updated);
         when(batchStockRepository.save(batch2Updated)).thenReturn(batch2Updated);
         when(purchaseOrderRepository.save(Mockito.any(PurchaseOrder.class))).thenReturn(order1);

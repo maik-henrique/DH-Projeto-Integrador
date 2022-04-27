@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -25,9 +25,9 @@ public class ValidateBuyer {
      */
     public Buyer getBuyer(Long id) {
         try {
-            return buyerRepository.getById(id);
-        } catch (EntityNotFoundException e) {
-            System.out.println(e);
+            Buyer buyer = buyerRepository.findById(id).get();
+            return buyer;
+        } catch (NoSuchElementException e) {
             throw new BuyerNotFoundException("This buyer is not on the database");
         }
     }
