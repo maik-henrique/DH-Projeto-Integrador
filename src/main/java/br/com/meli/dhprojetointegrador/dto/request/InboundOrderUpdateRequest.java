@@ -18,19 +18,20 @@ import java.util.List;
 @AllArgsConstructor
 public class InboundOrderUpdateRequest {
 
-    @NotNull
+    @NotNull(message = "orderNumber must not be null")
     private Long orderNumber;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull
+    @NotNull(message = "orderDate must not be null")
     private LocalDate orderDate;
 
-    @NotNull
+    @NotNull(message = "sectionId must not be null")
     private Long sectionId;
 
-    @NotNull
+    @NotNull(message = "agentId must not be null")
     private Long agentId;
-    @NotNull
+
+    @NotNull(message = "batchStock must not be null")
     private List<@Valid BatchStockUpdateRequest> batchStock;
 }
