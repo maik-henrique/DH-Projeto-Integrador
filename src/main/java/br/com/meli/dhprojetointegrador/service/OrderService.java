@@ -84,7 +84,7 @@ public class OrderService {
      * Description: salva um produto do carrinho na tabela cartProduct
      */
     private void createCartProduct(Integer qtd, Long id, PurchaseOrder order) {
-        Product product = productRepository.getById(id);
+        Product product = productRepository.findById(id).get();
         CartProduct cartProduct = CartProduct.builder()
                 .product(product)
                 .purchaseOrder(order)
@@ -101,7 +101,7 @@ public class OrderService {
      */
     private void updateCurrentQuantity(Integer qtd, Long id) {
         AtomicReference<Integer> acc = new AtomicReference<>(qtd);
-        Product product = productRepository.getById(id);
+        Product product = productRepository.findById(id).get();
         Set<BatchStock> batchStockList = product.getBatchStockList();
         batchStockList.stream().forEach(b -> {
             if (b.getCurrentQuantity() > 0) {
@@ -154,9 +154,9 @@ public class OrderService {
      */
     public OrderIntermediateDTO createOrder(PurchaseOrderInput input) {
 
-        List<ProductInput> productInputList = input.getProducts();
-
         Buyer buyer = validateBuyer.getBuyer(input.getBuyerId());
+
+        List<ProductInput> productInputList = input.getProducts();
         List<Product> productList = productInputList.stream()
                 .map(o -> validadeProduct.validateQuantity(o.getQuantity(), o.getProductId()))
                 .collect(Collectors.toList());
