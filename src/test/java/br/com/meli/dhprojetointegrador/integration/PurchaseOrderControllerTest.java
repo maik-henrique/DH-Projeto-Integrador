@@ -1,3 +1,4 @@
+package br.com.meli.dhprojetointegrador.integration;
 
 import br.com.meli.dhprojetointegrador.controller.OrderController;
 import br.com.meli.dhprojetointegrador.service.OrderService;

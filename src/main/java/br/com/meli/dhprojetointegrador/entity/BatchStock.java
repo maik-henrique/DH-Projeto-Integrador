@@ -2,7 +2,6 @@ package br.com.meli.dhprojetointegrador.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -12,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +28,7 @@ import org.springframework.format.annotation.NumberFormat;
 @Table(name = "batch_stock")
 public class BatchStock {
     @Id
-    private Integer batchNumber;
+    private Long batchNumber;
 
     @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
@@ -60,6 +58,7 @@ public class BatchStock {
     @NotEmpty(message = "Temperatura contra indicada!")
     @Size(min = -22, max = 0, message = "Risco de temperatura!")
     private float currentTemperature;
+    private float minimumTemperature;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

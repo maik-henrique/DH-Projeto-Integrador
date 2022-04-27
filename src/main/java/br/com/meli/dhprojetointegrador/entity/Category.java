@@ -1,7 +1,6 @@
 package br.com.meli.dhprojetointegrador.entity;
 
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,8 +14,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
+import javax.persistence.*;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,8 +33,8 @@ import lombok.Setter;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
@@ -50,5 +50,9 @@ public class Category {
     private float maximumTemperature;
 
     @OneToMany(mappedBy = "category")
-    private Set<Product> categories;
+    @JsonIgnore
+    private Set<Product> products;
+
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "category")
+    private Set<Section> sections;
 }

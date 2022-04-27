@@ -8,14 +8,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
+
 
 @Getter
 @Setter
@@ -25,9 +24,9 @@ import org.springframework.format.annotation.NumberFormat;
 @Entity(name = "section")
 public class Section {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
   @NotNull(message = "O campo nome não pode ser nulo")
   @NotBlank(message = "O campo nome não pode estar em branco")

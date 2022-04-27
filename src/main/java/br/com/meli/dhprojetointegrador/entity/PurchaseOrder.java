@@ -3,13 +3,11 @@ package br.com.meli.dhprojetointegrador.entity;
 import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Set;
 
 @Getter
 @Setter

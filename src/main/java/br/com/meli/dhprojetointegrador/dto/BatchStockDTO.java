@@ -2,7 +2,6 @@ package br.com.meli.dhprojetointegrador.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -26,11 +24,8 @@ public class BatchStockDTO {
     @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     @NumberFormat
-    private Integer batchNumber;
+    private Long batchNumber;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
-    @NumberFormat
     private Long product_id;
 
     @NotEmpty(message = "Temperatura contra indicada!")

@@ -1,9 +1,7 @@
 package br.com.meli.dhprojetointegrador.entity;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
-import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,8 +13,6 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,11 +29,11 @@ import org.springframework.format.annotation.NumberFormat;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
-
     @NotNull(message = "O campo nome não pode ser nulo")
     @NotBlank(message = "O campo nome não pode estar em branco")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name;
 
     @DecimalMin(value = "0.0", inclusive = false)

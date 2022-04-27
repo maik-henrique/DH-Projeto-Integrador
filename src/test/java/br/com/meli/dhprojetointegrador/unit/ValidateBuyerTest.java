@@ -1,0 +1,57 @@
+package br.com.meli.dhprojetointegrador.unit;
+
+import br.com.meli.dhprojetointegrador.entity.Buyer;
+import br.com.meli.dhprojetointegrador.exception.BuyerNotFoundException;
+import br.com.meli.dhprojetointegrador.repository.BuyerRepository;
+import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import javax.persistence.EntityNotFoundException;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+public class ValidateBuyerTest {
+
+    BuyerRepository buyerRepository = mock(BuyerRepository.class);
+
+    private ValidateBuyer validateBuyer = new ValidateBuyer(buyerRepository);
+
+    Buyer buyer = Buyer.builder()
+            .id(1L)
+            .name("Bruno")
+            .password("123456")
+            .email("bruno@email.com")
+            .build();
+
+    /**
+     * @Author: Bruno
+     * @Teste: Teste unitario função getBuyer
+     * @Description: valida funcionamento correto da função
+     */
+    @Test
+    @DisplayName("TestPI-8 - validateQuantity")
+    public void validateBuyer_should_return_correct_Buyer() {
+        when(buyerRepository.getById(1L)).thenReturn(buyer);
+
+        Buyer result = validateBuyer.getBuyer(1L);
+
+        assert result.equals(buyer);
+    }
+
+    /**
+     * @Author: Bruno
+     * @Teste: Teste unitario função getBuyer
+     * @Description: valida funcionamento correto da função
+     */
+    @Test
+    @DisplayName("TestPI-8 - validateQuantity")
+    public void validateBuyer_should_trow_correct_Error() {
+        when(buyerRepository.getById(2L)).thenThrow(new EntityNotFoundException());
+
+        try {
+            validateBuyer.getBuyer( 2L);
+        } catch (BuyerNotFoundException e) {
+            assert true;
+        }
+    }
+}

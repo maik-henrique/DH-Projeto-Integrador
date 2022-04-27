@@ -8,7 +8,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +24,8 @@ import lombok.Setter;
 public class Agent {
 
   @Id
-  private Integer id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @NotBlank(message = "O campo nome não pode estar em branco")
   @NotNull(message = "O campo nome não pode ser nulo")

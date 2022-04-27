@@ -2,7 +2,6 @@ package br.com.meli.dhprojetointegrador.entity;
 
 import lombok.*;
 import org.springframework.format.annotation.NumberFormat;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

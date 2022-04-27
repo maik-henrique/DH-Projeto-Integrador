@@ -1,9 +1,11 @@
+package br.com.meli.dhprojetointegrador.unit;
+
 import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
 import br.com.meli.dhprojetointegrador.enums.StatusEnum;
-import br.com.meli.dhprojetointegrador.repository.OrderRepository;
-import br.com.meli.dhprojetointegrador.repository.ProductRepository;
+import br.com.meli.dhprojetointegrador.repository.*;
 import br.com.meli.dhprojetointegrador.service.OrderService;
-
+import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
+import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.InjectMocks;
@@ -16,11 +18,30 @@ import javax.validation.constraints.NotNull;
 
 public class PurchaseOrderServiceTest {
 
+
+    @InjectMocks
     private OrderService service;
 
-    private OrderRepository orderRepository;
+    @Mock
+    private ValidateBuyer validateBuyer;
 
+    @Mock
+    private ValidadeProduct validadeProduct;
+
+    @Mock
+    private CartProductRepository cartProductRepository;
+
+    @Mock
+    private PurchaseOrderRepository purchaseOrderRepository;
+
+    @Mock
     private ProductRepository productRepository;
+
+    @Mock
+    private BatchStockRepository batchStockRepository;
+
+    @Mock
+    private OrderRepository orderRepository;
 
     /**
      * @Author: David
@@ -32,8 +53,6 @@ public class PurchaseOrderServiceTest {
 
         this.orderRepository = Mockito.mock(OrderRepository.class);
         this.productRepository = Mockito.mock(ProductRepository.class);
-
-        this.service = new OrderService(orderRepository, productRepository);
 
         PurchaseOrder purchaseOrderAberto = PurchaseOrder.builder().status(StatusEnum.ABERTO).build();
         PurchaseOrder purchaseOrderFechado = PurchaseOrder.builder().status(StatusEnum.FINALIZADO).build();

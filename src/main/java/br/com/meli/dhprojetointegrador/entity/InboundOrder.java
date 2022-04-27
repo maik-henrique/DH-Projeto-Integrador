@@ -2,7 +2,6 @@ package br.com.meli.dhprojetointegrador.entity;
 
 import java.time.LocalDate;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,8 +28,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class InboundOrder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer orderNumber;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderNumber;
 
     @NotNull(message = "O campo nome não pode ser nulo")
     @NotBlank(message = "O campo nome não pode estar em branco")
@@ -49,8 +48,14 @@ public class InboundOrder {
     @JoinColumn(name = "section_id", nullable = false)
     private Section section;
 
-
-    @OneToMany(mappedBy = "inboundOrder")
+    @OneToMany(mappedBy = "inboundOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<BatchStock> batchStockList;
+
+    @PrePersist
+    public void prePersist() {
+        if (batchStockList != null) {
+            batchStockList.forEach(b -> b.setInboundOrder(this));
+        }
+    }
 
 }

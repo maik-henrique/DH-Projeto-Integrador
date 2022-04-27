@@ -1,8 +1,6 @@
 package br.com.meli.dhprojetointegrador.entity;
 
 import lombok.*;
-import org.springframework.core.serializer.Serializer;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

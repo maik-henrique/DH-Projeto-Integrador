@@ -2,6 +2,7 @@ package br.com.meli.dhprojetointegrador.entity;
 
 import java.util.Set;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,8 +26,8 @@ import lombok.Setter;
 public class Seller {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Integer id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @NotBlank(message = "O campo nome não pode estar em branco")
   @NotNull(message = "O campo nome não pode ser nulo")
