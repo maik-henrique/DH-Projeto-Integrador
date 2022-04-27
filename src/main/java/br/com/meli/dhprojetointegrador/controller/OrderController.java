@@ -16,6 +16,22 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
+import br.com.meli.dhprojetointegrador.service.CartProductService;
+import br.com.meli.dhprojetointegrador.service.OrderService;
+
+import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
+import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
+import br.com.meli.dhprojetointegrador.dto.response.TotalPrice;
+import org.springframework.web.util.UriComponentsBuilder;
+import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping(OrderController.baseUri)
