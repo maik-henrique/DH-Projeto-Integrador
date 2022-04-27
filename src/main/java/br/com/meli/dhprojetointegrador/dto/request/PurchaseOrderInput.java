@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
-import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,10 +32,6 @@ public class PurchaseOrderInput {
     @NotNull
     @NumberFormat
     private Long buyerId;
-
-    @NotNull
-    @NotBlank
-    private StatusEnum orderStatus;
 
     private List<@Valid ProductInput> products;
 
