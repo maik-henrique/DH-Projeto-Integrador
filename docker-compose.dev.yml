@@ -25,16 +25,13 @@ services:
     privileged: true
     user: root
     ports:
-<<<<<<< HEAD
-      - 8080:8080
+      - 8081:8080
       - 50000:50000
     environment:
       - DOCKER_HOST=tcp://docker:2376
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
-=======
-        - 8081:8080
->>>>>>> develop
+
     container_name: jenkins
     volumes:
       - /var/jenkins/caches:/var/jenkins/caches

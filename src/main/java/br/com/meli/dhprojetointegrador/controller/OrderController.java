@@ -7,6 +7,7 @@ import br.com.meli.dhprojetointegrador.dto.response.TotalPrice;
 import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
 import br.com.meli.dhprojetointegrador.service.OrderService;
 import br.com.meli.dhprojetointegrador.service.CartProductService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 
+@AllArgsConstructor
 @RestController
 @RequestMapping(OrderController.baseUri)
 public class OrderController {
@@ -23,12 +25,10 @@ public class OrderController {
 
     public static final String baseUri = "/api/v1/fresh-products/orders/";
 
-    @Autowired
-    private OrderService orderService;
 
+    private final OrderService orderService;
 
-    @Autowired
-    private CartProductService cartProductService;
+    private final CartProductService cartProductService;
 
 
     /**
@@ -60,6 +60,11 @@ public class OrderController {
         return ResponseEntity.ok(newOrderStatus);
     }
 
+    /**
+     *
+     * @param idOrder
+     * @return
+     */
     @GetMapping
     public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {
         return new ResponseEntity<>(cartProductService.getProductsByOrderId(idOrder), HttpStatus.OK);

@@ -7,15 +7,14 @@ import br.com.meli.dhprojetointegrador.service.OrderService;
 import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
 import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.validation.constraints.NotNull;
 
+@ExtendWith(MockitoExtension.class)
 public class PurchaseOrderServiceTest {
 
 
@@ -51,16 +50,13 @@ public class PurchaseOrderServiceTest {
     @Test
     void naoDeveAlterarStatusQuandoReceberVazio() {
 
-        this.orderRepository = Mockito.mock(OrderRepository.class);
-        this.productRepository = Mockito.mock(ProductRepository.class);
-
         PurchaseOrder purchaseOrderAberto = PurchaseOrder.builder().status(StatusEnum.ABERTO).build();
         PurchaseOrder purchaseOrderFechado = PurchaseOrder.builder().status(StatusEnum.FINALIZADO).build();
 
-        Mockito.when(orderRepository.getById(1L)).thenReturn(purchaseOrderAberto);
+        Mockito.when(orderRepository.getById(2L)).thenReturn(purchaseOrderAberto);
         Mockito.when(orderRepository.save(Mockito.any(PurchaseOrder.class))).thenReturn(purchaseOrderFechado);
 
-        PurchaseOrder result = this.service.atualizar(1L);
+        PurchaseOrder result = this.service.atualizar(2L);
 
         assert result.equals(purchaseOrderFechado);
 
