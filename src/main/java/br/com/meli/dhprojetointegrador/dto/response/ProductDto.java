@@ -18,9 +18,6 @@ public class ProductDto {
     private BigDecimal price;
     private float volume;
 
-    public Product map() {
-        return Product.builder().name(this.name).price(this.price).volume(this.volume).build();
-    }
 
     public static ProductDto map(Product product) {
         return ProductDto.builder().name(product.getName()).price(product.getPrice())

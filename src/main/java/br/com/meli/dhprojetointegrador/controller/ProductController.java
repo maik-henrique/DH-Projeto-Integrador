@@ -35,11 +35,8 @@ public class ProductController {
     @GetMapping("fresh-products")
     public ResponseEntity<List<ProductDto>> returnAllProducts() {
         List<Product> products = productService.returnAllProducts();
-<<<<<<< HEAD
             return products == null || products.isEmpty()?ResponseEntity.notFound().build():
                     ResponseEntity.ok(ProductDto.map(products));
-=======
-        return products == null || products.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(products);
     }
 
     /**
@@ -62,7 +59,6 @@ public class ProductController {
 
         List<Product> products = productService.returnProductsByCategory(category);
         return products == null || products.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(products);
->>>>>>> develop
     }
 
 }
