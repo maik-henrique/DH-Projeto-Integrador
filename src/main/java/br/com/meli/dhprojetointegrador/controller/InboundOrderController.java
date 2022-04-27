@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/fresh-products/inboundorder")
 @AllArgsConstructor
@@ -35,7 +37,7 @@ public class InboundOrderController {
 	 *         request
 	 */
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody InboundOrderUpdateRequest inboundOrderUpdateRequest) {
+	public ResponseEntity<?> update(@Valid @RequestBody InboundOrderUpdateRequest inboundOrderUpdateRequest) {
 		InboundOrder inboundOrder = modelMapper.map(inboundOrderUpdateRequest, InboundOrder.class);
 		InboundOrder updatedInboundOrder = inboundOrderService.update(inboundOrder);
 		InboundOrderResponse inboundOrderResponse = modelMapper.map(updatedInboundOrder, InboundOrderResponse.class);
@@ -44,7 +46,7 @@ public class InboundOrderController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> create(@RequestBody InboundPostRequestBody body) {
+	public ResponseEntity<Void> create(@Valid @RequestBody InboundPostRequestBody body) {
 		inboundOrderService.create(body);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

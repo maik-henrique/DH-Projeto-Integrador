@@ -42,6 +42,7 @@ public class ModelMapperConfig {
             Set<BatchStock> batchStock = source.getBatchStock().stream().map(
                     batchStockUpdateRequest -> BatchStock.builder()
                             .batchNumber(batchStockUpdateRequest.getBatchNumber())
+                            .minimumTemperature(batchStockUpdateRequest.getMinimumTemperature())
                             .currentQuantity(batchStockUpdateRequest.getCurrentQuantity())
                             .currentTemperature(batchStockUpdateRequest.getCurrentTemperature())
                             .dueDate(batchStockUpdateRequest.getDueDate())
@@ -72,6 +73,7 @@ public class ModelMapperConfig {
                             .batchNumber(batchStockSource.getBatchNumber())
                             .currentQuantity(batchStockSource.getCurrentQuantity())
                             .currentTemperature(batchStockSource.getCurrentTemperature())
+                            .minimumTemperature(batchStockSource.getMinimumTemperature())
                             .dueDate(batchStockSource.getDueDate())
                             .initialQuantity(batchStockSource.getInitialQuantity())
                             .manufacturingDate(batchStockSource.getManufacturingDate())
