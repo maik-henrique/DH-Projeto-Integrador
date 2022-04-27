@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,19 +31,19 @@ public class BatchStockServiceTests {
 
     @Test
     public void findByProductId_shouldReturnListOfProducts_whenProductsAreFound() {
-        when(batchStockRepository.findBatchStockByProducts(anyLong(), any(Sort.class)))
+        when(batchStockRepository.findBatchStockByProducts(anyLong(),any(Date.class),any(Sort.class)))
                 .thenReturn(List.of(BatchStock.builder().build()));
 
         List<BatchStock> batchStock = batchStockService.findByProductId(1L, "batchNumber");
 
         assertNotNull(batchStock);
         assertFalse(batchStock.isEmpty());
-        verify(batchStockRepository, times(1)).findBatchStockByProducts(1L, Sort.by("batchNumber"));
+        verify(batchStockRepository, times(1)).findBatchStockByProducts(1L,any(Date.class),Sort.by("batchNumber"));
     }
 
     @Test
     public void findByProductId_shouldThrowBusinessValidatorException_whenProductsAreNotFound() {
-        when(batchStockRepository.findBatchStockByProducts(anyLong(), any(Sort.class)))
+        when(batchStockRepository.findBatchStockByProducts(anyLong(),any(Date.class),any(Sort.class)))
                 .thenReturn(List.of());
 
         assertThrows(BusinessValidatorException.class, () -> batchStockService.findByProductId(1L, "batchNumber"));
