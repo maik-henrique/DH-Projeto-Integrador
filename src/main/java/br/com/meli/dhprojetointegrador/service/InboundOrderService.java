@@ -59,9 +59,9 @@ public class InboundOrderService {
 
         initializeIInboundOrderValidators(section, inboundOrder, agent);
         validators.forEach(IInboundOrderValidator::validate);
-
+        
         oldInboundOrder.setOrderDate(inboundOrder.getOrderDate());
-        oldInboundOrder.setSection(inboundOrder.getSection());
+        oldInboundOrder.setSection(section);
         oldInboundOrder.setAgent(agent);
         oldInboundOrder.setBatchStockList(inboundOrder.getBatchStockList());
 
