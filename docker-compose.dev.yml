@@ -10,25 +10,41 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_DATABASE=meli-frescos
-      - DATADOG_HOST=datadog
     volumes:
       - mysql_data:/var/lib/mysql
       - mysql_config:/etc/mysql/conf.d
+    container_name: mysqlserver
   redis:
     image: redis
     command: redis-server --requirepass Redis!
     ports:
       - "6379:6379"
+    container_name: redis
   jenkins:
     image: jenkins/jenkins:lts
     privileged: true
     user: root
     ports:
-        - 8080:8080
+      - 8080:8080
+      - 50000:50000
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
     container_name: jenkins
     volumes:
-        #- /home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home
-        - /var/run/docker.sock:/var/run/docker.sock
+      - /var/jenkins/caches:/var/jenkins/caches
+      #- /home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  jmeter-master:
+    image: vmarrazzo/jmeter
+    container_name: jmeter
+    volumes:
+      - .:/mnt/jmeter
+    command: -s -n -Jserver.rmi.ssl.disable=true
+    ports:
+    - 6000:6000
 
 volumes:
   mysql_data:

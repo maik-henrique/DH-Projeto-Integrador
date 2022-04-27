@@ -6,12 +6,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 
 @Getter
 @Setter
@@ -25,14 +29,23 @@ public class Section {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Integer id;
 
+  @NotNull(message = "O campo nome não pode ser nulo")
+  @NotBlank(message = "O campo nome não pode estar em branco")
   private String name;
 
+  @NotBlank(message = "O campo nome não pode estar em branco")
+  @NotNull(message = "O campo nome não pode ser nulo")
+  @NumberFormat
   private float capacity;
 
+  @NotBlank(message = "O campo nome não pode estar em branco")
+  @NotNull(message = "O campo nome não pode ser nulo")
   @ManyToOne
   @JoinColumn(name = "warehouse", nullable = false)
   private Warehouse warehouse;
 
+  @NotBlank(message = "O campo nome não pode estar em branco")
+  @NotNull(message = "O campo nome não pode ser nulo")
   @ManyToOne
   @JoinColumn(name = "category", nullable = false)
   private Category category;

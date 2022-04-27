@@ -5,6 +5,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,8 +26,13 @@ public class Agent {
   @Id
   private Integer id;
 
+  @NotBlank(message = "O campo nome não pode estar em branco")
+  @NotNull(message = "O campo nome não pode ser nulo")
   private String name;
 
+  @NotBlank(message = "O campo nome não pode estar em branco")
+  @NotNull(message = "O campo nome não pode ser nulo")
+  @Size(min = 6, max = 8, message = "Senha tem que ser de 6 a 8 caracteres!")
   private String password;
 
   @OneToOne

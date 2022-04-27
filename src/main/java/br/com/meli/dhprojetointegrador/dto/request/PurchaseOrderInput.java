@@ -20,18 +20,18 @@ import java.util.List;
 @NoArgsConstructor
 public class PurchaseOrderInput {
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotBlank(message = "O campo nome não pode estar em branco")
     @DateTimeFormat
     private LocalDate date;
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "O campo nome não pode estar em branco")
+    @NotNull(message = "O campo nome não pode ser nulo")
     @NumberFormat
     private Long buyerId;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotBlank(message = "O campo nome não pode estar em branco")
     private StatusEnum orderStatus;
 
     private List<@Valid ProductInput> products;
