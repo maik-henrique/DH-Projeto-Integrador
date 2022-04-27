@@ -12,15 +12,15 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartProductDTO {
-    private Long productId;
     private Integer quantity;
+    private String product;
 
     public CartProductDTO(CartProduct cartProduct) {
-        this.productId = getProductId();
-        this.quantity = getQuantity();
+        this.product = cartProduct.getProduct().getName();
+        this.quantity = cartProduct.getQuantity();
     }
 
-    public static List<CartProductDTO> convert(List<CartProduct> cartProducts) {
+    public static List<CartProductDTO> convertToProductList(List<CartProduct> cartProducts) {
         return cartProducts.stream().map(CartProductDTO::new).collect(Collectors.toList());
     }
 }

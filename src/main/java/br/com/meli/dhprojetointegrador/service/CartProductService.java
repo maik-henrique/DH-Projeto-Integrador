@@ -18,9 +18,4 @@ public class CartProductService{
         return cartProdRepo.findByPurchaseOrderId(OrderId);
     }
 
-    public List<CartProduct> findAll() {
-        return cartProdRepo.findAll();
-    }
-
-
 }

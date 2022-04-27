@@ -19,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(OrderController.baseUri)
@@ -59,15 +60,7 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {
         List<CartProduct> products = cartProductService.getProductsByOrderId(idOrder);
-        return new ResponseEntity<>(CartProductDTO.convert(products), HttpStatus.OK);
-        //return new ResponseEntity<>(cartProductService.getProductsByOrderId(idOrder), HttpStatus.OK);
+        return new ResponseEntity<>(CartProductDTO.convertToProductList(products), HttpStatus.OK);
     }
-
-    @GetMapping("/all")
-    public List<CartProduct> listarCartProd() {
-        List<CartProduct> cartProducts = cartProductService.findAll();
-        return cartProducts;
-    }
-
 
 }
