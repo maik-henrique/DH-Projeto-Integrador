@@ -15,6 +15,8 @@ import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.service.InboundOrderService;
 import lombok.AllArgsConstructor;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/fresh-products/inboundorder")
 @AllArgsConstructor
@@ -35,7 +37,7 @@ public class InboundOrderController {
 	 *         request
 	 */
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody InboundOrderUpdateRequest inboundOrderUpdateRequest) {
+	public ResponseEntity<?> update(@Valid @RequestBody InboundOrderUpdateRequest inboundOrderUpdateRequest) {
 		InboundOrder inboundOrder = modelMapper.map(inboundOrderUpdateRequest, InboundOrder.class);
 		InboundOrder updatedInboundOrder = inboundOrderService.update(inboundOrder);
 		InboundOrderResponse inboundOrderResponse = modelMapper.map(updatedInboundOrder, InboundOrderResponse.class);
@@ -44,7 +46,7 @@ public class InboundOrderController {
 	}
 
 	@PostMapping
-	public ResponseEntity<InboundOrderResponse> create(@RequestBody InboundOrderPostRequest inboundOrderPostRequest) {
+	public ResponseEntity<InboundOrderResponse> create(@Valid @RequestBody InboundOrderPostRequest inboundOrderPostRequest) {
 		InboundOrder inboundOrder = modelMapper.map(inboundOrderPostRequest, InboundOrder.class);
 		InboundOrder createInboundOrder = inboundOrderService.create(inboundOrder);
 		InboundOrderResponse inboundOrderResponse = modelMapper.map(createInboundOrder, InboundOrderResponse.class);
