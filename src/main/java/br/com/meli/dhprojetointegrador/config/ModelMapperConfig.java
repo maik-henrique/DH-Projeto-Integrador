@@ -49,6 +49,8 @@ public class ModelMapperConfig {
                         Set<BatchStock> batchStock = source.getBatchStock().stream().map(
                                         batchStockUpdateRequest -> BatchStock.builder()
                                                         .batchNumber(batchStockUpdateRequest.getBatchNumber())
+                                                        .minimumTemperature(
+                                                                        batchStockUpdateRequest.getMinimumTemperature())
                                                         .currentQuantity(batchStockUpdateRequest.getCurrentQuantity())
                                                         .currentTemperature(
                                                                         batchStockUpdateRequest.getCurrentTemperature())
@@ -71,6 +73,31 @@ public class ModelMapperConfig {
                                         .orderDate(source.getOrderDate())
                                         .section(section)
                                         .batchStockList(batchStock)
+                                        .build();
+                };
+        }
+
+        private Converter<InboundOrder, InboundOrderResponse> gedtInboundOrderUpdateRequestToInboundOrderConverter() {
+                return context -> {
+                        InboundOrder source = context.getSource();
+
+                        List<BatchStockResponse> batchStock = source.getBatchStockList().stream().map(
+                                        batchStockSource -> BatchStockResponse.builder()
+                                                        .batchNumber(batchStockSource.getBatchNumber())
+                                                        .currentQuantity(batchStockSource.getCurrentQuantity())
+                                                        .currentTemperature(batchStockSource.getCurrentTemperature())
+                                                        .minimumTemperature(batchStockSource.getMinimumTemperature())
+                                                        .dueDate(batchStockSource.getDueDate())
+                                                        .initialQuantity(batchStockSource.getInitialQuantity())
+                                                        .manufacturingDate(batchStockSource.getManufacturingDate())
+                                                        .manufacturingTime(batchStockSource.getManufacturingTime())
+                                                        .productId(batchStockSource.getProducts().getId())
+                                                        .build())
+                                        .collect(Collectors.toList());
+
+                        return InboundOrderResponse
+                                        .builder()
+                                        .batchStock(batchStock)
                                         .build();
                 };
         }
@@ -111,27 +138,4 @@ public class ModelMapperConfig {
                 };
         }
 
-        private Converter<InboundOrder, InboundOrderResponse> gedtInboundOrderUpdateRequestToInboundOrderConverter() {
-                return context -> {
-                        InboundOrder source = context.getSource();
-
-                        List<BatchStockResponse> batchStock = source.getBatchStockList().stream().map(
-                                        batchStockSource -> BatchStockResponse.builder()
-                                                        .batchNumber(batchStockSource.getBatchNumber())
-                                                        .currentQuantity(batchStockSource.getCurrentQuantity())
-                                                        .currentTemperature(batchStockSource.getCurrentTemperature())
-                                                        .dueDate(batchStockSource.getDueDate())
-                                                        .initialQuantity(batchStockSource.getInitialQuantity())
-                                                        .manufacturingDate(batchStockSource.getManufacturingDate())
-                                                        .manufacturingTime(batchStockSource.getManufacturingTime())
-                                                        .productId(batchStockSource.getProducts().getId())
-                                                        .build())
-                                        .collect(Collectors.toList());
-
-                        return InboundOrderResponse
-                                        .builder()
-                                        .batchStock(batchStock)
-                                        .build();
-                };
-        }
 }

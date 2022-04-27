@@ -1,5 +1,7 @@
 package br.com.meli.dhprojetointegrador.controller;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +37,7 @@ public class InboundOrderController {
 	 *         request
 	 */
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody InboundOrderUpdateRequest inboundOrderUpdateRequest) {
+	public ResponseEntity<?> update(@Valid @RequestBody InboundOrderUpdateRequest inboundOrderUpdateRequest) {
 		InboundOrder inboundOrder = modelMapper.map(inboundOrderUpdateRequest, InboundOrder.class);
 		InboundOrder updatedInboundOrder = inboundOrderService.update(inboundOrder);
 		InboundOrderResponse inboundOrderResponse = modelMapper.map(updatedInboundOrder, InboundOrderResponse.class);
