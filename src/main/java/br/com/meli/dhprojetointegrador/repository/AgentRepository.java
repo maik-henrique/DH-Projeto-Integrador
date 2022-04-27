@@ -1,8 +1,7 @@
 package br.com.meli.dhprojetointegrador.repository;
 
+import br.com.meli.dhprojetointegrador.entity.Agent;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.meli.dhprojetointegrador.entity.Agent;
-
-public interface AgentRepository extends JpaRepository<Agent, Long> {
+public interface AgentRepository extends JpaRepository<Agent, Long>  {
 }
