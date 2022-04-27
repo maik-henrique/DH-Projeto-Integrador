@@ -1,12 +1,23 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import br.com.meli.dhprojetointegrador.enums.StatusEnum;
-import lombok.*;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import br.com.meli.dhprojetointegrador.enums.StatusEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -14,7 +25,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "purchaseOrder")
-public class PurchaseOrder implements Serializable{
+public class PurchaseOrder implements Serializable {
 
     private static final long serialVersionUID = 7156526077883281623L;
 

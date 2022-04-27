@@ -24,7 +24,7 @@ import lombok.Setter;
 @Table(name = "batch_stock")
 public class BatchStock {
     @Id
-    private Integer batchNumber;
+    private Long batchNumber;
 
     private int currentQuantity;
     private LocalDate dueDate;
@@ -32,6 +32,7 @@ public class BatchStock {
     private LocalDate manufacturingDate;
     private LocalDateTime manufacturingTime;
     private float currentTemperature;
+    private float minimumTemperature;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
