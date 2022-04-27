@@ -97,6 +97,11 @@ public class InboundOrderServiceTests {
                 verify(inboundOrderRepository, times(1)).save(any());
         }
 
+        /**
+         * @Author: Bruno
+         * @Teste: Teste unitário função create InboundOrder
+         * @Description: valida funcionamento correto da função
+         */
         @Test
         public void create_ReturnListOfBatchStock_WhenSuccessful() {
                 when(sectionService.findSectionById(anyLong())).thenReturn(SectionCreator.createValidSection());
