@@ -48,13 +48,14 @@ public class InboundOrderService {
     public InboundOrder update(InboundOrder inboundOrder) throws BusinessValidatorException {
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
         Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());
-        inboundOrder.getBatchStockList().forEach(batchStock -> {
-
-            Product product = productService.findProductById(batchStock.getProducts().getId());
-            batchStock.setProducts(product);
-        });
 
         InboundOrder oldInboundOrder = findInboundOrderByOrderNumber(inboundOrder.getOrderNumber());
+
+        inboundOrder.getBatchStockList().forEach(batchStock -> {
+            Product product = productService.findProductById(batchStock.getProducts().getId());
+            batchStock.setProducts(product);
+            batchStock.setInboundOrder(oldInboundOrder);
+        });
 
         initializeIInboundOrderValidators(section, inboundOrder, agent);
         validators.forEach(IInboundOrderValidator::validate);
