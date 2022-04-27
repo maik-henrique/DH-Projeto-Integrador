@@ -32,7 +32,7 @@ public class OrderController {
     private CartProductService cartProductService;
 
     /**
-     * Author: Bruno Mendes
+     * Author: Bruno s Mendes
      * Method: PurchaseOrderProductRegistration
      * Description: Controller para realizar a operação de criar uma ordem de compra
      */
