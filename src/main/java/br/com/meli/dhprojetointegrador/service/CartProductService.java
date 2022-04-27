@@ -14,9 +14,13 @@ public class CartProductService{
 
     private final CartProductRepository cartProdRepo;
 
-    @Transactional(readOnly = true)
     public List<CartProduct> getProductsByOrderId(long OrderId) {
         return cartProdRepo.findByPurchaseOrderId(OrderId);
     }
+
+    public List<CartProduct> findAll() {
+        return cartProdRepo.findAll();
+    }
+
 
 }

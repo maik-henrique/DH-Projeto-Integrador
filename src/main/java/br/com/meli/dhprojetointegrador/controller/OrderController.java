@@ -2,8 +2,10 @@ package br.com.meli.dhprojetointegrador.controller;
 
 
 import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
+import br.com.meli.dhprojetointegrador.dto.response.CartProductDTO;
 import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
 import br.com.meli.dhprojetointegrador.dto.response.TotalPrice;
+import br.com.meli.dhprojetointegrador.entity.CartProduct;
 import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
 import br.com.meli.dhprojetointegrador.service.OrderService;
 import br.com.meli.dhprojetointegrador.service.CartProductService;
@@ -16,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(OrderController.baseUri)
@@ -55,7 +58,16 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {
-        return new ResponseEntity<>(cartProductService.getProductsByOrderId(idOrder), HttpStatus.OK);
+        List<CartProduct> products = cartProductService.getProductsByOrderId(idOrder);
+        return new ResponseEntity<>(CartProductDTO.convert(products), HttpStatus.OK);
+        //return new ResponseEntity<>(cartProductService.getProductsByOrderId(idOrder), HttpStatus.OK);
     }
+
+    @GetMapping("/all")
+    public List<CartProduct> listarCartProd() {
+        List<CartProduct> cartProducts = cartProductService.findAll();
+        return cartProducts;
+    }
+
 
 }
