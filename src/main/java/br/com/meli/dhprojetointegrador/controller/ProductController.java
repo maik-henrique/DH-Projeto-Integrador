@@ -1,6 +1,7 @@
 package br.com.meli.dhprojetointegrador.controller;
 
 
+import br.com.meli.dhprojetointegrador.dto.response.ProductDto;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.service.ProductService;
 import lombok.AllArgsConstructor;
@@ -28,10 +29,14 @@ public class ProductController {
      */
 
     @GetMapping("fresh-products")
-    public ResponseEntity<?> returnAllProducts() {
+    public ResponseEntity<List<ProductDto>> returnAllProducts() {
         List<Product> products = productService.returnAllProducts();
             return products == null || products.isEmpty()?ResponseEntity.notFound().build():
-                    ResponseEntity.ok(products);
+                    ResponseEntity.ok(ProductDto.map(products));
     }
 
 }
+
+
+
+

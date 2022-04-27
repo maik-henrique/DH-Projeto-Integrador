@@ -29,8 +29,8 @@ public class OrderController {
     private CartProductService cartProductService;
   
 
-    @Autowired
-    private CartProductService cartProductService;
+//    @Autowired
+//    private CartProductService cartProductService;
 
    
     @PutMapping("{idorder}")
