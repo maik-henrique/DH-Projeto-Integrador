@@ -51,11 +51,11 @@ public class OrderController {
      * @param idProducto
      * @return
      */
-    @GetMapping("/api/v1/fresh-products/{list}?{querytype}={idProducto}")
+  /*  @GetMapping("/api/v1/fresh-products/{list}?{querytype}={idProducto}")
     public ResponseEntity<List<ProductInput>> listarProdutosLotes(@RequestParam(required = true) String list, Integer querytype, Integer idProducto){
         List<Product> products = orderService.listaProdutosLotes();
         return ResponseEntity.ok(ProductInput.map(products));
-    }
+    }*/
 
     @GetMapping
     public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {

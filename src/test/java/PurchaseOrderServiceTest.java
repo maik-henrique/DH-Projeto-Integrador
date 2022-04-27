@@ -1,6 +1,7 @@
 import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
 import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import br.com.meli.dhprojetointegrador.repository.OrderRepository;
+import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import br.com.meli.dhprojetointegrador.service.OrderService;
 
 import org.junit.jupiter.api.Test;
@@ -11,11 +12,15 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.validation.constraints.NotNull;
+
 public class PurchaseOrderServiceTest {
 
     private OrderService service;
 
     private OrderRepository orderRepository;
+
+    private ProductRepository productRepository;
 
     /**
      * @Author: David
@@ -26,18 +31,19 @@ public class PurchaseOrderServiceTest {
     void naoDeveAlterarStatusQuandoReceberVazio() {
 
         this.orderRepository = Mockito.mock(OrderRepository.class);
-        this.service = new OrderService(orderRepository);
+        this.productRepository = Mockito.mock(ProductRepository.class);
 
-        PurchaseOrder purchaseOrder = PurchaseOrder.builder().status(StatusEnum.ABERTO).build();
+        this.service = new OrderService(orderRepository, productRepository);
 
-        Mockito.when(this.service.atualizar(any())).thenReturn(purchaseOrder);
+        PurchaseOrder purchaseOrderAberto = PurchaseOrder.builder().status(StatusEnum.ABERTO).build();
+        PurchaseOrder purchaseOrderFechado = PurchaseOrder.builder().status(StatusEnum.FINALIZADO).build();
 
+        Mockito.when(orderRepository.getById(1L)).thenReturn(purchaseOrderAberto);
+        Mockito.when(orderRepository.save(Mockito.any(PurchaseOrder.class))).thenReturn(purchaseOrderFechado);
 
-        PurchaseOrder result = this.service.atualizar(purchaseOrder);
+        PurchaseOrder result = this.service.atualizar(1L);
 
-        assertNotNull(result);
-        assertTrue(!result.isEmpty());
-        assertNotEquals("", result);
+        assert result.equals(purchaseOrderFechado);
 
     }
 

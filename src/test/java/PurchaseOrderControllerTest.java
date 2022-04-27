@@ -1,48 +1,43 @@
-import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
-import br.com.meli.dhprojetointegrador.enums.StatusEnum;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.meli.dhprojetointegrador.controller.OrderController;
+import br.com.meli.dhprojetointegrador.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@SpringBootTest
+
+/*@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+@ActiveProfiles("test")*/
+@SpringBootTest(classes= OrderController.class)
 @AutoConfigureMockMvc
-@ActiveProfiles(profiles = "test")
 public class PurchaseOrderControllerTest {
+
 
     @Autowired
     private MockMvc mvc;
-
 
     /**
      * @Author: David
      * @Methodo: Mudar Cart para Aberto ou Finalizado na Order
      * @Description: Modifique o pedido existente. torná-lo do tipo de carrinho para modificar - ABERTO/FINALIZADO
-     * @throws JsonProcessingException
      */
     @Test
-    public void deveMudarStatusOrder() throws JsonProcessingException {
+    public void deveMudarStatusOrder() throws Exception{
 
-        PurchaseOrderInput dto = PurchaseOrderInput.builder().orderStatus(StatusEnum.ABERTO).build();
-
-        String payload = new ObjectMapper().writeValueAsString(dto);
-
-        try {
             mvc.perform(MockMvcRequestBuilders
-                    .post("/api/v1/fresh-products/orders/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(payload)
-            ).andExpect(MockMvcResultMatchers.status().isCreated());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    .put("/api/v1/fresh-products/orders/2"))
+                    .andExpect(MockMvcResultMatchers.status().isOk());
+
     }
 
 }

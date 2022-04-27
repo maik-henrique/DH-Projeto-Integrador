@@ -6,6 +6,8 @@ import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import br.com.meli.dhprojetointegrador.exception.PurchaseOrderNotFoundException;
 import br.com.meli.dhprojetointegrador.repository.OrderRepository;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderService {
 
     @Autowired
@@ -57,11 +61,11 @@ public class OrderService {
 
     /**
      * @Author: David
-     * @Methodo: Listar produtos em seus determinados lotes
+     *
+     * @@Methodo: Listar produtos em seus determinados lotes
      * @Description: Veja uma lista de produtos com todos os lotes onde aparece. Se a lista não existir, ela deve retornar um “404 Not Found”.
      * @return
      */
-    @Override
     public List<Product> listaProdutosLotes() {
 
         List<Product> products = productRepository.findAll();

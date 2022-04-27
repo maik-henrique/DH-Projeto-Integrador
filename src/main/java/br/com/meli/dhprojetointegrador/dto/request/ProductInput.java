@@ -27,7 +27,4 @@ public class ProductInput {
     @NumberFormat
     private Integer quantity;
 
-    public static List<ProductInput> map(List<Product> vendedores) {
-        return vendedores.stream().map(e -> map(e)).collect(Collectors.toList());
-    }
 }
