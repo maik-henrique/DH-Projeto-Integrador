@@ -21,9 +21,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InboundOrderPostRequest {
-  @NotNull
-  private Long orderNumber;
-
   @JsonDeserialize(using = LocalDateDeserializer.class)
   @JsonSerialize(using = LocalDateSerializer.class)
   @NotNull

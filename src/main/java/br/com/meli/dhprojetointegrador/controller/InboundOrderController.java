@@ -46,7 +46,8 @@ public class InboundOrderController {
 	}
 
 	@PostMapping
-	public ResponseEntity<InboundOrderResponse> create(@RequestBody InboundOrderPostRequest inboundOrderPostRequest) {
+	public ResponseEntity<InboundOrderResponse> create(
+			@Valid @RequestBody InboundOrderPostRequest inboundOrderPostRequest) {
 		InboundOrder inboundOrder = modelMapper.map(inboundOrderPostRequest, InboundOrder.class);
 		InboundOrder createInboundOrder = inboundOrderService.create(inboundOrder);
 		InboundOrderResponse inboundOrderResponse = modelMapper.map(createInboundOrder, InboundOrderResponse.class);

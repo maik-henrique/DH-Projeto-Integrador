@@ -56,7 +56,6 @@ public class InboundOrderService {
             batchStock.setInboundOrder(oldInboundOrder);
         });
 
-
         initializeIInboundOrderValidators(section, inboundOrder, agent);
         validators.forEach(IInboundOrderValidator::validate);
 
@@ -93,7 +92,6 @@ public class InboundOrderService {
         });
 
         initializeIInboundOrderValidators(section, inboundOrder, agent);
-        System.out.println("OBA");
         validators.forEach(IInboundOrderValidator::validate);
 
         inboundOrder.setAgent(agent);
