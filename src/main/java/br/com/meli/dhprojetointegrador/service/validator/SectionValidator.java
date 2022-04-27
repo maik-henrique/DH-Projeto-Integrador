@@ -9,6 +9,15 @@ public class SectionValidator implements IInboundOrderValidator {
     private SectionService sectionService;
     private Long sectionId;
 
+    /**
+     * Author: Pedro Dalpa
+     * Method: validate
+     * Description: valida se uma seção existe, caso nao exista retornara um
+     * BusinessValidatorException
+     * 
+     * 
+     */
+
     @Override
     public void validate() throws BusinessValidatorException {
         sectionService.findSectionById(sectionId);

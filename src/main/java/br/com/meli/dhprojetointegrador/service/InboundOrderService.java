@@ -56,7 +56,6 @@ public class InboundOrderService {
             batchStock.setInboundOrder(oldInboundOrder);
         });
 
-
         initializeIInboundOrderValidators(section, inboundOrder, agent);
         validators.forEach(IInboundOrderValidator::validate);
 
@@ -83,6 +82,18 @@ public class InboundOrderService {
                 new AgentWarehouseValidator(section, agent.getId(), warehouseService));
     }
 
+    /**
+     * Author: Pedro Dalpa
+     * Method: create
+     * Description: salva o inbound order e cria os registros no stock conforme
+     * necessário
+     * 
+     * @param inboundOrder an instance of InboundOrder to create
+     * @return instance of InboundOrder created
+     * @throws BusinessValidatorException in case it fails to created the
+     *                                    InboundOrder properly
+     */
+
     public InboundOrder create(InboundOrder inboundOrder) {
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
         Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());
@@ -93,7 +104,6 @@ public class InboundOrderService {
         });
 
         initializeIInboundOrderValidators(section, inboundOrder, agent);
-        System.out.println("OBA");
         validators.forEach(IInboundOrderValidator::validate);
 
         inboundOrder.setAgent(agent);

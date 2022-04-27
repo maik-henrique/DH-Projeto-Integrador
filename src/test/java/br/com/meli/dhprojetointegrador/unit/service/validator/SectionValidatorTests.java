@@ -47,6 +47,11 @@ public class SectionValidatorTests {
                 .thenReturn(Optional.of(SectionCreator.createValidSection()));
     }
 
+    /**
+     * @Author: Bruno
+     * @Teste: Teste unitário da validação de seção
+     * @Description: valida o funcionamento correto da função
+     */
     @Test
     public void validate_shouldNotThrowException_whenSectionIsValid() {
         SectionService sectionService = new SectionService(sectionRepository);
@@ -65,6 +70,11 @@ public class SectionValidatorTests {
         assertDoesNotThrow(() -> sectionValidator.validate());
     }
 
+    /**
+     * @Author: Bruno
+     * @Teste: Teste unitário da validação de seção
+     * @Description: valida o funcionamento incorreto da função
+     */
     @Test
     public void validate_shouldThrowBusinessValidatorException_whenSectionIsNotValid() {
         SectionService sectionService = new SectionService(sectionRepository);
