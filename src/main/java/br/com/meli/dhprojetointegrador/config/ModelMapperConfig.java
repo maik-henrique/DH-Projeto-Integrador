@@ -4,11 +4,10 @@ import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.response.BatchStockResponse;
 import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
 import br.com.meli.dhprojetointegrador.entity.*;
-import br.com.meli.dhprojetointegrador.mapper.freshproducts.ProductToFreshProductsQueryResponseConverter;
+import br.com.meli.dhprojetointegrador.mapper.freshproducts.BatchStockListToFreshProductsQueryResponseConverter;
 import lombok.AllArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 @Configuration
 public class ModelMapperConfig {
 
-    private final ProductToFreshProductsQueryResponseConverter productToFreshProductsQueryResponseConverter;
+    private final BatchStockListToFreshProductsQueryResponseConverter batchStockListToFreshProductsQueryResponseConverter;
 
     @Bean
     public ModelMapper getModelMapper() {
@@ -35,7 +34,7 @@ public class ModelMapperConfig {
         modelMapper.createTypeMap(InboundOrder.class, InboundOrderResponse.class)
                 .setConverter(inboundOrderToInboundOrderResponseConverter);
 
-        modelMapper.addConverter(productToFreshProductsQueryResponseConverter);
+        modelMapper.addConverter(batchStockListToFreshProductsQueryResponseConverter);
 
         return modelMapper;
     }

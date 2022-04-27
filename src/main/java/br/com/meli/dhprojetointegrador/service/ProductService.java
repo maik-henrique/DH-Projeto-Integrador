@@ -6,6 +6,7 @@ import br.com.meli.dhprojetointegrador.exception.NotImplementedException;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -17,10 +18,6 @@ public class ProductService {
 
     public Product findProductById(Long id) {
         return productRepository.findById(id).orElseThrow(() -> new BusinessValidatorException(String.format("Product with id %d not found", id)));
-    }
-
-    public Product findProductByIdSorted(Long id, String sortBy) {
-        throw new NotImplementedException();
     }
 
     /**

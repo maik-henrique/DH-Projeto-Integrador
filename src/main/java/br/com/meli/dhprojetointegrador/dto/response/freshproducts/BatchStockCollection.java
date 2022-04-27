@@ -1,19 +1,18 @@
 package br.com.meli.dhprojetointegrador.dto.response.freshproducts;
 
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
+
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FreshProductsQueriedResponse {
-    private Set<SectionResponse> sections;
-    private String productId;
-    private List<BatchStockResponse> batchStock;
+public class BatchStockCollection {
+    private List<BatchStock> batchStock;
 }

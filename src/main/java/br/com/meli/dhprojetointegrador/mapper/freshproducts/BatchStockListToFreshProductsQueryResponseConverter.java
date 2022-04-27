@@ -1,5 +1,6 @@
 package br.com.meli.dhprojetointegrador.mapper.freshproducts;
 
+import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockCollection;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockResponse;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.SectionResponse;
@@ -9,35 +10,40 @@ import br.com.meli.dhprojetointegrador.entity.Product;
 import org.modelmapper.AbstractConverter;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class ProductToFreshProductsQueryResponseConverter extends AbstractConverter<Product, FreshProductsQueriedResponse> {
+public class BatchStockListToFreshProductsQueryResponseConverter extends AbstractConverter<BatchStockCollection, FreshProductsQueriedResponse> {
     @Override
-    protected FreshProductsQueriedResponse convert(Product source) {
-        Set<SectionResponse> sections = extractSection(source);
-        Set<BatchStockResponse> batchStockSet = extractBatchStock(source);
+    protected FreshProductsQueriedResponse convert(BatchStockCollection source) {
+        List<BatchStock> batchStockList = source.getBatchStock();
+        BatchStock batchStock = batchStockList.stream().findAny().orElseThrow(() -> new RuntimeException("No Batchstock found"));
+        Product product = batchStock.getProducts();
+
+        List<BatchStockResponse> batchStockResponses = extractBatchStock(batchStockList);
+        Set<SectionResponse> section = extractSection(batchStockList);
 
         return FreshProductsQueriedResponse.builder()
-                .productId(String.valueOf(source.getId()))
-                .sections(sections)
-                .batchStock(batchStockSet)
+                .productId(String.valueOf(product.getId()))
+                .batchStock(batchStockResponses)
+                .sections(section)
                 .build();
     }
 
-    private Set<BatchStockResponse> extractBatchStock(Product source) {
-        return source.getBatchStockList()
+    private List<BatchStockResponse> extractBatchStock(List<BatchStock> source) {
+        return source
                 .stream().map(batchStock -> BatchStockResponse.builder()
                         .batchNumber(String.valueOf(batchStock.getBatchNumber()))
                         .currentQuantity(batchStock.getCurrentQuantity())
                         .dueDate(batchStock.getDueDate())
                         .build()
-                ).collect(Collectors.toSet());
+                ).collect(Collectors.toList());
     }
 
-    private Set<SectionResponse> extractSection(Product source) {
-        return source.getBatchStockList()
+    private Set<SectionResponse> extractSection(List<BatchStock> source) {
+        return source
                 .stream().map(BatchStock::getInboundOrder)
                 .map(InboundOrder::getSection)
                 .map(section -> SectionResponse.builder()
@@ -46,4 +52,6 @@ public class ProductToFreshProductsQueryResponseConverter extends AbstractConver
                         .build()
                 ).collect(Collectors.toSet());
     }
+
+
 }
