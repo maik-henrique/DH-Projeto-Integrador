@@ -1,20 +1,23 @@
 package br.com.meli.dhprojetointegrador.service;
 
-import br.com.meli.dhprojetointegrador.dto.request.InboundPostRequestBody;
-import br.com.meli.dhprojetointegrador.entity.*;
-import br.com.meli.dhprojetointegrador.exception.BadRequestException;
+import java.util.List;
+import org.springframework.stereotype.Service;
+import br.com.meli.dhprojetointegrador.entity.Agent;
+import br.com.meli.dhprojetointegrador.entity.InboundOrder;
+import br.com.meli.dhprojetointegrador.entity.Product;
+import br.com.meli.dhprojetointegrador.entity.Section;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
-import br.com.meli.dhprojetointegrador.mapper.BatchStockMapper;
-import br.com.meli.dhprojetointegrador.repository.*;
+import br.com.meli.dhprojetointegrador.repository.AgentRepository;
+import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
+import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
+import br.com.meli.dhprojetointegrador.repository.ProductRepository;
+import br.com.meli.dhprojetointegrador.repository.SectionRepository;
+import br.com.meli.dhprojetointegrador.service.validator.AgentWarehouseValidator;
 import br.com.meli.dhprojetointegrador.service.validator.IInboundOrderValidator;
 import br.com.meli.dhprojetointegrador.service.validator.SectionCategoryValidator;
+import br.com.meli.dhprojetointegrador.service.validator.SectionValidator;
 import br.com.meli.dhprojetointegrador.service.validator.SpaceAvailableValidator;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -24,6 +27,7 @@ public class InboundOrderService {
     private final AgentService agentService;
     private final ProductService productService;
     private List<IInboundOrderValidator> validators;
+    private WarehouseService warehouseService;
 
     private final SectionRepository sectionRepository;
     private final AgentRepository agentRepository;
@@ -31,11 +35,13 @@ public class InboundOrderService {
     private final ProductRepository productRepository;
 
     /**
-     * Given an InboundOrder request it updates it's related fields if they do exist.
+     * Given an InboundOrder request it updates it's related fields if they do
+     * exist.
      * 
      * @param inboundOrder an instance of InboundOrder to be updated
      * @return instance of InboundOrder updated
-     * @throws BusinessValidatorException in case it fails to update the InboundOrder properly
+     * @throws BusinessValidatorException in case it fails to update the
+     *                                    InboundOrder properly
      */
     public InboundOrder update(InboundOrder inboundOrder) throws BusinessValidatorException {
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
@@ -48,8 +54,7 @@ public class InboundOrderService {
             batchStock.setInboundOrder(oldInboundOrder);
         });
 
-
-        initializeIInboundOrderValidators(section, inboundOrder);
+        initializeIInboundOrderValidators(section, inboundOrder, agent);
         validators.forEach(IInboundOrderValidator::validate);
 
         oldInboundOrder.setOrderDate(inboundOrder.getOrderDate());
@@ -63,45 +68,47 @@ public class InboundOrderService {
     private InboundOrder findInboundOrderByOrderNumber(Long orderNumber) {
         return inboundOrderRepository
                 .findByOrderNumber(orderNumber)
-                .orElseThrow(() -> new BusinessValidatorException("Inbound order not found with the provider order number"));
+                .orElseThrow(
+                        () -> new BusinessValidatorException("Inbound order not found with the provider order number"));
     }
 
-    private void initializeIInboundOrderValidators(Section section, InboundOrder inboundOrder) {
+    private void initializeIInboundOrderValidators(Section section, InboundOrder inboundOrder, Agent agent) {
         validators = List.of(
                 new SectionCategoryValidator(section, inboundOrder),
-                new SpaceAvailableValidator(section, inboundOrder)
-        );
+                new SpaceAvailableValidator(section, inboundOrder),
+                new SectionValidator(sectionService, section.getId()),
+                new AgentWarehouseValidator(section, agent.getId(), warehouseService));
     }
 
-  public InboundOrder create(InboundPostRequestBody inboundPostRequestBody) {
-    InboundOrder inboundOrder = new InboundOrder();
+    /**
+     * Author: Pedro Dalpa
+     * Method: create
+     * Description: salva o inbound order e cria os registros no stock conforme
+     * necessário
+     * 
+     * @param inboundOrder an instance of InboundOrder to create
+     * @return instance of InboundOrder created
+     * @throws BusinessValidatorException in case it fails to created the
+     *                                    InboundOrder properly
+     */
 
-    Section section = sectionRepository.findById(inboundPostRequestBody.getSectionId())
-        .orElseThrow(() -> new BadRequestException("Section id not found"));
+    public InboundOrder create(InboundOrder inboundOrder) {
+        Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
+        Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());
 
-    Agent agent = agentRepository.findById(inboundPostRequestBody.getAgentId())
-        .orElseThrow(() -> new BadRequestException("Agent id not found"));
+        inboundOrder.getBatchStockList().forEach(batchStock -> {
+            Product product = productService.findProductById(batchStock.getProducts().getId());
+            batchStock.setProducts(product);
+        });
 
-    LocalDate convertedDate = inboundPostRequestBody.getOrderDate().toInstant().atZone(ZoneId.systemDefault())
-        .toLocalDate();
+        initializeIInboundOrderValidators(section, inboundOrder, agent);
+        validators.forEach(IInboundOrderValidator::validate);
 
-    inboundOrder.setSection(section);
-    inboundOrder.setOrderDate(convertedDate);
-    inboundOrder.setAgent(agent);
+        inboundOrder.setAgent(agent);
+        inboundOrder.setSection(section);
 
-    InboundOrder savedInboundOrder = inboundOrderRepository.save(inboundOrder);
+        return inboundOrderRepository.save(inboundOrder);
 
-    inboundPostRequestBody.getBatchStock().forEach(item -> {
-      item.setInboundOrder(savedInboundOrder);
-      Product product = productRepository.findById(item.getProduct_id())
-          .orElseThrow(() -> new BadRequestException("Agent id not found"));
-      item.setProducts(product);
-    });
+    }
 
-    List<BatchStock> batchStocks = BatchStockMapper.INSTANCE.toBatchStock(inboundPostRequestBody.getBatchStock());
-
-    batchStockRepository.saveAll(batchStocks);
-
-    return savedInboundOrder;
-  }
 }

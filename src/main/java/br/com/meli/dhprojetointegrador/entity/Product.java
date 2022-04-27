@@ -34,8 +34,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotBlank(message = "O campo nome não pode estar em branco")
     private String name;
 
+    @NotBlank(message = "O campo nome não pode estar em branco")
+    @NotNull(message = "O campo nome não pode ser nulo")
     @DecimalMin(value = "0.0", inclusive = false)
     @Digits(integer=3, fraction=2)
     private BigDecimal price;
@@ -57,6 +61,8 @@ public class Product {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
+    @NotBlank(message = "O campo nome não pode estar em branco")
+    @NotNull(message = "O campo nome não pode ser nulo")
     @OneToMany(mappedBy = "products")
     private Set<BatchStock> batchStockList;
 

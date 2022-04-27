@@ -2,6 +2,7 @@ package br.com.meli.dhprojetointegrador.dto.request;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import br.com.meli.dhprojetointegrador.dto.BatchStockDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +34,9 @@ public class InboundPostRequestBody {
   @NotNull(message = "O campo nome não pode ser nulo")
   private Long sectionId;
 
+  @NotBlank(message = "O campo nome não pode estar em branco")
+  @NotNull(message = "O campo nome não pode ser nulo")
+  private Set<BatchStockDTO> batchStock;
 
-  private List<BatchStockDTO> batchStock;
 
 }

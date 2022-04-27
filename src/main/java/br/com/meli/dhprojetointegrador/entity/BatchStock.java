@@ -27,6 +27,9 @@ import org.springframework.format.annotation.NumberFormat;
 @Builder
 @Table(name = "batch_stock")
 public class BatchStock {
+
+    @NotBlank(message = "O campo nome não pode estar em branco")
+    @NotNull(message = "O campo nome não pode ser nulo")
     @Id
     private Long batchNumber;
 
@@ -55,15 +58,24 @@ public class BatchStock {
     @DateTimeFormat
     private LocalDateTime manufacturingTime;
 
+    @NotBlank(message = "O campo nome não pode estar em branco")
+    @NotNull(message = "O campo nome não pode ser nulo")
     @NotEmpty(message = "Temperatura contra indicada!")
     @Size(min = -22, max = 0, message = "Risco de temperatura!")
     private float currentTemperature;
+
+    @NotBlank(message = "O campo nome não pode estar em branco")
+    @NotNull(message = "O campo nome não pode ser nulo")
     private float minimumTemperature;
 
+    @NotBlank(message = "O campo nome não pode estar em branco")
+    @NotNull(message = "O campo nome não pode ser nulo")
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product products;
 
+    @NotBlank(message = "O campo nome não pode estar em branco")
+    @NotNull(message = "O campo nome não pode ser nulo")
     @ManyToOne
     @JoinColumn(name = "order_number")
     private InboundOrder inboundOrder;

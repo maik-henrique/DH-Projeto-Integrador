@@ -8,8 +8,9 @@ import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -40,7 +41,7 @@ public class ValidateProductTest {
     @Test
     @DisplayName("TestPI-8 - validateQuantity")
     public void validateQuantity_should_return_correct_Product() {
-        when(productRepository.getById(1L)).thenReturn(product1);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
 
         Product result = validateProduct.validateQuantity(10, 1L);
 
@@ -55,7 +56,7 @@ public class ValidateProductTest {
     @Test
     @DisplayName("TestPI-8 - validateQuantity")
     public void validateQuantity_should_trow_corret_Error() {
-        when(productRepository.getById(2L)).thenThrow(new EntityNotFoundException());
+        when(productRepository.findById(2L)).thenThrow(new NoSuchElementException());
 
         try {
             validateProduct.validateQuantity(10, 2L);
@@ -72,7 +73,7 @@ public class ValidateProductTest {
     @Test
     @DisplayName("TestPI-8 - validateQuantity")
     public void validateQuantity_should_trow_NotEnougthProductsException() {
-        when(productRepository.getById(1L)).thenReturn(product1);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
 
         try {
             validateProduct.validateQuantity(20, 1L);

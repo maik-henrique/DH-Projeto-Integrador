@@ -1,10 +1,12 @@
 package br.com.meli.dhprojetointegrador.entity;
 
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.NotBlank;
@@ -36,4 +38,9 @@ public class Warehouse {
   @OneToOne(mappedBy = "warehouse", cascade = CascadeType.ALL)
   @PrimaryKeyJoinColumn
   private Agent agent;
+
+  @NotBlank(message = "O campo nome não pode estar em branco")
+  @NotNull(message = "O campo nome não pode ser nulo")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "warehouse")
+  private List<Section> sections;
 }

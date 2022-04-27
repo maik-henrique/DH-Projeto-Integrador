@@ -120,10 +120,10 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
 				.timestamp(LocalDateTime.now())
 				.title("Product Not Found")
-				.statusCode(HttpStatus.BAD_REQUEST.value())
+				.statusCode(HttpStatus.NOT_FOUND.value())
 				.description(exception.getMessage())
 				.build();
 
-		return new ResponseEntity<>(exceptionPayload, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.NOT_FOUND);
 	}
 }

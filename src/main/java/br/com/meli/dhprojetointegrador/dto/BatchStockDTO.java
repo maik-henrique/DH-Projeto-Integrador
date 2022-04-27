@@ -26,6 +26,8 @@ public class BatchStockDTO {
     @NumberFormat
     private Long batchNumber;
 
+    @NotBlank(message = "O campo nome não pode estar em branco")
+    @NotNull(message = "O campo nome não pode ser nulo")
     private Long product_id;
 
     @NotEmpty(message = "Temperatura contra indicada!")
@@ -61,7 +63,12 @@ public class BatchStockDTO {
     @DateTimeFormat
     private LocalDate dueDate;
 
+    @NotBlank(message = "O campo nome não pode estar em branco")
+    @NotNull(message = "O campo nome não pode ser nulo")
     private InboundOrder inboundOrder;
+
+    @NotBlank(message = "O campo nome não pode estar em branco")
+    @NotNull(message = "O campo nome não pode ser nulo")
     private Product products;
 
 }
