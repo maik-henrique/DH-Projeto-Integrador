@@ -6,7 +6,7 @@ pipeline {
 
          stage('build') {
              tools {
-                  maven "M2_HOME"
+                  maven "MAVEN_HOME"
                   jdk "JAVA_HOME"
              }
              steps {
