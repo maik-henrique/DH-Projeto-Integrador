@@ -31,6 +31,7 @@ public class InboundOrderPostRequest {
 
   @NotNull
   private Long agentId;
+
   @NotNull
   private List<@Valid BatchStockPostRequest> batchStock;
 

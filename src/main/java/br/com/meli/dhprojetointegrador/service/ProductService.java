@@ -7,8 +7,13 @@ import org.springframework.stereotype.Service;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
+import br.com.meli.dhprojetointegrador.exception.NotImplementedException;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
