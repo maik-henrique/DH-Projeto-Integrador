@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.meli.dhprojetointegrador.dto.response.ProductDto;
+import br.com.meli.dhprojetointegrador.dto.response.ProductResponseDto;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.service.ProductService;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping(ProductController.baseUri)
 public class ProductController {
 
-    public static final String baseUri = "/api/v1/";
+    public static final String baseUri = "/api/v1/fresh-products";
     private final ProductService productService;
 
     /**
@@ -32,11 +32,11 @@ public class ProductController {
      * @return lista de produtos
      */
 
-    @GetMapping("fresh-products")
-    public ResponseEntity<List<ProductDto>> returnAllProducts() {
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> returnAllProducts() {
         List<Product> products = productService.returnAllProducts();
             return products == null || products.isEmpty()?ResponseEntity.notFound().build():
-                    ResponseEntity.ok(ProductDto.map(products));
+                    ResponseEntity.ok(ProductResponseDto.map(products));
     }
 
     /**

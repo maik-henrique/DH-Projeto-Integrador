@@ -34,10 +34,6 @@ public class OrderController {
     @Autowired
     private CartProductService cartProductService;
 
-<<<<<<< HEAD
-//    @Autowired
-//    private CartProductService cartProductService;
-=======
     /**
      * Author: Bruno Mendes
      * Method: PurchaseOrderProductRegistration
@@ -54,7 +50,6 @@ public class OrderController {
                 .toUri();
         return ResponseEntity.created(uri).body(totalPrice);
     }
->>>>>>> develop
 
     @PutMapping("{idorder}")
     public ResponseEntity<PurchaseOrder> ModifyExistingOrder(@PathVariable Long idorder) {
