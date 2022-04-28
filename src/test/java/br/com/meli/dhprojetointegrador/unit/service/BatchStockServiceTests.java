@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class BatchStockServiceTests {
 
     @Mock
     private BatchStockRepository batchStockRepository;
-
+    
     @Test
     public void findByProductId_shouldReturnListOfProducts_whenProductsAreFound() {
         when(batchStockRepository.findBatchStockByProducts(anyLong(),any(LocalDate.class),any(Sort.class)))

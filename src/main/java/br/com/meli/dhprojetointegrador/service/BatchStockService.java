@@ -18,7 +18,6 @@ import java.util.List;
 public class BatchStockService {
 
 	private final BatchStockRepository batchStockRepository;
-	private final Clock clock;
 
 	/**
 	 * Returns a list of batch stocks that has a due date within the allowed range
@@ -31,7 +30,7 @@ public class BatchStockService {
 	public List<BatchStock> findByProductId(Long productId, String sortBy) throws ResourceNotFound{
 		Sort sort = Sort.by(sortBy);
 
-		LocalDate maxdueDate = LocalDate.now(clock).plusWeeks(DueDateEnum.MAX_DUEDATE_WEEKS.getDuedate());
+		LocalDate maxdueDate = LocalDate.now().plusWeeks(DueDateEnum.MAX_DUEDATE_WEEKS.getDuedate());
 		List<BatchStock> batchStock = batchStockRepository.findBatchStockByProducts(productId, maxdueDate, sort);
 
 		if (batchStock.isEmpty()) {
