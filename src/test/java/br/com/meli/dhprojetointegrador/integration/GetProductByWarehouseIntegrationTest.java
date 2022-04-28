@@ -18,8 +18,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.util.UriBuilder;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -137,8 +139,10 @@ public class GetProductByWarehouseIntegrationTest {
     public void correct_functioning_of_returnTotalProductsByWarehouse() throws Exception {
         setup();
 
+        URI uri1 = URI.create("/api/v1/fresh-products/warehouse/1");
+
         MvcResult result = mock
-                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/warehouse/1"))
+                .perform(MockMvcRequestBuilders.get(uri1))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
@@ -160,8 +164,10 @@ public class GetProductByWarehouseIntegrationTest {
     public void function_returnTotalProductsByWarehouse_should_trow_ProductNotFound() throws Exception {
         setup();
 
+        URI uri2 = URI.create("/api/v1/fresh-products/warehouse/2");
+
         MvcResult result = mock
-                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/warehouse/2"))
+                .perform(MockMvcRequestBuilders.get(uri2))
                 .andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
