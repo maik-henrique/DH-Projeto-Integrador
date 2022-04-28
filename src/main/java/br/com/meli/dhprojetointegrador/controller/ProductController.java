@@ -1,6 +1,5 @@
 package br.com.meli.dhprojetointegrador.controller;
 
-
 import br.com.meli.dhprojetointegrador.dto.request.freshproducts.FetchFreshProductsSortByRequest;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockCollection;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
@@ -12,15 +11,15 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @ResponseBody
-@RequestMapping(ProductController.baseUri)
+@RequestMapping("/api/v1/fresh-products")
 public class ProductController {
 
-    public static final String baseUri = "/api/v1/";
     private final ProductService productService;
     private final ModelMapper modelMapper;
     private final BatchStockService batchStockService;
@@ -28,29 +27,48 @@ public class ProductController {
     /**
      * Author: Mariana Galdino
      * Method: Buscar todos os produtos
-     * Description: Serviço responsavel por retornar todos os produtos presentes na aplicação;
+     * Description: Serviço responsavel por retornar todos os produtos presentes na
+     * aplicação;
+     *
      * @return lista de produtos
      */
-    @GetMapping("fresh-products")
+    @GetMapping
     public ResponseEntity<?> returnAllProducts() {
         List<Product> products = productService.returnAllProducts();
-            return products == null || products.isEmpty()?ResponseEntity.notFound().build():
-                    ResponseEntity.ok(products);
+        return products == null || products.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(products);
     }
-
+    
     /**
-     * Find and return a list of batch stocks that contains a specific product sorted by default by the batchNumber  
-     * 
-     * @return list of products that match the query in 200 response, otherwise returns 404 if the product wasn't found 
+     * Author: Matheus Guerra e Maik
+     * Method: Buscar todos os produtos de uma certa categoria ou busca lotes em que um determinado produto está contido
+     * Description: Retorna todos os produtos de uma mesma categoria presentes no
+     * banco de dados; Alternativamente, permite a busca dos lotes em que um produto está contido.
+     *
+     * @param category Um dos 3 valores possiveis para o atributo "name" da Class
+     *                 Category:
+     *                 FS,
+     *                 RF,
+     *                 FF
+     * @param sortBy   Para requisições baseadas em produtos, é usado como parâmetro de ordenação, por padrão orderna por batchNumber
+     * @param id       Representa o id do produto que será alvo da busca
+     *
+     * @return Se existir, retorna lista de produtos filtrados por categoria
      */
-    @GetMapping("fresh-products/list")
-    public ResponseEntity<?> findAllProducts(@RequestParam(name = "sortBy", defaultValue = "L") FetchFreshProductsSortByRequest sortBy,
-                                             @RequestParam(name = "productId") Long id) {
-        List<BatchStock> batchStockSorted = batchStockService.findByProductId(id, sortBy.getFieldName());
+    @GetMapping("/list")
+    public ResponseEntity<?> findAllProducts(@RequestParam(name = "category", required = false) String category,
+                                             @RequestParam(name = "sortBy", defaultValue = "L") FetchFreshProductsSortByRequest sortBy,
+                                             @RequestParam(name = "productId", required = false) Long id) {
+        if (category != null) {
+            List<Product> products = productService.returnProductsByCategory(category);
+            return products == null || products.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(products);
+        }
 
+        List<BatchStock> batchStockSorted = batchStockService.findByProductId(id, sortBy.getFieldName());
         FreshProductsQueriedResponse response = modelMapper.map(BatchStockCollection.builder().batchStock(batchStockSorted).build(),
                 FreshProductsQueriedResponse.class);
+
         return ResponseEntity.ok(response);
+
     }
 
 }

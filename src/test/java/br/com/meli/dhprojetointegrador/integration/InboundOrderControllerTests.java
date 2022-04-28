@@ -1,13 +1,14 @@
 package br.com.meli.dhprojetointegrador.integration;
 
-import br.com.meli.dhprojetointegrador.dto.request.BatchStockUpdateRequest;
-import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
-import br.com.meli.dhprojetointegrador.dto.response.BatchStockResponse;
-import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
-import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
-import br.com.meli.dhprojetointegrador.entity.*;
-import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
-import br.com.meli.dhprojetointegrador.repository.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,26 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import br.com.meli.dhprojetointegrador.dto.request.BatchStockUpdateRequest;
+import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
+import br.com.meli.dhprojetointegrador.dto.response.BatchStockResponse;
+import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
+import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
+import br.com.meli.dhprojetointegrador.entity.Agent;
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.entity.Category;
+import br.com.meli.dhprojetointegrador.entity.InboundOrder;
+import br.com.meli.dhprojetointegrador.entity.Product;
+import br.com.meli.dhprojetointegrador.entity.Section;
+import br.com.meli.dhprojetointegrador.entity.Warehouse;
+import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
+import br.com.meli.dhprojetointegrador.repository.AgentRepository;
+import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
+import br.com.meli.dhprojetointegrador.repository.CategoryRepository;
+import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
+import br.com.meli.dhprojetointegrador.repository.ProductRepository;
+import br.com.meli.dhprojetointegrador.repository.SectionRepository;
+import br.com.meli.dhprojetointegrador.repository.WarehouseRepository;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
@@ -68,6 +89,7 @@ public class InboundOrderControllerTests {
 	private ObjectMapper objectMapper;
 	
 	
+
 	@Test
 	@DisplayName("Inbound Order - Proper setting of the of values")
 	public void update_shouldUpdateInboundOrderField_whenProperRequestIsSent() throws Exception {
@@ -138,7 +160,8 @@ public class InboundOrderControllerTests {
 				.perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
 						.contentType(MediaType.APPLICATION_JSON).content(payload))
 				.andExpect(MockMvcResultMatchers.status()
-						.isUnprocessableEntity()).andReturn();
+						.isUnprocessableEntity())
+				.andReturn();
 
 		String responsePaylaod = result.getResponse().getContentAsString();
 		ExceptionPayloadResponse payloadResponse = objectMapper.readValue(responsePaylaod, ExceptionPayloadResponse.class);
@@ -146,9 +169,9 @@ public class InboundOrderControllerTests {
 		assertNotNull(payloadResponse);
 		assertEquals("An error occurred during business validation processing", payloadResponse.getTitle());
 		assertEquals(422, payloadResponse.getStatusCode());
-		assertEquals("Product's category from product 3 is invalid, the expected was FRIOS", payloadResponse.getDescription());
+		assertEquals("Product's category from product 3 is invalid, the expected was FRIOS",
+				payloadResponse.getDescription());
 	}
-
 
 	@Test
 	@DisplayName("Inbound Order Update - Volume of inbound order exceeds the section capacity")
@@ -177,7 +200,8 @@ public class InboundOrderControllerTests {
 				.perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
 						.contentType(MediaType.APPLICATION_JSON).content(payload))
 				.andExpect(MockMvcResultMatchers.status()
-						.isUnprocessableEntity()).andReturn();
+						.isUnprocessableEntity())
+				.andReturn();
 
 		String responsePaylaod = result.getResponse().getContentAsString();
 		ExceptionPayloadResponse payloadResponse = objectMapper.readValue(responsePaylaod, ExceptionPayloadResponse.class);
@@ -186,7 +210,9 @@ public class InboundOrderControllerTests {
 		assertEquals("An error occurred during business validation processing", payloadResponse.getTitle());
 		assertEquals(422, payloadResponse.getStatusCode());
 
-		assertEquals(String.format("Section has capacity of %.2f, which is incompatible with the inbound order total volume which is %.2f", 32.0f, 42.0f), payloadResponse.getDescription());
+		assertEquals(String.format(
+				"Section has capacity of %.2f, which is incompatible with the inbound order total volume which is %.2f", 32.0f,
+				42.0f), payloadResponse.getDescription());
 	}
 
 	private void setupBaseData(float newPoductVolume) {
@@ -256,7 +282,5 @@ public class InboundOrderControllerTests {
 
 		return inboundOrderRepository.save(inboundOrder);
 	}
-
-
 
 }

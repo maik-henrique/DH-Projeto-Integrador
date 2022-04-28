@@ -1,19 +1,21 @@
 package br.com.meli.dhprojetointegrador.controller;
 
+import javax.validation.Valid;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.meli.dhprojetointegrador.dto.request.InboundOrderPostRequest;
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
-import br.com.meli.dhprojetointegrador.dto.request.InboundPostRequestBody;
 import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
 import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.service.InboundOrderService;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/fresh-products/inboundorder")
@@ -35,7 +37,7 @@ public class InboundOrderController {
 	 *         request
 	 */
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody InboundOrderUpdateRequest inboundOrderUpdateRequest) {
+	public ResponseEntity<?> update(@Valid @RequestBody InboundOrderUpdateRequest inboundOrderUpdateRequest) {
 		InboundOrder inboundOrder = modelMapper.map(inboundOrderUpdateRequest, InboundOrder.class);
 		InboundOrder updatedInboundOrder = inboundOrderService.update(inboundOrder);
 		InboundOrderResponse inboundOrderResponse = modelMapper.map(updatedInboundOrder, InboundOrderResponse.class);
@@ -43,10 +45,23 @@ public class InboundOrderController {
 		return ResponseEntity.ok().body(inboundOrderResponse);
 	}
 
+	/**
+	 * Author: Pedro Dalpa
+	 * Method: create
+	 * Description: salva o inbound order e cria os registros no stock conforme
+	 * necessário
+	 * 
+	 * @param inboundOrder an instance of InboundOrder to create
+	 * @return instance of InboundOrder created
+	 *
+	 */
 	@PostMapping
-	public ResponseEntity<Void> create(@RequestBody InboundPostRequestBody body) {
-		inboundOrderService.create(body);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<InboundOrderResponse> create(
+			@Valid @RequestBody InboundOrderPostRequest inboundOrderPostRequest) {
+		InboundOrder inboundOrder = modelMapper.map(inboundOrderPostRequest, InboundOrder.class);
+		InboundOrder createInboundOrder = inboundOrderService.create(inboundOrder);
+		InboundOrderResponse inboundOrderResponse = modelMapper.map(createInboundOrder, InboundOrderResponse.class);
+		return ResponseEntity.ok().body(inboundOrderResponse);
 	}
 
 }

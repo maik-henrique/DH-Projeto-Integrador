@@ -31,6 +31,7 @@ public class BatchStock {
     private LocalDate manufacturingDate;
     private LocalDateTime manufacturingTime;
     private float currentTemperature;
+    private float minimumTemperature;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
