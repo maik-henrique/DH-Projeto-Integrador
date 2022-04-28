@@ -8,7 +8,8 @@ import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import lombok.AllArgsConstructor;
 
 /**
- * Validates if the category of an inbound order matches the section category 
+ * @Author: Maik
+ * Valida se a categoria do InboundOrder é igual ao da Section
  *
  */
 @AllArgsConstructor
@@ -18,8 +19,8 @@ public class SectionCategoryValidator implements IInboundOrderValidator {
     private final InboundOrder inboundOrder;
 
     /**
-     * Validates for each product in the batch stock if their category matches the section's category, if it does not
-     * it'll then throw a BusinessValidatorException
+     * Valida se para cada um dos produtos no batchStock a categoria é igual a da Section.
+     * @throws BusinessValidatorException caso a categoria de um dos produtos não seja igual a da Section
      */
     @Override
     public void validate() throws BusinessValidatorException {
