@@ -52,7 +52,7 @@ public class ProductController {
      * @return Se existir, retorna lista de produtos filtrados por categoria
      */
 
-    @GetMapping("/fresh-products/list")
+    @GetMapping("fresh-products/list")
     public ResponseEntity<?> returnAllProductsByCategory(@RequestParam(required = false) String category) {
 
         List<Product> products = productService.returnProductsByCategory(category);
