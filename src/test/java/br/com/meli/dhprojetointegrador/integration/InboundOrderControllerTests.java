@@ -25,6 +25,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import br.com.meli.dhprojetointegrador.dto.request.BatchStockUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.response.BatchStockResponse;
@@ -81,7 +89,7 @@ public class InboundOrderControllerTests {
 	private ObjectMapper objectMapper;
 
 	@Test
-	@DisplayName("Inbound Order Update Integration - Proper setting of the of values")
+	@DisplayName("Inbound Order - Proper setting of the of values")
 	public void update_shouldUpdateInboundOrderField_whenProperRequestIsSent() throws Exception {
 		setupBaseData(2.0f);
 
@@ -129,7 +137,7 @@ public class InboundOrderControllerTests {
 	}
 
 	@Test
-	@DisplayName("Inbound Order Update Integration - Mismatch of product and section category")
+	@DisplayName("Inbound Order - Mismatch of product and section category")
 	public void update_shouldReturnUnprossebleEntityResponse_whenCategoyOfTheProductDoesNotMatch() throws Exception {
 		setupBaseData(2.0f);
 		setupBaseDataExtraProduct(CategoryEnum.CONGELADOS, 2.0f);
@@ -164,9 +172,8 @@ public class InboundOrderControllerTests {
 	}
 
 	@Test
-	@DisplayName("Inbound Order Update Integration - Volume of inbound order exceeds the section capacity")
-	public void update_shouldReturnUnprossebleEntityResponse_whenProductsVolumeExceedTheSectionCapacity()
-			throws Exception {
+	@DisplayName("Inbound Order Update - Volume of inbound order exceeds the section capacity")
+	public void update_shouldReturnUnprossebleEntityResponse_whenProductsVolumeExceedTheSectionCapacity() throws Exception {
 		setupBaseData(42.0f);
 
 		BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder()

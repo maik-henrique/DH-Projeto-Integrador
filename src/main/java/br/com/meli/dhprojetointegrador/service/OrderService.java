@@ -2,6 +2,7 @@ package br.com.meli.dhprojetointegrador.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -59,7 +60,7 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    @CachePut(value = "UpdateStatusOrder", key = "#idorder")
+    //@CachePut(value = "UpdateStatusOrder", key = "#idorder")
     public PurchaseOrder atualizar(Long idorder) {
 
         try {
@@ -102,7 +103,7 @@ public class OrderService {
     private void updateCurrentQuantity(Integer qtd, Long id) {
         AtomicReference<Integer> acc = new AtomicReference<>(qtd);
         Product product = productRepository.findById(id).get();
-        Set<BatchStock> batchStockList = product.getBatchStockList();
+        Set<BatchStock> batchStockList = new HashSet<>(product.getBatchStockList());
         batchStockList.stream().forEach(b -> {
             if (b.getCurrentQuantity() > 0) {
                 Integer stock = b.getCurrentQuantity();
