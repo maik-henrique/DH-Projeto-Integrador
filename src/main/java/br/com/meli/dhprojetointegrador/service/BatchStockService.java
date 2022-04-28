@@ -54,14 +54,14 @@ public class BatchStockService {
      */
     public List<BatchStock> findByProductId(Long productId, String sortBy) throws ResourceNotFound {
         Sort sort = Sort.by(sortBy);
-        LocalDate minimumDueDate = LocalDate.now(clock);
-        LocalDate maxdueDate = minimumDueDate.plusWeeks(DueDateEnum.MAX_DUEDATE_WEEKS.getDuedate());
 
-        List<BatchStock> batchStock = batchStockRepository.findBatchStockByProducts(productId, minimumDueDate, maxdueDate, sort);
+        LocalDate minimumDueDate = LocalDate.now(clock).plusWeeks(DueDateEnum.MAX_DUEDATE_WEEKS.getDuedate());
+
+        List<BatchStock> batchStock = batchStockRepository.findBatchStockByProducts(productId, minimumDueDate, sort);
 
         if (batchStock.isEmpty()) {
-            throw new ResourceNotFound(String.format("No stock was found for product of id %d or within the maximum due date of %s", productId,
-                    maxdueDate.toString()));
+            throw new ResourceNotFound(String.format("No stock was found for product of id %d and it needs to have a due date of at least %s", productId,
+                    minimumDueDate.toString()));
         }
 
         return batchStock;
