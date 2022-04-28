@@ -56,6 +56,12 @@ public class ProductController {
         return products == null || products.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(products);
     }
 
+    /**
+     * Author: Bruno Mendes
+     * Method: returnTotalProductsByWarehouse
+     * Description: Busca os produtos e associação com cada warehouse e soma o total de produtos em cada warehouse
+     * @return ProductByWarehouseResponse
+     */
     @GetMapping("fresh-products/warehouse/{id}")
     public ResponseEntity <ProductByWarehouseResponse> returnTotalProductsByWarehouse(@PathVariable Long id) {
         return ResponseEntity.ok().body(productService.getProductByWarehouse(id));

@@ -128,6 +128,11 @@ public class GetProductByWarehouseIntegrationTest {
         return inboundOrderRepository.save(inboundOrder);
     }
 
+    /**
+     * @Author: Bruno
+     * @Teste: correct_functioning_of_returnTotalProductsByWarehouse
+     * @Description: Teste integrador endpoint /api/v1/fresh-products/warehouse/{id}
+     */
     @Test
     @DisplayName("Get product by warehouses - when receiving the right input function works properly")
     public void correct_functioning_of_returnTotalProductsByWarehouse() throws Exception {
@@ -146,6 +151,11 @@ public class GetProductByWarehouseIntegrationTest {
         assertEquals(productByWarehouse.getWarehouses().get(0).getWarehouseCode(), 1L);
     }
 
+    /**
+     * @Author: Bruno
+     * @Teste: function_returnTotalProductsByWarehouse_should_trow_ProductNotFound
+     * @Description: Teste integrador endpoint /api/v1/fresh-products/warehouse/{id}
+     */
     @Test
     @DisplayName("Get product by warehouses - when receiving inexistent id returns correct error")
     public void function_returnTotalProductsByWarehouse_should_trow_ProductNotFound() throws Exception {
