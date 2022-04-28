@@ -2,12 +2,9 @@ package br.com.meli.dhprojetointegrador.controller;
 
 import java.util.List;
 
+import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.service.ProductService;
@@ -57,6 +54,11 @@ public class ProductController {
 
         List<Product> products = productService.returnProductsByCategory(category);
         return products == null || products.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(products);
+    }
+
+    @GetMapping("fresh-products/warehouse/{id}")
+    public ResponseEntity <ProductByWarehouseResponse> returnTotalProductsByWarehouse(@PathVariable Long id) {
+        return ResponseEntity.ok().body(productService.getProductByWarehouse(id));
     }
 
 }
