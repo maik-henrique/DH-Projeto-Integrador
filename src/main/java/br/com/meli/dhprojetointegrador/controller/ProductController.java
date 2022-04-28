@@ -12,9 +12,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -34,7 +31,6 @@ public class ProductController {
      * Description: Serviço responsavel por retornar todos os produtos presentes na aplicação;
      * @return lista de produtos
      */
-
     @GetMapping("fresh-products")
     public ResponseEntity<?> returnAllProducts() {
         List<Product> products = productService.returnAllProducts();
@@ -42,6 +38,11 @@ public class ProductController {
                     ResponseEntity.ok(products);
     }
 
+    /**
+     * Find and return a list of batch stocks that contains a specific product sorted by default by the batchNumber  
+     * 
+     * @return list of products that match the query in 200 response, otherwise returns 404 if the product wasn't found 
+     */
     @GetMapping("fresh-products/list")
     public ResponseEntity<?> findAllProducts(@RequestParam(name = "sortBy", defaultValue = "L") FetchFreshProductsSortByRequest sortBy,
                                              @RequestParam(name = "productId") Long id) {

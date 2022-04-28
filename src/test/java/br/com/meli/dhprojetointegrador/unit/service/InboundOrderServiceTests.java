@@ -2,7 +2,6 @@ package br.com.meli.dhprojetointegrador.unit.service;
 
 import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
-import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
 import br.com.meli.dhprojetointegrador.service.AgentService;
 import br.com.meli.dhprojetointegrador.service.InboundOrderService;
@@ -19,8 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
