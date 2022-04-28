@@ -43,7 +43,7 @@ public class BatchStockServiceTests {
     @Test
     @DisplayName(value = "Filtro de produtos - Produto encontrado")
     public void findByProductId_shouldReturnListOfProducts_whenProductsAreFound() {
-        when(batchStockRepository.findBatchStockByProducts(anyLong(), any(LocalDate.class), any(LocalDate.class), any(Sort.class)))
+        when(batchStockRepository.findBatchStockByProducts(anyLong(), any(LocalDate.class), any(Sort.class)))
                 .thenReturn(List.of(BatchStock.builder().build()));
 
         List<BatchStock> batchStock = batchStockService.findByProductId(1L, "batchNumber");
@@ -51,13 +51,13 @@ public class BatchStockServiceTests {
         assertNotNull(batchStock);
         assertFalse(batchStock.isEmpty());
         verify(batchStockRepository, times(1)).findBatchStockByProducts(anyLong(), any(LocalDate.class),
-                any(LocalDate.class), any(Sort.class));
+                any(Sort.class));
     }
 
     @Test
     @DisplayName(value = "Filtro de produtos - Produto não encontrado")
     public void findByProductId_shouldThrowBusinessValidatorException_whenProductsAreNotFound() {
-        when(batchStockRepository.findBatchStockByProducts(anyLong(), any(LocalDate.class), any(LocalDate.class), any(Sort.class)))
+        when(batchStockRepository.findBatchStockByProducts(anyLong(), any(LocalDate.class), any(Sort.class)))
                 .thenReturn(List.of());
         assertThrows(BusinessValidatorException.class, () -> batchStockService.findByProductId(1L, "batchNumber"));
     }
