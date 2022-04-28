@@ -1,5 +1,7 @@
 package br.com.meli.dhprojetointegrador.integration;
 
+
+import br.com.meli.dhprojetointegrador.dto.BatchStockDTO;
 import br.com.meli.dhprojetointegrador.dto.request.BatchStockPostRequest;
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderPostRequest;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
@@ -8,6 +10,17 @@ import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.enums.DueDateEnum;
 import br.com.meli.dhprojetointegrador.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.collection.IsEmptyCollection;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -23,6 +36,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.DateFormat;
@@ -34,24 +51,39 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+@ActiveProfiles("test")
+@SpringBootTest
+@AutoConfigureMockMvc
 public class ProductControllerTests extends BaseIntegrationControllerTests {
 
     private final static LocalDate LOCAL_DATE_NOW_MOCK = LocalDate.of(2022, 4, 13);
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private SectionRepository sectionRepository;
-    @Autowired
-    private WarehouseRepository warehouseRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
+
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private SectionRepository sectionRepository;
+
+    @Autowired
+    private WarehouseRepository warehouseRepository;
+    
+    @Autowired
+    private CategoryRepository categoryRepository;
+    
+    @Autowired
+    private BatchStockRepository batchStockRepository;
+
     @Autowired
     private SellerRepository sellerRepository;
     @Autowired
@@ -152,6 +184,66 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
     private Product setupProduct(String name, Float volume) {
         Product product = Product.builder().name(name).volume(volume).build();
 
+     * @Author: Matheus Guerra
+     * @Teste: Teste de integração do endpoint "/api/v1/fresh-products/list"
+     * @Description: valida o funcionamento correto do endpoint:
+     *              Retorno de uma lista de produtos filtrados por categoria;
+     *              Retorno de uma lista vazia caso não haja produtos da categoria escolhida;
+     */
+    @Test
+    @DisplayName("US:02 - Item 02")
+    public void correct_functioning_of_returnAllProductsByCategory() throws Exception {
+
+        Category categoryFF = setupCategory(CategoryEnum.FF);
+        Category categoryFS = setupCategory(CategoryEnum.FS);
+
+        Product productFFa = setupProduct("morango", categoryFF);
+        Product productFFb = setupProduct("laranja", categoryFF);
+
+        Product productFSa = setupProduct("pera", categoryFS);
+
+        setupProduct("objeto", null);
+
+        List<Product> produtosFF = Arrays.asList(productFFa,productFFb);
+        List<Product> produtosFS = Arrays.asList(productFSa);
+
+        String payloadFF = objectMapper.writeValueAsString(produtosFF);
+        String payloadFS = objectMapper.writeValueAsString(produtosFS);
+
+
+        MvcResult resultFF = mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/list").param("category","FF"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        MvcResult resultFS = mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/list").param("category","FS"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        MvcResult resultRF = mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/list").param("category","RF"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
+
+        String responsePayloadFF = resultFF.getResponse().getContentAsString();
+        String responsePayloadFS = resultFS.getResponse().getContentAsString();
+        String responsePayloadRF = resultRF.getResponse().getContentAsString();
+
+        assertNotNull(responsePayloadFF);
+        assertNotNull(responsePayloadFS);
+        assertEquals("",responsePayloadRF);
+
+        assertEquals(payloadFF, responsePayloadFF);
+        assertEquals(payloadFS, responsePayloadFS);
+
+    }
+
+    private Category setupCategory(CategoryEnum categoryEnum) {
+        Category category = Category.builder().name(categoryEnum).sections(Collections.EMPTY_SET).build();
+        return categoryRepository.save(category);
+    }
+
+    private Product setupProduct(String name, Category category) {
+        Product product = Product.builder().name(name).category(category).batchStockList(Collections.EMPTY_SET).build();
+
         productRepository.save(product);
         return product;
     }
@@ -194,8 +286,8 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
         Product frangoManaged = productRepository.save(frango);
         Product carneManaged = productRepository.save(carne);
 
-        LocalDate notExpiredDueDate = LOCAL_DATE_NOW_MOCK.plusDays(1L);
-        LocalDate expiredDueDate = LOCAL_DATE_NOW_MOCK.plusWeeks(DueDateEnum.MAX_DUEDATE_WEEKS.getDuedate()).plusDays(1);
+        LocalDate expiredDueDate = LOCAL_DATE_NOW_MOCK.plusDays(1L);
+        LocalDate notExpiredDueDate = LOCAL_DATE_NOW_MOCK.plusWeeks(DueDateEnum.MAX_DUEDATE_WEEKS.getDuedate()).plusDays(1);
 
         BatchStockPostRequest frangoBatchStock = BatchStockPostRequest.builder().batchNumber(123L).currentQuantity(32)
                 .currentTemperature(17.0f).dueDate(notExpiredDueDate).initialQuantity(42).minimumTemperature(17.0f)
