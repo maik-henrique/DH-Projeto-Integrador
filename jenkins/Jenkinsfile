@@ -18,13 +18,6 @@ pipeline {
                   }
             }
 
-         stage('Clean Package'){
-             steps {
-                 git branch: 'feature/PI-33', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git'
-                 sh "mvn clean package"
-             }
-         }
-
         stage('Integration tests + Unit tests'){
             steps {
                   sh 'mvn -Dmaven.test.failure.ignore=true install'
