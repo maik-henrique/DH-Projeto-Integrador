@@ -1,35 +1,33 @@
 package br.com.meli.dhprojetointegrador.service;
 
-import br.com.meli.dhprojetointegrador.entity.Product;
-import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
-import br.com.meli.dhprojetointegrador.dto.request.ProductInput;
-import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
-import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
-import br.com.meli.dhprojetointegrador.enums.StatusEnum;
-import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
-import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import br.com.meli.dhprojetointegrador.exception.PurchaseOrderNotFoundException;
-import br.com.meli.dhprojetointegrador.repository.OrderRepository;
-import br.com.meli.dhprojetointegrador.repository.ProductRepository;
-import org.springframework.cache.annotation.CachePut;
-import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import br.com.meli.dhprojetointegrador.dto.request.ProductInput;
+import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
+import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.entity.Buyer;
 import br.com.meli.dhprojetointegrador.entity.CartProduct;
+import br.com.meli.dhprojetointegrador.entity.Product;
+import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
+import br.com.meli.dhprojetointegrador.enums.StatusEnum;
+import br.com.meli.dhprojetointegrador.exception.PurchaseOrderNotFoundException;
 import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
 import br.com.meli.dhprojetointegrador.repository.CartProductRepository;
+import br.com.meli.dhprojetointegrador.repository.OrderRepository;
+import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import br.com.meli.dhprojetointegrador.repository.PurchaseOrderRepository;
+import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
+import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -58,13 +56,11 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     /**
-     * @Author: David
-     * @Methodo: Mudar Cart para Aberto ou Finalizado na Order
-     * @Description: Modifique o pedido existente. torná-lo do tipo de carrinho para modificar - ABERTO/FINALIZADO
-     * @param idorder
-     * @return
+     * Author: David
+     * Methodo: Mudar Cart para Aberto ou Finalizado na Order
+     * Description: Modifique o pedido existente. torná-lo do tipo de carrinho para modificar - ABERTO/FINALIZADO
      */
-    @CachePut(value = "UpdateStatusOrder", key = "#idorder")
+    //@CachePut(value = "UpdateStatusOrder", key = "#idorder")
     public PurchaseOrder atualizar(Long idorder) {
 
         try {
