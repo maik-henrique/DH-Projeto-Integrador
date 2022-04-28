@@ -70,8 +70,6 @@ public class ProductController {
             return products == null || products.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(products);
         }
 
-    @GetMapping("fresh-products/list")
-    public ResponseEntity<?> returnAllProductsByCategory(@RequestParam(required = false) String category) {
         List<BatchStock> batchStockSorted = batchStockService.findByProductId(id, sortBy.getFieldName());
         FreshProductsQueriedResponse response = modelMapper.map(BatchStockCollection.builder().batchStock(batchStockSorted).build(),
                 FreshProductsQueriedResponse.class);

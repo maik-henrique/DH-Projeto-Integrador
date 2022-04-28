@@ -77,16 +77,10 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private AgentRepository agentRepository;
-
-    @Autowired
     private WarehouseRepository warehouseRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    private InboundOrderRepository inboundOrderRepository;
 
     @Autowired
     private BatchStockRepository batchStockRepository;
