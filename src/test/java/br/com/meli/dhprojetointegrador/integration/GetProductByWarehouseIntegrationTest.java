@@ -132,7 +132,7 @@ public class GetProductByWarehouseIntegrationTest {
     /**
      * @Author: Bruno
      * @Teste: correct_functioning_of_returnTotalProductsByWarehouse
-     * @Description: Teste integrador endpoint /api/v1/fresh-products/warehouse/{id}
+     * @Description: Teste integrador endpoint /api/v1/fresh-products/warehouse/{id} funcionamento correto
      */
     @Test
     @DisplayName("Get product by warehouses - when receiving the right input function works properly")
@@ -157,7 +157,7 @@ public class GetProductByWarehouseIntegrationTest {
     /**
      * @Author: Bruno
      * @Teste: function_returnTotalProductsByWarehouse_should_trow_ProductNotFound
-     * @Description: Teste integrador endpoint /api/v1/fresh-products/warehouse/{id}
+     * @Description: Teste integrador endpoint /api/v1/fresh-products/warehouse/{id} funcionamento com erro
      */
     @Test
     @DisplayName("Get product by warehouses - when receiving not existent id returns the correct error")
