@@ -1,26 +1,16 @@
 package br.com.meli.dhprojetointegrador.unit.service;
 
-import br.com.meli.dhprojetointegrador.dto.request.ProductInput;
-import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
-import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
 import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import br.com.meli.dhprojetointegrador.dto.response.WarehouseQuantity;
 import br.com.meli.dhprojetointegrador.entity.*;
-import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import br.com.meli.dhprojetointegrador.repository.*;
-import br.com.meli.dhprojetointegrador.service.OrderService;
 import br.com.meli.dhprojetointegrador.service.ProductService;
 import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
-import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.mockito.Mockito.mock;
