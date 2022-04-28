@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.util.UriBuilder;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -58,6 +57,54 @@ public class GetProductByWarehouseIntegrationTest {
 
     @Autowired
     private InboundOrderRepository inboundOrderRepository;
+
+    /**
+     * @Author: Bruno
+     * @Teste: correct_functioning_of_returnTotalProductsByWarehouse
+     * @Description: Teste integrador endpoint /api/v1/fresh-products/warehouse/{id} funcionamento correto
+     */
+    @Test
+    @DisplayName("Get product by warehouses - when receiving the right input function works properly")
+    public void correct_functioning_of_returnTotalProductsByWarehouse() throws Exception {
+        setup();
+
+        URI uri1 = URI.create("/api/v1/fresh-products/warehouse/1");
+
+        MvcResult result = mock
+                .perform(MockMvcRequestBuilders.get(uri1))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        String responsePayload = result.getResponse().getContentAsString();
+        ProductByWarehouseResponse productByWarehouse = objectMapper.readValue(responsePayload, ProductByWarehouseResponse.class);
+
+        assertNotNull(responsePayload);
+        assertEquals(productByWarehouse.getWarehouses().isEmpty(), false);
+        assertEquals(productByWarehouse.getWarehouses().get(0).getTotalQuantity(), 30);
+        assertEquals(productByWarehouse.getWarehouses().get(0).getWarehouseCode(), 1L);
+    }
+
+    /**
+     * @Author: Bruno
+     * @Teste: function_returnTotalProductsByWarehouse_should_trow_ProductNotFound
+     * @Description: Teste integrador endpoint /api/v1/fresh-products/warehouse/{id} funcionamento com erro
+     */
+    @Test
+    @DisplayName("Get product by warehouses - when receiving not existent id returns the correct error")
+    public void function_returnTotalProductsByWarehouse_should_trow_ProductNotFound() throws Exception {
+        setup();
+
+        URI uri2 = URI.create("/api/v1/fresh-products/warehouse/2");
+
+        MvcResult result = mock
+                .perform(MockMvcRequestBuilders.get(uri2))
+                .andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
+
+        String responsePayload = result.getResponse().getContentAsString();
+        ExceptionPayloadDTO exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadDTO.class);
+
+        assertNotNull(responsePayload);
+        assertEquals(exceptionResponse.getTitle(), "Product Not Found");
+    }
 
     private void setup() {
         Warehouse warehouse = setupWarehouse();
@@ -127,53 +174,5 @@ public class GetProductByWarehouseIntegrationTest {
                 .build();
 
         return inboundOrderRepository.save(inboundOrder);
-    }
-
-    /**
-     * @Author: Bruno
-     * @Teste: correct_functioning_of_returnTotalProductsByWarehouse
-     * @Description: Teste integrador endpoint /api/v1/fresh-products/warehouse/{id} funcionamento correto
-     */
-    @Test
-    @DisplayName("Get product by warehouses - when receiving the right input function works properly")
-    public void correct_functioning_of_returnTotalProductsByWarehouse() throws Exception {
-        setup();
-
-        URI uri1 = URI.create("/api/v1/fresh-products/warehouse/1");
-
-        MvcResult result = mock
-                .perform(MockMvcRequestBuilders.get(uri1))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-
-        String responsePayload = result.getResponse().getContentAsString();
-        ProductByWarehouseResponse productByWarehouse = objectMapper.readValue(responsePayload, ProductByWarehouseResponse.class);
-
-        assertNotNull(responsePayload);
-        assertEquals(productByWarehouse.getWarehouses().isEmpty(), false);
-        assertEquals(productByWarehouse.getWarehouses().get(0).getTotalQuantity(), 30);
-        assertEquals(productByWarehouse.getWarehouses().get(0).getWarehouseCode(), 1L);
-    }
-
-    /**
-     * @Author: Bruno
-     * @Teste: function_returnTotalProductsByWarehouse_should_trow_ProductNotFound
-     * @Description: Teste integrador endpoint /api/v1/fresh-products/warehouse/{id} funcionamento com erro
-     */
-    @Test
-    @DisplayName("Get product by warehouses - when receiving not existent id returns the correct error")
-    public void function_returnTotalProductsByWarehouse_should_trow_ProductNotFound() throws Exception {
-        setup();
-
-        URI uri2 = URI.create("/api/v1/fresh-products/warehouse/2");
-
-        MvcResult result = mock
-                .perform(MockMvcRequestBuilders.get(uri2))
-                .andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
-
-        String responsePayload = result.getResponse().getContentAsString();
-        ExceptionPayloadDTO exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadDTO.class);
-
-        assertNotNull(responsePayload);
-        assertEquals(exceptionResponse.getTitle(), "Product Not Found");
     }
 }
