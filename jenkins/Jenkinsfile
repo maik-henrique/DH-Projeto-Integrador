@@ -15,10 +15,12 @@ pipeline {
              }
          }
 
-        stage('Build + Unit tests') {
+        stage('Integration tests + Unit tests'){
             steps {
-                    sh 'mvn clean test'
-            }   
+                   git url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git'
+                   sh 'mvn clean install'
+                   cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: 'target/*.json', pendingStepsNumber: -1, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1
+            }
         }
 
         stage('Archiving Reports') {
@@ -29,14 +31,6 @@ pipeline {
                 }
             }   
         }
-
-        stage('Integration tests'){
-            steps {
-                git url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git'
-                sh 'mvn clean install'
-                cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: 'target/*.json', pendingStepsNumber: -1, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1                       
-            }
-         }     
 
           stage("build & SonarQube analysis") {
             steps {
