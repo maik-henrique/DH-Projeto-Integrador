@@ -14,6 +14,10 @@
     <name>dh-projeto-integrador</name>
     <description>Projeto Integrador DH</description>
     <properties>
+
+            <maven.compiler.source>1.8</maven.compiler.source>
+            <maven.compiler.target>1.8</maven.compiler.target>
+
         <java.version>11</java.version>
         <sonar.exclusions>**/dto/**/*,
             **/entity/*,
