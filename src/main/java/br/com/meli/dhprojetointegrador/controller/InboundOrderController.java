@@ -55,7 +55,6 @@ public class InboundOrderController {
 	 * @return instance of InboundOrder created
 	 *
 	 */
-
 	@PostMapping
 	public ResponseEntity<InboundOrderResponse> create(
 			@Valid @RequestBody InboundOrderPostRequest inboundOrderPostRequest) {

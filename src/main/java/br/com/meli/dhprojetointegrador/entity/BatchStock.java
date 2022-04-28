@@ -27,7 +27,6 @@ import lombok.Setter;
 public class BatchStock {
     @Id
     private Long batchNumber;
-
     private int currentQuantity;
     private LocalDate dueDate;
     private int initialQuantity;
