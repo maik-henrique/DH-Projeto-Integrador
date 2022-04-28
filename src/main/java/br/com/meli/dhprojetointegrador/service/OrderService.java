@@ -9,6 +9,7 @@ import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
 import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

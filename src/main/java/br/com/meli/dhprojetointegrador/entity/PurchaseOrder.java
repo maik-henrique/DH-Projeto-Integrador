@@ -35,8 +35,6 @@ public class PurchaseOrder implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @ManyToOne
     @JoinColumn(name = "buyer_id")
     private Buyer buyer;

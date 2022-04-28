@@ -31,12 +31,12 @@ services:
       - DOCKER_HOST=tcp://docker:2376
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
-
     container_name: jenkins
     volumes:
       - /var/jenkins/caches:/var/jenkins/caches
       #- /home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
+    command: -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
 
   jmeter-master:
     image: vmarrazzo/jmeter

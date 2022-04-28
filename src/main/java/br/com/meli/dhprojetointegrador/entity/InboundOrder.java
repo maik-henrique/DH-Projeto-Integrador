@@ -38,20 +38,14 @@ public class InboundOrder {
     @DateTimeFormat
     private LocalDate orderDate;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @ManyToOne
     @JoinColumn(name = "agent_id", nullable = false)
     private Agent agent;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @ManyToOne
     @JoinColumn(name = "section_id", nullable = false)
     private Section section;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
     @OneToMany(mappedBy = "inboundOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<BatchStock> batchStockList;
 

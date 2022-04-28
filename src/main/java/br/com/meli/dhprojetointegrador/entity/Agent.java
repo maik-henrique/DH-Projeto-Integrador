@@ -36,8 +36,6 @@ public class Agent {
   @Size(min = 6, max = 8, message = "Senha tem que ser de 6 a 8 caracteres!")
   private String password;
 
-  @NotBlank(message = "O campo nome não pode estar em branco")
-  @NotNull(message = "O campo nome não pode ser nulo")
   @OneToOne
   @MapsId
   @JoinColumn(name = "agent_id")

@@ -53,14 +53,10 @@ public class Category {
     @Size(min = -22, max = 0, message = "Risco de temperatura!")
     private float maximumTemperature;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private Set<Product> products;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "category")
     private Set<Section> sections;
 }

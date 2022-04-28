@@ -29,8 +29,6 @@ import org.springframework.format.annotation.NumberFormat;
 public class Product {
 
     @Id
-    @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -49,20 +47,14 @@ public class Product {
     @NotNull(message = "O campo nome não pode ser nulo")
     private float volume;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
     @OneToMany(mappedBy = "products")
     private Set<BatchStock> batchStockList;
 

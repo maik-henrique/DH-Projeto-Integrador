@@ -31,8 +31,6 @@ public class Seller {
   @NotNull(message = "O campo nome não pode ser nulo")
   private String name;
 
-  @NotBlank(message = "O campo nome não pode estar em branco")
-  @NotNull(message = "O campo nome não pode ser nulo")
   @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
   private Set<Product> products;
 }

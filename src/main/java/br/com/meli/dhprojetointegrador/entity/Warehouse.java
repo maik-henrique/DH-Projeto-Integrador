@@ -33,14 +33,10 @@ public class Warehouse {
   @NotNull(message = "O campo nome não pode ser nulo")
   private String name;
 
-  @NotBlank(message = "O campo nome não pode estar em branco")
-  @NotNull(message = "O campo nome não pode ser nulo")
   @OneToOne(mappedBy = "warehouse", cascade = CascadeType.ALL)
   @PrimaryKeyJoinColumn
   private Agent agent;
 
-  @NotBlank(message = "O campo nome não pode estar em branco")
-  @NotNull(message = "O campo nome não pode ser nulo")
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "warehouse")
   private List<Section> sections;
 }

@@ -37,14 +37,10 @@ public class Section {
   @NumberFormat
   private float capacity;
 
-  @NotBlank(message = "O campo nome não pode estar em branco")
-  @NotNull(message = "O campo nome não pode ser nulo")
   @ManyToOne
   @JoinColumn(name = "warehouse", nullable = false)
   private Warehouse warehouse;
 
-  @NotBlank(message = "O campo nome não pode estar em branco")
-  @NotNull(message = "O campo nome não pode ser nulo")
   @ManyToOne
   @JoinColumn(name = "category", nullable = false)
   private Category category;
