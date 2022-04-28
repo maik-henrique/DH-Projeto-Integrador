@@ -6,9 +6,19 @@ pipeline {
 
          stage('build') {
              tools {
-                  maven "MAVEN_HOME"
-                  jdk "JAVA_HOME"
+                  maven 'Maven 3.3.9'
+                  jdk 'jdk8'
              }
+
+         stage ('Initialize') {
+            steps {
+                  sh '''
+                      echo "PATH = ${PATH}"
+                      echo "MAVEN_HOME = ${MAVEN_HOME}"
+                  '''
+                  }
+            }
+
              steps {
                  git branch: 'feature/PI-33', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git'
                  sh "mvn clean package"
