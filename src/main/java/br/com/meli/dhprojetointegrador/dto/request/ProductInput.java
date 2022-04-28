@@ -14,12 +14,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ProductInput {
 
-    @NotBlank
     @NotNull
     @NumberFormat
     private Long productId;
 
-    @NotBlank
     @NotNull
     @NumberFormat
     private Integer quantity;

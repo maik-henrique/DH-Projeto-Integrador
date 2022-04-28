@@ -13,6 +13,14 @@ public class AgentWarehouseValidator implements IInboundOrderValidator {
     private Long agentId;
     private WarehouseService warehouseService;
 
+    /**
+     * Author: Pedro Dalpa
+     * Method: validate
+     * Description: valida se o id do agente que foi passado esta ligado a aquele
+     * armazém
+     * 
+     */
+
     @Override
     public void validate() {
         Warehouse warehouse = warehouseService.findWarehouseIdBySection(section);
