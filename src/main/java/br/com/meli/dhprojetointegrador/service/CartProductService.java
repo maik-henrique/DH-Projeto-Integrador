@@ -14,6 +14,12 @@ public class CartProductService{
 
     private final CartProductRepository cartProdRepo;
 
+    /**
+     * Author: Micaela Alves
+     * Method: getProductsByOrderId
+     * Description: Recupera uma lista com todos os registros de CartProduct onde OrderId for igual ao especificado
+     *
+     **/
     public List<CartProduct> getProductsByOrderId(long OrderId) {
         return cartProdRepo.findByPurchaseOrderId(OrderId);
     }

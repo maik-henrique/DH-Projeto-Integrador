@@ -62,6 +62,11 @@ public class OrderController {
         return ResponseEntity.ok(newOrderStatus);
     }
 
+    /**
+     * Author: Micaela Alves
+     * Method: ShowProductsOrder
+     * Description: Controller retorna a lista de produtos pertencentes a uma PurchaseOrder
+     */
     @GetMapping
     public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {
         List<CartProduct> products = cartProductService.getProductsByOrderId(idOrder);
