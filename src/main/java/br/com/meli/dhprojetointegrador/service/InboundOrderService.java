@@ -57,7 +57,7 @@ public class InboundOrderService {
         return inboundOrderRepository.save(oldInboundOrder);
     }
 
-    private InboundOrder findInboundOrderByOrderNumber(Long orderNumber) {
+    private InboundOrder findInboundOrderByOrderNumber(Long orderNumber) throws BusinessValidatorException{
         return inboundOrderRepository
                 .findByOrderNumber(orderNumber)
                 .orElseThrow(
@@ -83,8 +83,7 @@ public class InboundOrderService {
      * @throws BusinessValidatorException in case it fails to created the
      *                                    InboundOrder properly
      */
-
-    public InboundOrder create(InboundOrder inboundOrder) {
+    public InboundOrder create(InboundOrder inboundOrder) throws BusinessValidatorException {
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
         Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());
 

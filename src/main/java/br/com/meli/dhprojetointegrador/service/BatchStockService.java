@@ -31,7 +31,7 @@ public class BatchStockService {
 	 * @return lista de batchStock cuja busca foi bem sucedida
 	 * @throws ResourceNotFound caso nenhum produto seja encontrado
 	 */
-	public List<BatchStock> findByProductId(Long productId, String sortBy) throws ResourceNotFound{
+	public List<BatchStock> findByProductId(Long productId, String sortBy) throws ResourceNotFound {
 		Sort sort = Sort.by(sortBy);
 		LocalDate minimumDueDate = LocalDate.now(clock);
 		LocalDate maxdueDate = minimumDueDate.plusWeeks(DueDateEnum.MAX_DUEDATE_WEEKS.getDuedate());
