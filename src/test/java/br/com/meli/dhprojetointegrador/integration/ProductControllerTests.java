@@ -8,7 +8,6 @@ import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.enums.DueDateEnum;
 import br.com.meli.dhprojetointegrador.repository.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,8 +29,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -177,6 +174,7 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
         return product;
     }
 
+
         /**
          * @Author: Matheus Guerra
          * @Teste: Teste de integração do endpoint "/api/v1/fresh-products/list"
@@ -231,14 +229,14 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
 
         }
 
+
         private Category setupCategory (CategoryEnum categoryEnum){
             Category category = Category.builder().name(categoryEnum).sections(Collections.EMPTY_SET).build();
             return categoryRepository.save(category);
         }
 
-        private Product setupProduct (String name, Category category){
-            Product product = Product.builder().name(name).category(category).batchStockList(Collections.EMPTY_SET).build();
-
+        private Product setupProduct(String name, Category category) {
+        Product product = Product.builder().name(name).category(category).batchStockList(Collections.EMPTY_SET).build();
 
             productRepository.save(product);
             return product;
