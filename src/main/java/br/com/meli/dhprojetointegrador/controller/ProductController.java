@@ -6,12 +6,9 @@ import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQ
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import java.util.List;
 
+import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.service.BatchStockService;
@@ -79,6 +76,17 @@ public class ProductController {
 
         return ResponseEntity.ok(response);
 
+    }
+
+    /**
+     * Author: Bruno Mendes
+     * Method: returnTotalProductsByWarehouse
+     * Description: Busca os produtos e associação com cada warehouse e soma o total de produtos em cada warehouse
+     * @return ProductByWarehouseResponse
+     */
+    @GetMapping("fresh-products/warehouse/{id}")
+    public ResponseEntity <ProductByWarehouseResponse> returnTotalProductsByWarehouse(@PathVariable Long id) {
+        return ResponseEntity.ok().body(productService.getProductByWarehouse(id));
     }
 
 }
