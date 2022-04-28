@@ -20,7 +20,7 @@ pipeline {
 
         stage('Integration tests + Unit tests'){
             steps {
-                  sh 'mvn clean -Dmaven.test.failure.ignore=true install'
+                  sh 'mvn clean install'
                   cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: 'target/*.json', pendingStepsNumber: -1, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1
             }
              post {
