@@ -1,24 +1,14 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import java.math.BigDecimal;
-import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import lombok.*;
+
+import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.format.annotation.NumberFormat;
+import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -36,15 +26,10 @@ public class Product {
     @NotBlank(message = "O campo nome não pode estar em branco")
     private String name;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     @DecimalMin(value = "0.0", inclusive = false)
-    @Digits(integer=3, fraction=2)
+    @Digits(integer = 3, fraction = 2)
     private BigDecimal price;
-
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NumberFormat
-    @NotNull(message = "O campo nome não pode ser nulo")
     private float volume;
 
     @ManyToOne

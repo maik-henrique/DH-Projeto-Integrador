@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AutoConfigureMockMvc
 public class PurchaseOrderControllerTest {
 
-
     @Autowired
     private MockMvc mock;
 
@@ -52,7 +51,6 @@ public class PurchaseOrderControllerTest {
     public void deveMudarStatusOrder() throws Exception{
 
         setup();
-
 
         MvcResult result = mock
                 .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/orders/2")

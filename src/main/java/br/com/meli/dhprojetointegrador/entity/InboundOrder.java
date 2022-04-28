@@ -1,25 +1,11 @@
 package br.com.meli.dhprojetointegrador.entity;
 
+import lombok.*;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.persistence.PrePersist;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,8 +20,6 @@ public class InboundOrder {
     private Long orderNumber;
 
     @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @DateTimeFormat
     private LocalDate orderDate;
 
     @ManyToOne

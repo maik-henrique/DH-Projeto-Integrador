@@ -26,8 +26,7 @@ public class CartProduct {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo quantity não pode ser nulo")
     @NumberFormat
     private Integer quantity;
 }

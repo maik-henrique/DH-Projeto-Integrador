@@ -31,39 +31,21 @@ public class BatchStock {
     @Id
     private Long batchNumber;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
     @NumberFormat
     private int currentQuantity;
 
     @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @DateTimeFormat
     private LocalDate dueDate;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
     @NumberFormat
     private int initialQuantity;
 
     @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @DateTimeFormat
     private LocalDate manufacturingDate;
 
     @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @DateTimeFormat
     private LocalDateTime manufacturingTime;
-
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
-    @NotEmpty(message = "Temperatura contra indicada!")
-    @Size(min = -22, max = 0, message = "Risco de temperatura!")
     private float currentTemperature;
-
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
     private float minimumTemperature;
 
     @ManyToOne

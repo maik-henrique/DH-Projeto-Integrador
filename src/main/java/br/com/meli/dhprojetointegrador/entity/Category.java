@@ -22,6 +22,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 @Entity
 @NoArgsConstructor
@@ -35,24 +37,10 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
     @Enumerated(EnumType.STRING)
     private CategoryEnum name;
-
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
-    @NotEmpty(message = "Temperatura contra indicada!")
-    @Size(min = -22, max = 0, message = "Risco de temperatura!")
     private float minimumTemperature;
-
-    @NotBlank(message = "O campo nome não pode estar em branco")
-    @NotNull(message = "O campo nome não pode ser nulo")
-    @NotEmpty(message = "Temperatura contra indicada!")
-    @Size(min = -22, max = 0, message = "Risco de temperatura!")
     private float maximumTemperature;
-
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private Set<Product> products;

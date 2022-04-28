@@ -69,7 +69,7 @@ public class AgentWarehouseValidatorTests {
                 Warehouse warehouse = warehouseRepository.save(Warehouse.builder().name("Warehouse 1").build());
 
                 Section section = Section.builder().category(frios).name("Section 2")
-                                .warehouse(warehouse).capacity(10).id(1L).build();
+                                .warehouse(warehouse).capacity(10F).id(1L).build();
 
                 Agent agent = Agent.builder().name("Test").id(warehouse.getId()).build();
 
