@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +36,7 @@ public class ValidateBuyerTest {
     @Test
     @DisplayName("TestPI-8 - validateQuantity")
     public void validateBuyer_should_return_correct_Buyer() {
-        when(buyerRepository.getById(1L)).thenReturn(buyer);
+        when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
 
         Buyer result = validateBuyer.getBuyer(1L);
 
@@ -48,7 +51,7 @@ public class ValidateBuyerTest {
     @Test
     @DisplayName("TestPI-8 - validateQuantity")
     public void validateBuyer_should_trow_correct_Error() {
-        when(buyerRepository.getById(2L)).thenThrow(new EntityNotFoundException());
+        when(buyerRepository.findById(2L)).thenThrow(new NoSuchElementException());
 
         try {
             validateBuyer.getBuyer( 2L);

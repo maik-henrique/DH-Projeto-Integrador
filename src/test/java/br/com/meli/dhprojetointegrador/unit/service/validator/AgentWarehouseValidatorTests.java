@@ -30,70 +30,79 @@ import br.com.meli.dhprojetointegrador.unit.util.WarehouseCreator;
 @ExtendWith(SpringExtension.class)
 public class AgentWarehouseValidatorTests {
 
-    private AgentWarehouseValidator agentWarehouseValidator;
+        private AgentWarehouseValidator agentWarehouseValidator;
 
-    @Mock
-    private WarehouseRepository warehouseRepository;
-    @Mock
-    private SectionRepository sectionRepository;
+        @Mock
+        private WarehouseRepository warehouseRepository;
+        @Mock
+        private SectionRepository sectionRepository;
 
-    @Mock
-    private AgentRepository agentRepository;
+        @Mock
+        private AgentRepository agentRepository;
 
-    @BeforeEach
-    void setUp() {
-        BDDMockito.when(warehouseRepository.save(ArgumentMatchers.any(Warehouse.class)))
-                .thenReturn(WarehouseCreator.createValidWarehouse());
+        @BeforeEach
+        void setUp() {
+                BDDMockito.when(warehouseRepository.save(ArgumentMatchers.any(Warehouse.class)))
+                                .thenReturn(WarehouseCreator.createValidWarehouse());
 
-        BDDMockito.when(sectionRepository.save(ArgumentMatchers.any(Section.class)))
-                .thenReturn(SectionCreator.createValidSection());
+                BDDMockito.when(sectionRepository.save(ArgumentMatchers.any(Section.class)))
+                                .thenReturn(SectionCreator.createValidSection());
 
-        BDDMockito.when(sectionRepository.findById(ArgumentMatchers.anyLong()))
-                .thenReturn(Optional.of(SectionCreator.createValidSection()));
+                BDDMockito.when(sectionRepository.findById(ArgumentMatchers.anyLong()))
+                                .thenReturn(Optional.of(SectionCreator.createValidSection()));
 
-        BDDMockito.when(warehouseRepository.findBySections(ArgumentMatchers.any(Section.class)))
-                .thenReturn(Optional.of(WarehouseCreator.createValidWarehouse()));
+                BDDMockito.when(warehouseRepository.findBySections(ArgumentMatchers.any(Section.class)))
+                                .thenReturn(Optional.of(WarehouseCreator.createValidWarehouse()));
 
-        BDDMockito.when(agentRepository.save(ArgumentMatchers.any(Agent.class)))
-                .thenReturn(Agent.builder().build());
-    }
+                BDDMockito.when(agentRepository.save(ArgumentMatchers.any(Agent.class)))
+                                .thenReturn(Agent.builder().build());
+        }
 
-    // teste warehouse = agente, warehouse != agente
-    @Test
-    public void validate_shouldNotThrowException_whenAgentIdIsEqualWarehouseId() {
-        WarehouseService warehouseService = new WarehouseService(warehouseRepository);
+        /**
+         * @Author: Bruno
+         * @Teste: Teste unitário da validação de agente pertence a armazém
+         * @Description: valida o funcionamento correto da função
+         */
+        @Test
+        public void validate_shouldNotThrowException_whenAgentIdIsEqualWarehouseId() {
+                WarehouseService warehouseService = new WarehouseService(warehouseRepository);
 
-        Category frios = Category.builder().name(CategoryEnum.FRIOS).build();
+                Category frios = Category.builder().name(CategoryEnum.FRIOS).build();
 
-        Warehouse warehouse = warehouseRepository.save(Warehouse.builder().name("Warehouse 1").build());
+                Warehouse warehouse = warehouseRepository.save(Warehouse.builder().name("Warehouse 1").build());
 
-        Section section = Section.builder().category(frios).name("Section 2")
-                .warehouse(warehouse).capacity(10).id(1L).build();
+                Section section = Section.builder().category(frios).name("Section 2")
+                                .warehouse(warehouse).capacity(10).id(1L).build();
 
-        Agent agent = Agent.builder().name("Test").id(warehouse.getId()).build();
+                Agent agent = Agent.builder().name("Test").id(warehouse.getId()).build();
 
-        sectionRepository.save(section);
-        agentRepository.save(agent);
+                sectionRepository.save(section);
+                agentRepository.save(agent);
 
-        agentWarehouseValidator = new AgentWarehouseValidator(section, agent.getId(), warehouseService);
+                agentWarehouseValidator = new AgentWarehouseValidator(section, agent.getId(), warehouseService);
 
-        assertDoesNotThrow(() -> agentWarehouseValidator.validate());
-    }
+                assertDoesNotThrow(() -> agentWarehouseValidator.validate());
+        }
 
-    @Test
-    public void validate_shouldThrowException_whenAgentIdIsNotEqualWarehouseId() {
-        WarehouseService warehouseService = new WarehouseService(warehouseRepository);
+        /**
+         * @Author: Bruno
+         * @Teste: Teste unitário da validação de agente pertence a armazém
+         * @Description: valida o funcionamento incorreto da função
+         */
+        @Test
+        public void validate_shouldThrowException_whenAgentIdIsNotEqualWarehouseId() {
+                WarehouseService warehouseService = new WarehouseService(warehouseRepository);
 
-        Section section = Section.builder().name("Section 2").id(1L).build();
+                Section section = Section.builder().name("Section 2").id(1L).build();
 
-        Agent agent = Agent.builder().name("Test").id(2L).build();
+                Agent agent = Agent.builder().name("Test").id(2L).build();
 
-        sectionRepository.save(section);
-        agentRepository.save(agent);
+                sectionRepository.save(section);
+                agentRepository.save(agent);
 
-        agentWarehouseValidator = new AgentWarehouseValidator(section, agent.getId(), warehouseService);
+                agentWarehouseValidator = new AgentWarehouseValidator(section, agent.getId(), warehouseService);
 
-        assertThrows(BusinessValidatorException.class, () -> agentWarehouseValidator.validate());
-    }
+                assertThrows(BusinessValidatorException.class, () -> agentWarehouseValidator.validate());
+        }
 
 }

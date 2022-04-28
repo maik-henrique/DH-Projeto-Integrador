@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
@@ -28,14 +29,15 @@ public class ValidadeProduct {
      */
     public Product validateQuantity(Integer qtd, Long id) {
         try {
-            Product product = productRepository.getById(id);
+            Product product = productRepository.findById(id).get();
             Set<BatchStock> batchList = product.getBatchStockList();
             int totalStock = batchList.stream().mapToInt(BatchStock::getCurrentQuantity).sum();
             if (totalStock < qtd) {
                 throw new NotEnoughProductsException("The product " + product.getName() + " doesn't have enough stock for your purchase");
+            } else {
+                return product;
             }
-            return product;
-        } catch (EntityNotFoundException e ) {
+        } catch (NoSuchElementException e ) {
             throw new ProductNotFoundException("This product isn't on the database");
         }
     }

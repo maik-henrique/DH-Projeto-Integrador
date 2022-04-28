@@ -45,8 +45,20 @@ public class InboundOrderController {
 		return ResponseEntity.ok().body(inboundOrderResponse);
 	}
 
+	/**
+	 * Author: Pedro Dalpa
+	 * Method: create
+	 * Description: salva o inbound order e cria os registros no stock conforme
+	 * necessário
+	 * 
+	 * @param inboundOrder an instance of InboundOrder to create
+	 * @return instance of InboundOrder created
+	 *
+	 */
+
 	@PostMapping
-	public ResponseEntity<InboundOrderResponse> create(@RequestBody InboundOrderPostRequest inboundOrderPostRequest) {
+	public ResponseEntity<InboundOrderResponse> create(
+			@Valid @RequestBody InboundOrderPostRequest inboundOrderPostRequest) {
 		InboundOrder inboundOrder = modelMapper.map(inboundOrderPostRequest, InboundOrder.class);
 		InboundOrder createInboundOrder = inboundOrderService.create(inboundOrder);
 		InboundOrderResponse inboundOrderResponse = modelMapper.map(createInboundOrder, InboundOrderResponse.class);
