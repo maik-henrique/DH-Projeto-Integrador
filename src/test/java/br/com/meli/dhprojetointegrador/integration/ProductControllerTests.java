@@ -120,7 +120,7 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
      */
 
     @Test
-    @DisplayName("Product Controller Integration - Return all registered products")
+    @DisplayName("Test01 - req 02 - Return all registered products")
     public void shouldReturnAllRegisteredProducts() throws Exception {
 
         Product product1 = setupProducts("frango", 20f);
@@ -148,7 +148,7 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
      * @return lista vazia de produtos
      */
     @Test
-    @DisplayName("Product Controller Integration - Return 404 not found")
+    @DisplayName( "Test02 - req02 - Return 404 not found")
     public void shouldReturnHttpNotFound_whenNoOneProduct() throws Exception {
 
         Product product1 = Product.builder().name("alface").price(new BigDecimal(12)).volume(5f).build();
@@ -327,4 +327,3 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
         }
 
     }
-}
