@@ -32,7 +32,7 @@ public class ValidateProductTest {
 
     Product product1 = Product.builder()
             .id(1L)
-            .batchStockList(List.of(batch1))
+            .batchStockList(Set.of(batch1))
             .name("Banana")
             .price(new BigDecimal("2.50"))
             .build();

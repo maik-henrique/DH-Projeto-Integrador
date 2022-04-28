@@ -41,6 +41,6 @@ public class Product {
     private Seller seller;
 
     @OneToMany(mappedBy = "products")
-    private List<BatchStock> batchStockList;
+    private Set<BatchStock> batchStockList;
 
 }

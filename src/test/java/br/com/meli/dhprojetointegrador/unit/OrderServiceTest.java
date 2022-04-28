@@ -64,14 +64,14 @@ public class OrderServiceTest {
 
     Product product1 = Product.builder()
             .id(1L)
-            .batchStockList(List.of(batch1))
+            .batchStockList(Set.of(batch1))
             .name("Banana")
             .price(new BigDecimal("2.50"))
             .build();
 
     Product product2 = Product.builder()
             .id(2L)
-            .batchStockList(List.of(batch2))
+            .batchStockList(Set.of(batch2))
             .name("Cenoura")
             .price(new BigDecimal("4.50"))
             .build();
