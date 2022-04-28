@@ -127,8 +127,8 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
         Product frangoManaged = productRepository.save(frango);
         Product carneManaged = productRepository.save(carne);
 
-        LocalDate notExpiredDueDate = LOCAL_DATE_NOW_MOCK.plusDays(1L);
-        LocalDate expiredDueDate = LOCAL_DATE_NOW_MOCK.plusWeeks(DueDateEnum.MAX_DUEDATE_WEEKS.getDuedate()).plusDays(1);
+        LocalDate expiredDueDate = LOCAL_DATE_NOW_MOCK.plusDays(1L);
+        LocalDate notExpiredDueDate = LOCAL_DATE_NOW_MOCK.plusWeeks(DueDateEnum.MAX_DUEDATE_WEEKS.getDuedate()).plusDays(1);
 
         BatchStockPostRequest frangoBatchStock = BatchStockPostRequest.builder().batchNumber(123L).currentQuantity(32)
                 .currentTemperature(17.0f).dueDate(notExpiredDueDate).initialQuantity(42).minimumTemperature(17.0f)
