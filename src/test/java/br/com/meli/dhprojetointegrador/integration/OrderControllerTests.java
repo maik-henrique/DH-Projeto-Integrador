@@ -30,12 +30,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-@ActiveProfiles("test")
-@SpringBootTest
-@AutoConfigureMockMvc
-public class OrderControllerTests {
+public class OrderControllerTests extends BaseIntegrationControllerTests {
 
     @Autowired
     private MockMvc mock;
