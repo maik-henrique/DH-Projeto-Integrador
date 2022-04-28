@@ -74,6 +74,7 @@ public class OrderControllerTests {
 
         PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
                 .date(date)
+                .orderStatus(StatusEnum.ABERTO)
                 .products(List.of(product1, product2))
                 .buyerId(1L)
                 .build();
@@ -103,6 +104,7 @@ public class OrderControllerTests {
 
         PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
                 .date(date)
+                .orderStatus(StatusEnum.ABERTO)
                 .products(List.of(product1, product2))
                 .buyerId(10L)
                 .build();
@@ -132,6 +134,7 @@ public class OrderControllerTests {
 
         PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
                 .date(date)
+                .orderStatus(StatusEnum.ABERTO)
                 .products(List.of(product1, product2))
                 .buyerId(1L)
                 .build();

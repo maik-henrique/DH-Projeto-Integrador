@@ -18,25 +18,20 @@ import java.util.List;
 @AllArgsConstructor
 public class InboundOrderUpdateRequest {
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private Long orderNumber;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private LocalDate orderDate;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private Long sectionId;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private Long agentId;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private List<@Valid BatchStockUpdateRequest> batchStock;
 }

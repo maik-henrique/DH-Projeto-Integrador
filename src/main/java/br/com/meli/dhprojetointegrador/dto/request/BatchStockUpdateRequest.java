@@ -20,43 +20,34 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BatchStockUpdateRequest {
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private Long batchNumber;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private Long productId;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private Float currentTemperature;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private Float minimumTemperature;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private Integer initialQuantity;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private Integer currentQuantity;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private LocalDate dueDate;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private LocalDate manufacturingDate;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)

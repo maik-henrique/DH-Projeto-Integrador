@@ -241,7 +241,8 @@ public class InboundOrderControllerTests {
 	}
 
 	private Warehouse setupWarehouse() {
-		Agent agent = Agent.builder().name("007").build();
+		Agent agent = Agent.builder().name("007")
+				.password("password").build();
 		Warehouse warehouse = Warehouse.builder().id(1L).name("Galpao do joao").agent(agent).build();
 		agent.setWarehouse(warehouse);
 
