@@ -36,7 +36,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -50,9 +49,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,9 +78,6 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
     
     @Autowired
     private CategoryRepository categoryRepository;
-    
-    @Autowired
-    private BatchStockRepository batchStockRepository;
 
     @Autowired
     private SellerRepository sellerRepository;
