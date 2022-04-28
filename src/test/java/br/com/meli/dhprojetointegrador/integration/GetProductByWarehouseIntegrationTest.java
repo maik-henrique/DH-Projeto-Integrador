@@ -65,8 +65,8 @@ public class GetProductByWarehouseIntegrationTest {
         Product product1 = setupProduct(1L, "Banana", new BigDecimal("2.50"));
         InboundOrder inboundOrder = setupInboundOrder(1L, warehouse, section);
 
-        BatchStock batchStock1 = setupBatchStock(1L, product1, inboundOrder);
-        BatchStock batchStock2 = setupBatchStock(2L, product1, inboundOrder);
+        setupBatchStock(1L, product1, inboundOrder);
+        setupBatchStock(2L, product1, inboundOrder);
 
 
     }
@@ -156,7 +156,7 @@ public class GetProductByWarehouseIntegrationTest {
      * @Description: Teste integrador endpoint /api/v1/fresh-products/warehouse/{id}
      */
     @Test
-    @DisplayName("Get product by warehouses - when receiving inexistent id returns correct error")
+    @DisplayName("Get product by warehouses - when receiving not existent id returns the correct error")
     public void function_returnTotalProductsByWarehouse_should_trow_ProductNotFound() throws Exception {
         setup();
 
