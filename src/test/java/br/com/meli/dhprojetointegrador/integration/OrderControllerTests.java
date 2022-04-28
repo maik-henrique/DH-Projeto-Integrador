@@ -5,14 +5,21 @@ import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
 import br.com.meli.dhprojetointegrador.dto.response.*;
 import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
+import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import br.com.meli.dhprojetointegrador.repository.*;
+import br.com.meli.dhprojetointegrador.service.CartProductService;
+import br.com.meli.dhprojetointegrador.unit.util.CardProductCreator;
+import br.com.meli.dhprojetointegrador.unit.util.ProductCreator;
+import br.com.meli.dhprojetointegrador.unit.util.PurchaseOrderCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,9 +33,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
@@ -63,6 +72,9 @@ public class OrderControllerTests {
 
     @Autowired
     private InboundOrderRepository inboundOrderRepository;
+
+    @Autowired
+    private CartProductRepository cartProductRepository;
 
     @Test
     @DisplayName("Create Purchase Order - when receiving the right input function works properly")
@@ -180,6 +192,53 @@ public class OrderControllerTests {
         assertEquals(exceptionResponse.getTitle(), "Not Enough Products");
     }
 
+    @Test
+    @DisplayName("Show Products in Purchase Order - when receiving valid id return all products")
+    public void should_return_all_products_in_purchase_order() throws Exception{
+        /**
+         * BUYER ----------
+         * PURCHASE ORDER ---------------
+         * INBOUNDORDER ----------------
+         * AGENTE -------
+         * SELLER
+         */
+
+        setup();
+        Product product1 = setupProduct(1L, "Banana", new BigDecimal("2.50"));
+
+       // CartProduct cartProduct = setupCartProduct(product1, );
+//        List<CartProduct> cardProductList = IntStream
+//                .range(0, 2)
+//                .mapToObj(value -> {
+//                    return CardProductCreator.createValidCardProduct();
+//                })
+//                .collect(Collectors.toList());
+
+        cartProductRepository.save(CardProductCreator.createValidCardProduct());
+
+        MvcResult result = mock
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/orders/?idOrderd=1"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        String response = result.getResponse().getContentAsString();
+        List<CartProductDTO> products =
+                objectMapper.readerForListOf(CartProductDTO.class).readValue(response);
+
+        assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+        assertNotNull(response);
+        assertFalse(products.isEmpty());
+
+//        CartProductRepository repository = mock(CartProductRepository.class);
+//        private final CartProductService service = new CartProductService(repository);
+
+//        Mockito.when(repository.findByPurchaseOrderId(id)).thenReturn(cardProductList);
+//        List<CartProduct> result = service.getProductsByOrderId(id);
+//
+//        assert result.get(0).getQuantity().equals(5);
+//        assert result.get(0).getProduct().getName().equals("Frango");
+//        assert result.get(1).getPurchaseOrder().getBuyer().getName().equals("Bruno");
+    }
+
     private void setup() {
         setupBuyer();
         Warehouse warehouse = setupWarehouse();
@@ -193,6 +252,7 @@ public class OrderControllerTests {
 
         setupInboundOrder(1L, batchStock1, warehouse, section);
         setupInboundOrder(2L, batchStock2, warehouse, section);
+
     }
 
     private Buyer setupBuyer() {
@@ -258,5 +318,40 @@ public class OrderControllerTests {
                 .build();
 
         return inboundOrderRepository.save(inboundOrder);
+    }
+
+    private CartProduct setupCartProduct(Product prod, PurchaseOrder order, int quantity) {
+        return CartProduct.builder()
+                .product(prod)
+                .purchaseOrder(order)
+                .quantity(quantity)
+                .build();
+    }
+
+    private PurchaseOrder setupPurchaseOrder(Buyer buyer, StatusEnum status, LocalDate date){
+        return PurchaseOrder.builder()
+                .buyer(buyer)
+                .status(status)
+                .date(date)
+                .build();
+    }
+
+    private Agent setupAgent(Warehouse warehouse) {
+        return Agent.builder()
+                .id(1L)
+                .name("Eduardo")
+                .password("12345")
+                .warehouse(warehouse)
+                .build();
+
+    }
+    private Seller setupSeller(Set<Product> products) {
+        return Seller.builder()
+                .id(1L)
+                .name("Mauricio")
+                .products(products)
+                .build();
+
+
     }
 }
