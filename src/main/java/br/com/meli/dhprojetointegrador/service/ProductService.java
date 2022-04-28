@@ -1,25 +1,32 @@
 package br.com.meli.dhprojetointegrador.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
+import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
+import br.com.meli.dhprojetointegrador.dto.response.WarehouseQuantity;
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
-import br.com.meli.dhprojetointegrador.exception.NotImplementedException;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
+
+    @Autowired
+    private ValidadeProduct validateProduct;
 
     public Product findProductById(Long id) {
         return productRepository.findById(id)
@@ -55,4 +62,35 @@ public class ProductService {
         return productRepository.findByCategory_Name(CategoryEnum.valueOf(category));
     }
 
+    /**
+     * Author: Bruno Mendes
+     * Method: getProductByWarehouse
+     * Description: Busca os produtos e associação com cada warehouse e soma o total de produtos em cada warehouse
+     * @return ProductByWarehouseResponse
+     */
+    public ProductByWarehouseResponse getProductByWarehouse(Long id) {
+        Product product = validateProduct.validateQuantity(1, id);
+        List<WarehouseQuantity> warehouseQuantities = new ArrayList<>();
+        Set<BatchStock> batchStockSet = product.getBatchStockList();
+        batchStockSet.forEach(b-> {
+            WarehouseQuantity warehouseQuantity = WarehouseQuantity.builder()
+                    .totalQuantity(b.getCurrentQuantity())
+                    .warehouseCode(b.getInboundOrder().getSection().getWarehouse().getId())
+                    .build();
+            warehouseQuantities.add(warehouseQuantity);
+        });
+        List<WarehouseQuantity> warehouseQuantitiesFinal = new ArrayList<>();
+        warehouseQuantities.stream().forEach( w -> {
+            if (warehouseQuantitiesFinal.stream().anyMatch(ww-> ww.getWarehouseCode().equals(w.getWarehouseCode()))) {
+                WarehouseQuantity existing = warehouseQuantitiesFinal.stream().filter(ww-> ww.getWarehouseCode().equals(w.getWarehouseCode())).findFirst().get();
+                existing.setTotalQuantity(existing.getTotalQuantity() + w.getTotalQuantity());
+            } else {
+                warehouseQuantitiesFinal.add(w);
+            }
+        });
+        return ProductByWarehouseResponse.builder()
+                .productId(id)
+                .warehouses(warehouseQuantitiesFinal)
+                .build();
+    }
 }

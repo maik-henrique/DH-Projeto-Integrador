@@ -6,28 +6,24 @@ import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQ
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import java.util.List;
 
+import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import br.com.meli.dhprojetointegrador.dto.response.ProductResponseDto;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.service.BatchStockService;
 import br.com.meli.dhprojetointegrador.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @ResponseBody
 @RequestMapping("/api/v1/fresh-products")
 public class ProductController {
+
 
     private final ProductService productService;
     private final ModelMapper modelMapper;
@@ -42,10 +38,13 @@ public class ProductController {
      * 
      * @return lista de produtos
      */
+
     @GetMapping
-    public ResponseEntity<?> returnAllProducts() {
+    public ResponseEntity<List<ProductResponseDto>> returnAllProducts() {
+
         List<Product> products = productService.returnAllProducts();
-        return products == null || products.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(products);
+            return products == null || products.isEmpty()?ResponseEntity.notFound().build():
+                    ResponseEntity.ok(ProductResponseDto.map(products));
     }
     
     /**
@@ -81,4 +80,16 @@ public class ProductController {
 
     }
 
+    /**
+     * Author: Bruno Mendes
+     * Method: returnTotalProductsByWarehouse
+     * Description: Busca os produtos e associação com cada warehouse e soma o total de produtos em cada warehouse
+     * @return ProductByWarehouseResponse
+     */
+    @GetMapping("fresh-products/warehouse/{id}")
+    public ResponseEntity <ProductByWarehouseResponse> returnTotalProductsByWarehouse(@PathVariable Long id) {
+        return ResponseEntity.ok().body(productService.getProductByWarehouse(id));
+    }
+
 }
+

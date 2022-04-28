@@ -39,12 +39,7 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-@ActiveProfiles("test")
-@SpringBootTest
-@AutoConfigureMockMvc
-public class OrderControllerTests {
+public class OrderControllerTests extends BaseIntegrationControllerTests {
 
     @Autowired
     private MockMvc mock;
