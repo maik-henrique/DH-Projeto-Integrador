@@ -11,9 +11,9 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-
 @Repository
 public interface BatchStockRepository extends JpaRepository<BatchStock, Long> {
-    @Query("FROM BatchStock b WHERE b.products.id = :product AND b.dueDate <= :maxdueDate")
-    List<BatchStock> findBatchStockByProducts(@Param("product") Long productId, @Param("maxdueDate") LocalDate maxdueDate, Sort sort);
+    @Query("FROM BatchStock b WHERE b.products.id = :product AND b.dueDate >= :minimumDueDate AND  b.dueDate <= :maxDueDate")
+    List<BatchStock> findBatchStockByProducts(@Param("product") Long productId, @Param("minimumDueDate") LocalDate minimumDueDate,
+                                              @Param("maxDueDate") LocalDate maxDueDate, Sort sort);
 }
