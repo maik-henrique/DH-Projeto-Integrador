@@ -8,8 +8,8 @@ import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import lombok.AllArgsConstructor;
 
 /**
- * 
- * Validates if section has space available for the incoming inbound order
+ * @Author: Maik
+ * Valida se a Section possui espaço disponível para a InboundOrder que está sendo recebida
  *
  */
 @AllArgsConstructor
@@ -19,8 +19,11 @@ public class SpaceAvailableValidator implements IInboundOrderValidator {
     private final InboundOrder inboundOrder;
 
     /**
-     * The validation calculates the total volume of the inbound order and compares it to the section capacity,
-     * if it exceeds then it'll throw a BusinessValidatorException
+     * @Author: Maik
+     *
+     * Cálcula o volume total da ordem de entrada e compara com a capacidade da seção, caso exceda, lança uma
+     * exceção
+     * @throws: BusinessValidatorException caso exceda a capacidade da seção
      */
     @Override
     public void validate() throws BusinessValidatorException {

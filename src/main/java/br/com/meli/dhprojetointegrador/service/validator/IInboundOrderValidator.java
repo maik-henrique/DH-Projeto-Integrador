@@ -3,17 +3,16 @@ package br.com.meli.dhprojetointegrador.service.validator;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 
 /**
- * Validator for InboundOrder processing.
- * @author maik
+ * Validação das regras de negócio voltadas para o processamento do InboundOrder
+ * @author: Maik
  *
  */
 public interface IInboundOrderValidator {
 	
 	/**
-	 * Method used to apply business logic validation on InboundOrder objects, if the validation succeeds, it'll do nothing, otherwise
-	 * it throws an exception.
-	 *  
-	 * @throws BusinessValidatorException in case a validation fails
+	 * Método usado para aplicar a validação das regras de negócio nos objetos InboundOrder, se a validação for bem sucedidade
+	 * a execução procede normalmente, casao contrário deverá lançar uma exceção
+	 * @throws BusinessValidatorException caso a validação falhe
 	 */
     void validate() throws BusinessValidatorException;
 }
