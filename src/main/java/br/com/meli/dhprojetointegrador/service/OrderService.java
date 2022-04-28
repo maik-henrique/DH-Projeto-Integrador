@@ -60,7 +60,7 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    @CachePut(value = "UpdateStatusOrder", key = "#idorder")
+    //@CachePut(value = "UpdateStatusOrder", key = "#idorder")
     public PurchaseOrder atualizar(Long idorder) {
 
         try {
