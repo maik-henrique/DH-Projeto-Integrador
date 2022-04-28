@@ -87,8 +87,6 @@ public class InboundOrderControllerTests {
 
 	@Autowired
 	private ObjectMapper objectMapper;
-	
-	
 
 	@Test
 	@DisplayName("Inbound Order - Proper setting of the of values")

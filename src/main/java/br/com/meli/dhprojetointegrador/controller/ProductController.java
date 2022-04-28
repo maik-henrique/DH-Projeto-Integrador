@@ -4,6 +4,15 @@ import br.com.meli.dhprojetointegrador.dto.request.freshproducts.FetchFreshProdu
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockCollection;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.service.BatchStockService;
 import br.com.meli.dhprojetointegrador.service.ProductService;
@@ -30,6 +39,7 @@ public class ProductController {
      * Description: Serviço responsavel por retornar todos os produtos presentes na
      * aplicação;
      *
+     * 
      * @return lista de produtos
      */
     @GetMapping
