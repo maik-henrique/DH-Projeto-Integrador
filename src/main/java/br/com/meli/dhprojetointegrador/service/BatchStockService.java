@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.enums.DueDateEnum;
+import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
 import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,16 @@ import lombok.AllArgsConstructor;
 public class BatchStockService {
   private BatchStockRepository batchStockRepository;
   private SectionService sectionService;
+
+  /**
+   * Returns a list of batch stocks that has a due date within the allowed range
+   * and selected section
+   * 
+   * @param sectionId    id of the section that is the target of the request
+   * @param numberOfDays goes to sum this param in current date to filter
+   * @return list of batch stock that contains the filters
+   * @throws BusinessValidatorException in case section not found
+   */
 
   public List<BatchStock> filterStockBySection(Long sectionId, Integer numberOfDays) {
     sectionService.findSectionById(sectionId);
