@@ -10,13 +10,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 
 @Repository
 public interface BatchStockRepository extends JpaRepository<BatchStock, Long> {
 
-        @Query("FROM BatchStock b WHERE b.inboundOrder.section.id = :sectionId AND b.dueDate > :dueDate")
-        public List<BatchStock> findBySectionId(@Param("sectionId") Long sectionId,
-                        @Param("dueDate") LocalDate dueDate, Sort sort);
+        @Query("FROM BatchStock b WHERE b.inboundOrder.section.id = :sectionId AND b.dueDate > :dueDate AND b.products.category.name IN :categoryId")
+        public List<BatchStock> findBySectionId(
+                        @Param("sectionId") Long sectionId,
+                        @Param("dueDate") LocalDate dueDate,
+                        @Param("categoryId") List<CategoryEnum> categoryId,
+                        Sort sort);
 
         // @Param("dueDate") LocalDate dueDate, Pageable pageable
         @Query("FROM BatchStock b WHERE b.products.id = :product AND b.dueDate >= :minimumDueDate AND  b.dueDate <= :maxDueDate")

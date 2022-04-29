@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.service.BatchStockService;
 import lombok.AllArgsConstructor;
@@ -38,9 +39,14 @@ public class BatchStockController {
   @GetMapping("/due-date")
   public ResponseEntity<List<BatchStock>> filterStockBySection(@RequestParam(required = true) long sectionId,
       @RequestParam(defaultValue = "0", required = false) Integer numberOfDays,
-      @RequestParam(defaultValue = "ASC", required = false) Direction ordination) {
+      @RequestParam(defaultValue = "ASC", required = false) Direction ordination,
+      @RequestParam(defaultValue = "FF, RF, FS", required = false) List<CategoryEnum> category) {
 
-    List<BatchStock> batchStocks = batchStockService.filterStockBySection(sectionId, numberOfDays, ordination);
+    List<BatchStock> batchStocks = batchStockService.filterStockBySection(
+        sectionId,
+        numberOfDays,
+        ordination,
+        category);
 
     return ResponseEntity.ok().body(batchStocks);
   }

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.enums.DueDateEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
@@ -32,14 +33,18 @@ public class BatchStockService {
      * @throws BusinessValidatorException in case section not found
      */
 
-    public List<BatchStock> filterStockBySection(Long sectionId, Integer numberOfDays, Direction ordination) {
+    public List<BatchStock> filterStockBySection(
+            Long sectionId,
+            Integer numberOfDays,
+            Direction ordination,
+            List<CategoryEnum> categoryEnum) {
         sectionService.findSectionById(sectionId);
 
         LocalDate dueDate = addDaysInCurrentDate(numberOfDays);
 
         Sort sort = Sort.by(ordination, "dueDate");
 
-        List<BatchStock> batchStocks = batchStockRepository.findBySectionId(sectionId, dueDate, sort);
+        List<BatchStock> batchStocks = batchStockRepository.findBySectionId(sectionId, dueDate, categoryEnum, sort);
 
         return batchStocks;
     }
