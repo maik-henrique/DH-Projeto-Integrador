@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Agent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dh-projeto-integrador</a> &gt; <a href="index.source.html" class="el_package">br.com.meli.dhprojetointegrador.entity</a> &gt; <span class="el_source">Agent.java</span></div><h1>Agent.java</h1><pre class="source lang-java linenums">package br.com.meli.dhprojetointegrador.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+<span class="pc" id="L19">@Setter</span>
+<span class="pc" id="L20">@Builder</span>
+<span class="fc" id="L21">@NoArgsConstructor</span>
+<span class="fc" id="L22">@AllArgsConstructor</span>
+@Entity(name = &quot;agent&quot;)
+public class Agent {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+<span class="fc" id="L28">  private Long id;</span>
+
+  @NotBlank(message = &quot;O campo nome não pode estar em branco&quot;)
+  @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="fc" id="L32">  private String name;</span>
+
+  @NotBlank(message = &quot;O campo senha não pode estar em branco&quot;)
+  @NotNull(message = &quot;O campo senha não pode ser nulo&quot;)
+  @Size(min = 6, max = 8, message = &quot;Senha tem que ser de 6 a 8 caracteres!&quot;)
+<span class="fc" id="L37">  private String password;</span>
+
+  @OneToOne
+  @MapsId
+  @JoinColumn(name = &quot;agent_id&quot;)
+<span class="nc" id="L42">  private Warehouse warehouse;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelMapperConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dh-projeto-integrador</a> &gt; <a href="index.source.html" class="el_package">br.com.meli.dhprojetointegrador.config</a> &gt; <span class="el_source">ModelMapperConfig.java</span></div><h1>ModelMapperConfig.java</h1><pre class="source lang-java linenums">package br.com.meli.dhprojetointegrador.config;
+
+
+import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
+import br.com.meli.dhprojetointegrador.dto.response.BatchStockResponse;
+import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import br.com.meli.dhprojetointegrador.dto.request.InboundOrderPostRequest;
+import br.com.meli.dhprojetointegrador.entity.Agent;
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.entity.InboundOrder;
+import br.com.meli.dhprojetointegrador.entity.Product;
+import br.com.meli.dhprojetointegrador.entity.Section;
+
+@Configuration
+<span class="fc" id="L22">public class ModelMapperConfig {</span>
+
+        @Bean
+        public ModelMapper getModelMapper() {
+<span class="fc" id="L26">                ModelMapper modelMapper = new ModelMapper();</span>
+
+<span class="fc" id="L28">                Converter&lt;InboundOrderUpdateRequest, InboundOrder&gt; converter = getInboundOrderUpdateRequestToInboundOrderConverter();</span>
+<span class="fc" id="L29">                Converter&lt;InboundOrder, InboundOrderResponse&gt; inboundOrderToInboundOrderResponseConverter = gedtInboundOrderUpdateRequestToInboundOrderConverter();</span>
+<span class="fc" id="L30">                Converter&lt;InboundOrderPostRequest, InboundOrder&gt; inboundOrderPostToInboundOrder = getInboundOrderPostRequestToInboundOrderConverter();</span>
+
+<span class="fc" id="L32">                modelMapper.createTypeMap(InboundOrderUpdateRequest.class, InboundOrder.class)</span>
+<span class="fc" id="L33">                                .setConverter(converter);</span>
+<span class="fc" id="L34">                modelMapper.createTypeMap(InboundOrder.class, InboundOrderResponse.class)</span>
+<span class="fc" id="L35">                                .setConverter(inboundOrderToInboundOrderResponseConverter);</span>
+<span class="fc" id="L36">                modelMapper.createTypeMap(InboundOrderPostRequest.class, InboundOrder.class)</span>
+<span class="fc" id="L37">                                .setConverter(inboundOrderPostToInboundOrder);</span>
+
+<span class="fc" id="L39">                return modelMapper;</span>
+        }
+
+        private Converter&lt;InboundOrderUpdateRequest, InboundOrder&gt; getInboundOrderUpdateRequestToInboundOrderConverter() {
+<span class="fc" id="L43">                return context -&gt; {</span>
+<span class="fc" id="L44">                        InboundOrderUpdateRequest source = context.getSource();</span>
+
+<span class="fc" id="L46">                        Agent agent = Agent.builder().id(source.getAgentId()).build();</span>
+<span class="fc" id="L47">                        Section section = Section.builder().id(source.getSectionId()).build();</span>
+<span class="fc" id="L48">                        Set&lt;BatchStock&gt; batchStock = source.getBatchStock().stream().map(</span>
+<span class="fc" id="L49">                                        batchStockUpdateRequest -&gt; BatchStock.builder()</span>
+<span class="fc" id="L50">                                                        .batchNumber(batchStockUpdateRequest.getBatchNumber())</span>
+<span class="fc" id="L51">                                                        .minimumTemperature(</span>
+<span class="fc" id="L52">                                                                        batchStockUpdateRequest.getMinimumTemperature())</span>
+<span class="fc" id="L53">                                                        .currentQuantity(batchStockUpdateRequest.getCurrentQuantity())</span>
+<span class="fc" id="L54">                                                        .currentTemperature(</span>
+<span class="fc" id="L55">                                                                        batchStockUpdateRequest.getCurrentTemperature())</span>
+<span class="fc" id="L56">                                                        .dueDate(batchStockUpdateRequest.getDueDate())</span>
+<span class="fc" id="L57">                                                        .initialQuantity(batchStockUpdateRequest.getInitialQuantity())</span>
+<span class="fc" id="L58">                                                        .manufacturingDate(</span>
+<span class="fc" id="L59">                                                                        batchStockUpdateRequest.getManufacturingDate())</span>
+<span class="fc" id="L60">                                                        .manufacturingTime(</span>
+<span class="fc" id="L61">                                                                        batchStockUpdateRequest.getManufacturingTime())</span>
+<span class="fc" id="L62">                                                        .products(Product.builder()</span>
+<span class="fc" id="L63">                                                                        .id(batchStockUpdateRequest.getProductId())</span>
+<span class="fc" id="L64">                                                                        .build())</span>
+<span class="fc" id="L65">                                                        .build())</span>
+<span class="fc" id="L66">                                        .collect(Collectors.toSet());</span>
+
+<span class="fc" id="L68">                        return InboundOrder</span>
+<span class="fc" id="L69">                                        .builder()</span>
+<span class="fc" id="L70">                                        .agent(agent)</span>
+<span class="fc" id="L71">                                        .orderNumber(source.getOrderNumber())</span>
+<span class="fc" id="L72">                                        .orderDate(source.getOrderDate())</span>
+<span class="fc" id="L73">                                        .section(section)</span>
+<span class="fc" id="L74">                                        .batchStockList(batchStock)</span>
+<span class="fc" id="L75">                                        .build();</span>
+                };
+        }
+
+        private Converter&lt;InboundOrder, InboundOrderResponse&gt; gedtInboundOrderUpdateRequestToInboundOrderConverter() {
+<span class="fc" id="L80">                return context -&gt; {</span>
+<span class="fc" id="L81">                        InboundOrder source = context.getSource();</span>
+
+<span class="fc" id="L83">                        List&lt;BatchStockResponse&gt; batchStock = source.getBatchStockList().stream().map(</span>
+<span class="fc" id="L84">                                        batchStockSource -&gt; BatchStockResponse.builder()</span>
+<span class="fc" id="L85">                                                        .batchNumber(batchStockSource.getBatchNumber())</span>
+<span class="fc" id="L86">                                                        .currentQuantity(batchStockSource.getCurrentQuantity())</span>
+<span class="fc" id="L87">                                                        .currentTemperature(batchStockSource.getCurrentTemperature())</span>
+<span class="fc" id="L88">                                                        .minimumTemperature(batchStockSource.getMinimumTemperature())</span>
+<span class="fc" id="L89">                                                        .dueDate(batchStockSource.getDueDate())</span>
+<span class="fc" id="L90">                                                        .initialQuantity(batchStockSource.getInitialQuantity())</span>
+<span class="fc" id="L91">                                                        .manufacturingDate(batchStockSource.getManufacturingDate())</span>
+<span class="fc" id="L92">                                                        .manufacturingTime(batchStockSource.getManufacturingTime())</span>
+<span class="fc" id="L93">                                                        .productId(batchStockSource.getProducts().getId())</span>
+<span class="fc" id="L94">                                                        .build())</span>
+<span class="fc" id="L95">                                        .collect(Collectors.toList());</span>
+
+<span class="fc" id="L97">                        return InboundOrderResponse</span>
+<span class="fc" id="L98">                                        .builder()</span>
+<span class="fc" id="L99">                                        .batchStock(batchStock)</span>
+<span class="fc" id="L100">                                        .build();</span>
+                };
+        }
+
+        private Converter&lt;InboundOrderPostRequest, InboundOrder&gt; getInboundOrderPostRequestToInboundOrderConverter() {
+<span class="fc" id="L105">                return context -&gt; {</span>
+<span class="nc" id="L106">                        InboundOrderPostRequest source = context.getSource();</span>
+
+<span class="nc" id="L108">                        Agent agent = Agent.builder().id(source.getAgentId()).build();</span>
+<span class="nc" id="L109">                        Section section = Section.builder().id(source.getSectionId()).build();</span>
+<span class="nc" id="L110">                        Set&lt;BatchStock&gt; batchStock = source.getBatchStock().stream().map(</span>
+<span class="nc" id="L111">                                        batchStockUpdateRequest -&gt; BatchStock.builder()</span>
+<span class="nc" id="L112">                                                        .batchNumber(batchStockUpdateRequest.getBatchNumber())</span>
+<span class="nc" id="L113">                                                        .currentQuantity(batchStockUpdateRequest.getCurrentQuantity())</span>
+<span class="nc" id="L114">                                                        .currentTemperature(</span>
+<span class="nc" id="L115">                                                                        batchStockUpdateRequest.getCurrentTemperature())</span>
+<span class="nc" id="L116">                                                        .dueDate(batchStockUpdateRequest.getDueDate())</span>
+<span class="nc" id="L117">                                                        .initialQuantity(batchStockUpdateRequest.getInitialQuantity())</span>
+<span class="nc" id="L118">                                                        .manufacturingDate(</span>
+<span class="nc" id="L119">                                                                        batchStockUpdateRequest.getManufacturingDate())</span>
+<span class="nc" id="L120">                                                        .manufacturingTime(</span>
+<span class="nc" id="L121">                                                                        batchStockUpdateRequest.getManufacturingTime())</span>
+<span class="nc" id="L122">                                                        .minimumTemperature(</span>
+<span class="nc" id="L123">                                                                        batchStockUpdateRequest.getMinimumTemperature())</span>
+<span class="nc" id="L124">                                                        .products(Product.builder()</span>
+<span class="nc" id="L125">                                                                        .id(batchStockUpdateRequest.getProductId())</span>
+<span class="nc" id="L126">                                                                        .build())</span>
+<span class="nc" id="L127">                                                        .build())</span>
+<span class="nc" id="L128">                                        .collect(Collectors.toSet());</span>
+
+<span class="nc" id="L130">                        return InboundOrder</span>
+<span class="nc" id="L131">                                        .builder()</span>
+<span class="nc" id="L132">                                        .agent(agent)</span>
+<span class="nc" id="L133">                                        .orderDate(source.getOrderDate())</span>
+<span class="nc" id="L134">                                        .section(section)</span>
+<span class="nc" id="L135">                                        .batchStockList(batchStock)</span>
+<span class="nc" id="L136">                                        .build();</span>
+                };
+        }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

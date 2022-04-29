@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InboundOrderController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dh-projeto-integrador</a> &gt; <a href="index.source.html" class="el_package">br.com.meli.dhprojetointegrador.controller</a> &gt; <span class="el_source">InboundOrderController.java</span></div><h1>InboundOrderController.java</h1><pre class="source lang-java linenums">package br.com.meli.dhprojetointegrador.controller;
+
+import javax.validation.Valid;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import br.com.meli.dhprojetointegrador.dto.request.InboundOrderPostRequest;
+import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
+import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
+import br.com.meli.dhprojetointegrador.entity.InboundOrder;
+import br.com.meli.dhprojetointegrador.service.InboundOrderService;
+import lombok.AllArgsConstructor;
+
+@RestController
+@RequestMapping(&quot;/api/v1/fresh-products/inboundorder&quot;)
+<span class="fc" id="L20">@AllArgsConstructor</span>
+public class InboundOrderController {
+
+	private final InboundOrderService inboundOrderService;
+	private final ModelMapper modelMapper;
+
+	/**
+	 * Endpoint for updating InboundOrders, it assumes that the nested objects
+	 * already exists, such as Product, Section, etc. If it is not able to find
+	 * them, it will throw a BusinessValidationException, which will then translate
+	 * into a status 422 response.
+	 * 
+	 * @param inboundOrderUpdateRequest contract of the inbound order that needs to
+	 *                                  be updated
+	 * @return inboud order updated or exception in case it does not fulfill the
+	 *         request
+	 */
+	@PutMapping
+	public ResponseEntity&lt;?&gt; update(@Valid @RequestBody InboundOrderUpdateRequest inboundOrderUpdateRequest) {
+<span class="fc" id="L39">		InboundOrder inboundOrder = modelMapper.map(inboundOrderUpdateRequest, InboundOrder.class);</span>
+<span class="fc" id="L40">		InboundOrder updatedInboundOrder = inboundOrderService.update(inboundOrder);</span>
+<span class="fc" id="L41">		InboundOrderResponse inboundOrderResponse = modelMapper.map(updatedInboundOrder, InboundOrderResponse.class);</span>
+
+<span class="fc" id="L43">		return ResponseEntity.ok().body(inboundOrderResponse);</span>
+	}
+
+	/**
+	 * Author: Pedro Dalpa
+	 * Method: create
+	 * Description: salva o inbound order e cria os registros no stock conforme
+	 * necessário
+	 * 
+	 * @param inboundOrder an instance of InboundOrder to create
+	 * @return instance of InboundOrder created
+	 *
+	 */
+
+	@PostMapping
+	public ResponseEntity&lt;InboundOrderResponse&gt; create(
+			@Valid @RequestBody InboundOrderPostRequest inboundOrderPostRequest) {
+<span class="nc" id="L60">		InboundOrder inboundOrder = modelMapper.map(inboundOrderPostRequest, InboundOrder.class);</span>
+<span class="nc" id="L61">		InboundOrder createInboundOrder = inboundOrderService.create(inboundOrder);</span>
+<span class="nc" id="L62">		InboundOrderResponse inboundOrderResponse = modelMapper.map(createInboundOrder, InboundOrderResponse.class);</span>
+<span class="nc" id="L63">		return ResponseEntity.ok().body(inboundOrderResponse);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

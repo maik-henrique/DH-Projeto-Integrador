@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BatchStockMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dh-projeto-integrador</a> &gt; <a href="index.source.html" class="el_package">br.com.meli.dhprojetointegrador.mapper</a> &gt; <span class="el_source">BatchStockMapperImpl.java</span></div><h1>BatchStockMapperImpl.java</h1><pre class="source lang-java linenums">package br.com.meli.dhprojetointegrador.mapper;
+
+import br.com.meli.dhprojetointegrador.dto.BatchStockDTO;
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.entity.BatchStock.BatchStockBuilder;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2022-04-28T23:48:28-0300&quot;,
+    comments = &quot;version: 1.4.2.Final, compiler: javac, environment: Java 11.0.14 (Azul Systems, Inc.)&quot;
+)
+@Component
+<span class="fc" id="L17">public class BatchStockMapperImpl extends BatchStockMapper {</span>
+
+    @Override
+    public List&lt;BatchStock&gt; toBatchStock(List&lt;BatchStockDTO&gt; batchStockDTO) {
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        if ( batchStockDTO == null ) {</span>
+<span class="nc" id="L22">            return null;</span>
+        }
+
+<span class="nc" id="L25">        List&lt;BatchStock&gt; list = new ArrayList&lt;BatchStock&gt;( batchStockDTO.size() );</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        for ( BatchStockDTO batchStockDTO1 : batchStockDTO ) {</span>
+<span class="nc" id="L27">            list.add( batchStockDTOToBatchStock( batchStockDTO1 ) );</span>
+<span class="nc" id="L28">        }</span>
+
+<span class="nc" id="L30">        return list;</span>
+    }
+
+    protected BatchStock batchStockDTOToBatchStock(BatchStockDTO batchStockDTO) {
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if ( batchStockDTO == null ) {</span>
+<span class="nc" id="L35">            return null;</span>
+        }
+
+<span class="nc" id="L38">        BatchStockBuilder batchStock = BatchStock.builder();</span>
+
+<span class="nc" id="L40">        batchStock.batchNumber( batchStockDTO.getBatchNumber() );</span>
+<span class="nc" id="L41">        batchStock.currentQuantity( batchStockDTO.getCurrentQuantity() );</span>
+<span class="nc" id="L42">        batchStock.dueDate( batchStockDTO.getDueDate() );</span>
+<span class="nc" id="L43">        batchStock.initialQuantity( batchStockDTO.getInitialQuantity() );</span>
+<span class="nc" id="L44">        batchStock.manufacturingDate( batchStockDTO.getManufacturingDate() );</span>
+<span class="nc" id="L45">        batchStock.manufacturingTime( batchStockDTO.getManufacturingTime() );</span>
+<span class="nc" id="L46">        batchStock.currentTemperature( batchStockDTO.getCurrentTemperature() );</span>
+<span class="nc" id="L47">        batchStock.minimumTemperature( batchStockDTO.getMinimumTemperature() );</span>
+<span class="nc" id="L48">        batchStock.products( batchStockDTO.getProducts() );</span>
+<span class="nc" id="L49">        batchStock.inboundOrder( batchStockDTO.getInboundOrder() );</span>
+
+<span class="nc" id="L51">        return batchStock.build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

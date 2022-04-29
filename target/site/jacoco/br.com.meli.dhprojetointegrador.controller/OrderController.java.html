@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dh-projeto-integrador</a> &gt; <a href="index.source.html" class="el_package">br.com.meli.dhprojetointegrador.controller</a> &gt; <span class="el_source">OrderController.java</span></div><h1>OrderController.java</h1><pre class="source lang-java linenums">package br.com.meli.dhprojetointegrador.controller;
+
+import java.net.URI;
+import java.util.List;
+import javax.validation.Valid;
+import br.com.meli.dhprojetointegrador.dto.response.CartProductDTO;
+import br.com.meli.dhprojetointegrador.entity.CartProduct;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
+import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
+import br.com.meli.dhprojetointegrador.dto.response.TotalPrice;
+import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
+import br.com.meli.dhprojetointegrador.service.CartProductService;
+import lombok.AllArgsConstructor;
+import br.com.meli.dhprojetointegrador.service.OrderService;
+
+
+<span class="fc" id="L21">@AllArgsConstructor</span>
+@RestController
+@RequestMapping(OrderController.baseUri)
+public class OrderController {
+
+    public static final String baseUri = &quot;/api/v1/fresh-products/orders/&quot;;
+
+    private final OrderService orderService;
+
+    private final CartProductService cartProductService;
+
+    /**
+     * Author: Bruno Mendes
+     * Method: PurchaseOrderProductRegistration
+     * Description: Controller para realizar a operação de criar uma ordem de compra
+     */
+    @PostMapping(&quot;&quot;)
+    public ResponseEntity&lt;TotalPrice&gt; PurchaseOrderProductRegistration(@Valid @RequestBody PurchaseOrderInput input,
+            UriComponentsBuilder uriBuilder) {
+<span class="fc" id="L40">        OrderIntermediateDTO result = orderService.createOrder(input);</span>
+<span class="fc" id="L41">        TotalPrice totalPrice = TotalPrice.builder().totalPrice(result.getTotalPrice()).build();</span>
+<span class="fc" id="L42">        URI uri = uriBuilder</span>
+<span class="fc" id="L43">                .path(baseUri.concat(&quot;/{id}&quot;))</span>
+<span class="fc" id="L44">                .buildAndExpand(result.getCreatedID())</span>
+<span class="fc" id="L45">                .toUri();</span>
+<span class="fc" id="L46">        return ResponseEntity.created(uri).body(totalPrice);</span>
+    }
+
+    /**
+     * @Author: David
+     * @Methodo: Mudar Cart para Aberto ou Finalizado na Order
+     * @Description: Modifique o pedido existente. torná-lo do tipo de carrinho para modificar - ABERTO/FINALIZADO
+     * @param idorder
+     * @return
+     */
+    @PutMapping(&quot;{idorder}&quot;)
+    public ResponseEntity&lt;PurchaseOrder&gt; ModifyExistingOrder(@Valid @PathVariable Long idorder){
+<span class="fc" id="L58">        PurchaseOrder newOrderStatus = orderService.atualizar(idorder);</span>
+<span class="fc" id="L59">        return ResponseEntity.ok(newOrderStatus);</span>
+    }
+
+    /**
+     *
+     * @param idOrder
+     * @return
+     */
+    @GetMapping
+    public ResponseEntity&lt;?&gt; ShowProductsOrder(@RequestParam Long idOrder) {
+<span class="nc" id="L69">        List&lt;CartProduct&gt; products = cartProductService.getProductsByOrderId(idOrder);</span>
+<span class="nc" id="L70">        return new ResponseEntity&lt;&gt;(CartProductDTO.convertToProductList(products), HttpStatus.OK);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

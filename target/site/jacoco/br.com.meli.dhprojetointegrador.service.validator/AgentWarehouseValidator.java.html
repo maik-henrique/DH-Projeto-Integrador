@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AgentWarehouseValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dh-projeto-integrador</a> &gt; <a href="index.source.html" class="el_package">br.com.meli.dhprojetointegrador.service.validator</a> &gt; <span class="el_source">AgentWarehouseValidator.java</span></div><h1>AgentWarehouseValidator.java</h1><pre class="source lang-java linenums">package br.com.meli.dhprojetointegrador.service.validator;
+
+import br.com.meli.dhprojetointegrador.entity.Section;
+import br.com.meli.dhprojetointegrador.entity.Warehouse;
+import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
+import br.com.meli.dhprojetointegrador.service.WarehouseService;
+import lombok.AllArgsConstructor;
+
+<span class="fc" id="L9">@AllArgsConstructor</span>
+public class AgentWarehouseValidator implements IInboundOrderValidator {
+
+    private Section section;
+    private Long agentId;
+    private WarehouseService warehouseService;
+
+    /**
+     * Author: Pedro Dalpa
+     * Method: validate
+     * Description: valida se o id do agente que foi passado esta ligado a aquele
+     * armazém
+     * 
+     */
+
+    @Override
+    public void validate() {
+<span class="fc" id="L26">        Warehouse warehouse = warehouseService.findWarehouseIdBySection(section);</span>
+
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (agentId != warehouse.getId()) {</span>
+<span class="fc" id="L29">            throw new BusinessValidatorException(&quot;Agent id not valid&quot;);</span>
+        }
+<span class="fc" id="L31">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

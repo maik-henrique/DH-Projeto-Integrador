@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BatchStockUpdateRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dh-projeto-integrador</a> &gt; <a href="index.source.html" class="el_package">br.com.meli.dhprojetointegrador.dto.request</a> &gt; <span class="el_source">BatchStockUpdateRequest.java</span></div><h1>BatchStockUpdateRequest.java</h1><pre class="source lang-java linenums">package br.com.meli.dhprojetointegrador.dto.request;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import lombok.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+<span class="fc" id="L16">@NoArgsConstructor</span>
+@Getter
+<span class="fc" id="L18">@Setter</span>
+<span class="pc" id="L19">@Builder</span>
+<span class="fc" id="L20">@AllArgsConstructor</span>
+public class BatchStockUpdateRequest {
+
+    @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="fc" id="L24">    private Long batchNumber;</span>
+
+    @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="fc" id="L27">    private Long productId;</span>
+
+    @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="fc" id="L30">    private Float currentTemperature;</span>
+
+    @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="fc" id="L33">    private Float minimumTemperature;</span>
+
+    @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="fc" id="L36">    private Integer initialQuantity;</span>
+
+    @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="fc" id="L39">    private Integer currentQuantity;</span>
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="fc" id="L44">    private LocalDate dueDate;</span>
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="fc" id="L49">    private LocalDate manufacturingDate;</span>
+
+    @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)
+<span class="fc" id="L55">    private LocalDateTime manufacturingTime;</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

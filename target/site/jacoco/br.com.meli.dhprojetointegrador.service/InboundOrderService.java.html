@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InboundOrderService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dh-projeto-integrador</a> &gt; <a href="index.source.html" class="el_package">br.com.meli.dhprojetointegrador.service</a> &gt; <span class="el_source">InboundOrderService.java</span></div><h1>InboundOrderService.java</h1><pre class="source lang-java linenums">package br.com.meli.dhprojetointegrador.service;
+
+import java.util.List;
+import org.springframework.stereotype.Service;
+import br.com.meli.dhprojetointegrador.entity.Agent;
+import br.com.meli.dhprojetointegrador.entity.InboundOrder;
+import br.com.meli.dhprojetointegrador.entity.Product;
+import br.com.meli.dhprojetointegrador.entity.Section;
+import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
+import br.com.meli.dhprojetointegrador.repository.AgentRepository;
+import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
+import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
+import br.com.meli.dhprojetointegrador.repository.ProductRepository;
+import br.com.meli.dhprojetointegrador.repository.SectionRepository;
+import br.com.meli.dhprojetointegrador.service.validator.AgentWarehouseValidator;
+import br.com.meli.dhprojetointegrador.service.validator.IInboundOrderValidator;
+import br.com.meli.dhprojetointegrador.service.validator.SectionCategoryValidator;
+import br.com.meli.dhprojetointegrador.service.validator.SectionValidator;
+import br.com.meli.dhprojetointegrador.service.validator.SpaceAvailableValidator;
+import lombok.AllArgsConstructor;
+
+@Service
+<span class="fc" id="L23">@AllArgsConstructor</span>
+public class InboundOrderService {
+    private final InboundOrderRepository inboundOrderRepository;
+    private final SectionService sectionService;
+    private final AgentService agentService;
+    private final ProductService productService;
+    private List&lt;IInboundOrderValidator&gt; validators;
+    private WarehouseService warehouseService;
+
+    private final SectionRepository sectionRepository;
+    private final AgentRepository agentRepository;
+    private final BatchStockRepository batchStockRepository;
+    private final ProductRepository productRepository;
+
+    /**
+     * Given an InboundOrder request it updates it's related fields if they do
+     * exist.
+     * 
+     * @param inboundOrder an instance of InboundOrder to be updated
+     * @return instance of InboundOrder updated
+     * @throws BusinessValidatorException in case it fails to update the
+     *                                    InboundOrder properly
+     */
+    public InboundOrder update(InboundOrder inboundOrder) throws BusinessValidatorException {
+<span class="fc" id="L47">        Section section = sectionService.findSectionById(inboundOrder.getSection().getId());</span>
+<span class="fc" id="L48">        Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());</span>
+<span class="fc" id="L49">        InboundOrder oldInboundOrder = findInboundOrderByOrderNumber(inboundOrder.getOrderNumber());</span>
+
+<span class="fc" id="L51">        inboundOrder.getBatchStockList().forEach(batchStock -&gt; {</span>
+<span class="fc" id="L52">            Product product = productService.findProductById(batchStock.getProducts().getId());</span>
+<span class="fc" id="L53">            batchStock.setProducts(product);</span>
+<span class="fc" id="L54">            batchStock.setInboundOrder(oldInboundOrder);</span>
+<span class="fc" id="L55">        });</span>
+
+<span class="fc" id="L57">        initializeIInboundOrderValidators(section, inboundOrder, agent);</span>
+<span class="fc" id="L58">        validators.forEach(IInboundOrderValidator::validate);</span>
+
+<span class="fc" id="L60">        oldInboundOrder.setOrderDate(inboundOrder.getOrderDate());</span>
+<span class="fc" id="L61">        oldInboundOrder.setSection(section);</span>
+<span class="fc" id="L62">        oldInboundOrder.setAgent(agent);</span>
+<span class="fc" id="L63">        oldInboundOrder.setBatchStockList(inboundOrder.getBatchStockList());</span>
+
+<span class="fc" id="L65">        return inboundOrderRepository.save(oldInboundOrder);</span>
+    }
+
+    private InboundOrder findInboundOrderByOrderNumber(Long orderNumber) {
+<span class="fc" id="L69">        return inboundOrderRepository</span>
+<span class="fc" id="L70">                .findByOrderNumber(orderNumber)</span>
+<span class="fc" id="L71">                .orElseThrow(</span>
+<span class="nc" id="L72">                        () -&gt; new BusinessValidatorException(&quot;Inbound order not found with the provider order number&quot;));</span>
+    }
+
+    private void initializeIInboundOrderValidators(Section section, InboundOrder inboundOrder, Agent agent) {
+<span class="fc" id="L76">        validators = List.of(</span>
+                new SectionCategoryValidator(section, inboundOrder),
+                new SpaceAvailableValidator(section, inboundOrder),
+<span class="fc" id="L79">                new SectionValidator(sectionService, section.getId()),</span>
+<span class="fc" id="L80">                new AgentWarehouseValidator(section, agent.getId(), warehouseService));</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Author: Pedro Dalpa
+     * Method: create
+     * Description: salva o inbound order e cria os registros no stock conforme
+     * necessário
+     * 
+     * @param inboundOrder an instance of InboundOrder to create
+     * @return instance of InboundOrder created
+     * @throws BusinessValidatorException in case it fails to created the
+     *                                    InboundOrder properly
+     */
+
+    public InboundOrder create(InboundOrder inboundOrder) {
+<span class="fc" id="L96">        Section section = sectionService.findSectionById(inboundOrder.getSection().getId());</span>
+<span class="fc" id="L97">        Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());</span>
+
+<span class="fc" id="L99">        inboundOrder.getBatchStockList().forEach(batchStock -&gt; {</span>
+<span class="fc" id="L100">            Product product = productService.findProductById(batchStock.getProducts().getId());</span>
+<span class="fc" id="L101">            batchStock.setProducts(product);</span>
+<span class="fc" id="L102">        });</span>
+
+<span class="fc" id="L104">        initializeIInboundOrderValidators(section, inboundOrder, agent);</span>
+<span class="fc" id="L105">        validators.forEach(IInboundOrderValidator::validate);</span>
+
+<span class="fc" id="L107">        inboundOrder.setAgent(agent);</span>
+<span class="fc" id="L108">        inboundOrder.setSection(section);</span>
+
+<span class="fc" id="L110">        return inboundOrderRepository.save(inboundOrder);</span>
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

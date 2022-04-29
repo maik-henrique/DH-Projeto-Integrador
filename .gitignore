@@ -1,5 +1,4 @@
 .idea
-/target/*
 Projeto-Integrador.iml
 HELP.md
 !.mvn/wrapper/maven-wrapper.jar

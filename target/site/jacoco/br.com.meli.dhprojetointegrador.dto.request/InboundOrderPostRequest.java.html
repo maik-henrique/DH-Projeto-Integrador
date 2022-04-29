@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InboundOrderPostRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dh-projeto-integrador</a> &gt; <a href="index.source.html" class="el_package">br.com.meli.dhprojetointegrador.dto.request</a> &gt; <span class="el_source">InboundOrderPostRequest.java</span></div><h1>InboundOrderPostRequest.java</h1><pre class="source lang-java linenums">package br.com.meli.dhprojetointegrador.dto.request;
+
+import java.time.LocalDate;
+import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+<span class="nc bnc" id="L17" title="All 38 branches missed.">@Data</span>
+<span class="nc" id="L18">@Builder</span>
+<span class="nc" id="L19">@AllArgsConstructor</span>
+<span class="nc" id="L20">@NoArgsConstructor</span>
+public class InboundOrderPostRequest {
+
+  @JsonDeserialize(using = LocalDateDeserializer.class)
+  @JsonSerialize(using = LocalDateSerializer.class)
+  @NotBlank(message = &quot;O campo nome não pode estar em branco&quot;)
+  @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="nc" id="L27">  private LocalDate orderDate;</span>
+
+  @NotBlank(message = &quot;O campo nome não pode estar em branco&quot;)
+  @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="nc" id="L31">  private Long sectionId;</span>
+
+  @NotBlank(message = &quot;O campo nome não pode estar em branco&quot;)
+  @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="nc" id="L35">  private Long agentId;</span>
+
+  @NotBlank(message = &quot;O campo nome não pode estar em branco&quot;)
+  @NotNull(message = &quot;O campo nome não pode ser nulo&quot;)
+<span class="nc" id="L39">  private List&lt;@Valid BatchStockPostRequest&gt; batchStock;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

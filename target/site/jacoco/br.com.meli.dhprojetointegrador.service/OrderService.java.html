@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">dh-projeto-integrador</a> &gt; <a href="index.source.html" class="el_package">br.com.meli.dhprojetointegrador.service</a> &gt; <span class="el_source">OrderService.java</span></div><h1>OrderService.java</h1><pre class="source lang-java linenums">package br.com.meli.dhprojetointegrador.service;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import br.com.meli.dhprojetointegrador.dto.request.ProductInput;
+import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
+import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.entity.Buyer;
+import br.com.meli.dhprojetointegrador.entity.CartProduct;
+import br.com.meli.dhprojetointegrador.entity.Product;
+import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
+import br.com.meli.dhprojetointegrador.enums.StatusEnum;
+import br.com.meli.dhprojetointegrador.exception.PurchaseOrderNotFoundException;
+import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
+import br.com.meli.dhprojetointegrador.repository.CartProductRepository;
+import br.com.meli.dhprojetointegrador.repository.OrderRepository;
+import br.com.meli.dhprojetointegrador.repository.ProductRepository;
+import br.com.meli.dhprojetointegrador.repository.PurchaseOrderRepository;
+import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
+import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@Service
+<span class="fc" id="L33">@AllArgsConstructor</span>
+<span class="fc" id="L34">@NoArgsConstructor</span>
+public class OrderService {
+
+    @Autowired
+    private ValidateBuyer validateBuyer;
+
+    @Autowired
+    private ValidadeProduct validadeProduct;
+
+    @Autowired
+    private CartProductRepository cartProductRepository;
+
+    @Autowired
+    private PurchaseOrderRepository purchaseOrderRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private BatchStockRepository batchStockRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    /**
+     * Author: David
+     * Methodo: Mudar Cart para Aberto ou Finalizado na Order
+     * Description: Modifique o pedido existente. torná-lo do tipo de carrinho para modificar - ABERTO/FINALIZADO
+     */
+    //@CachePut(value = &quot;UpdateStatusOrder&quot;, key = &quot;#idorder&quot;)
+    public PurchaseOrder atualizar(Long idorder) {
+
+        try {
+<span class="fc" id="L67">            PurchaseOrder updateStatus = orderRepository.getById(idorder);</span>
+
+<span class="fc bfc" id="L69" title="All 2 branches covered.">            if (updateStatus.getStatus().equals(StatusEnum.ABERTO)) {</span>
+<span class="fc" id="L70">                updateStatus.setStatus(StatusEnum.FINALIZADO);</span>
+            } else {
+<span class="fc" id="L72">                updateStatus.setStatus(StatusEnum.ABERTO);</span>
+            }
+
+<span class="fc" id="L75">            return orderRepository.save(updateStatus);</span>
+
+<span class="nc" id="L77">        } catch (EntityNotFoundException e) {</span>
+<span class="nc" id="L78">            throw new PurchaseOrderNotFoundException(&quot;Esta ordem nao foi encontrada na base de dados!&quot;);</span>
+        }
+    }
+
+    /**
+     * Author: Bruno Mendes
+     * Method: createCartProduct
+     * Description: salva um produto do carrinho na tabela cartProduct
+     */
+    private void createCartProduct(Integer qtd, Long id, PurchaseOrder order) {
+<span class="fc" id="L88">        Product product = productRepository.findById(id).get();</span>
+<span class="fc" id="L89">        CartProduct cartProduct = CartProduct.builder()</span>
+<span class="fc" id="L90">                .product(product)</span>
+<span class="fc" id="L91">                .purchaseOrder(order)</span>
+<span class="fc" id="L92">                .quantity(qtd)</span>
+<span class="fc" id="L93">                .build();</span>
+<span class="fc" id="L94">        cartProductRepository.save(cartProduct);</span>
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * Author: Bruno Mendes
+     * Method: updateCurrentQuantity
+     * Description: Atualiza a quantidade de produtos em cada batchstock após a
+     * compra
+     */
+    private void updateCurrentQuantity(Integer qtd, Long id) {
+<span class="fc" id="L104">        AtomicReference&lt;Integer&gt; acc = new AtomicReference&lt;&gt;(qtd);</span>
+<span class="fc" id="L105">        Product product = productRepository.findById(id).get();</span>
+<span class="fc" id="L106">        Set&lt;BatchStock&gt; batchStockList = product.getBatchStockList();</span>
+<span class="fc" id="L107">        batchStockList.stream().forEach(b -&gt; {</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">            if (b.getCurrentQuantity() &gt; 0) {</span>
+<span class="fc" id="L109">                Integer stock = b.getCurrentQuantity();</span>
+<span class="pc bpc" id="L110" title="1 of 4 branches missed.">                while (stock &gt; 0 &amp;&amp; acc.get() &gt; 0) {</span>
+<span class="fc" id="L111">                    stock -= 1;</span>
+<span class="fc" id="L112">                    b.setCurrentQuantity(b.getCurrentQuantity() - 1);</span>
+<span class="fc" id="L113">                    acc.updateAndGet(v -&gt; v - 1);</span>
+                }
+<span class="fc" id="L115">                b.setCurrentQuantity(stock);</span>
+<span class="fc" id="L116">                batchStockRepository.save(b);</span>
+            }
+<span class="fc" id="L118">        });</span>
+<span class="fc" id="L119">    }</span>
+
+    /**
+     * Author: Bruno Mendes
+     * Method: calculateTotalCart
+     * Description: recebe uma lista de produtos e quantodades e retorna o valor
+     * total do carrinho
+     */
+    private Double calculateTotalCart(List&lt;ProductInput&gt; productInputList, List&lt;Product&gt; productList) {
+<span class="fc" id="L128">        AtomicReference&lt;BigDecimal&gt; totalPrice = new AtomicReference&lt;&gt;(new BigDecimal(0.00));</span>
+
+<span class="fc" id="L130">        productInputList.forEach(cartProduct -&gt; {</span>
+<span class="fc" id="L131">            BigDecimal price = productList.stream().filter(p -&gt; p.getId().equals(cartProduct.getProductId()))</span>
+<span class="fc" id="L132">                    .findFirst().get().getPrice();</span>
+<span class="fc" id="L133">            totalPrice.updateAndGet(v -&gt; v.add(price.multiply(BigDecimal.valueOf(cartProduct.getQuantity()))));</span>
+<span class="fc" id="L134">        });</span>
+
+<span class="fc" id="L136">        return totalPrice.get().doubleValue();</span>
+    }
+
+    /**
+     * Author: Bruno Mendes
+     * Method: createPurchaseOrder
+     * Description: Recebe um Buyer e cria uma purchaseOrder
+     */
+    private PurchaseOrder createPurchaseOrder(Buyer buyer, LocalDate date) {
+<span class="fc" id="L145">        PurchaseOrder purchaseOrder = PurchaseOrder.builder().buyer(buyer).status(StatusEnum.FINALIZADO).date(date)</span>
+<span class="fc" id="L146">                .build();</span>
+<span class="fc" id="L147">        return purchaseOrderRepository.save(purchaseOrder);</span>
+    }
+
+    /**
+     * Author: Bruno Mendes
+     * Method: createOrder
+     * Description: Recebe uma ordem de compras, realiza as validações e implementa
+     * a compra e retorna o preço total do carrinho
+     */
+    public OrderIntermediateDTO createOrder(PurchaseOrderInput input) {
+
+<span class="fc" id="L158">        Buyer buyer = validateBuyer.getBuyer(input.getBuyerId());</span>
+
+<span class="fc" id="L160">        List&lt;ProductInput&gt; productInputList = input.getProducts();</span>
+<span class="fc" id="L161">        List&lt;Product&gt; productList = productInputList.stream()</span>
+<span class="fc" id="L162">                .map(o -&gt; validadeProduct.validateQuantity(o.getQuantity(), o.getProductId()))</span>
+<span class="fc" id="L163">                .collect(Collectors.toList());</span>
+
+<span class="fc" id="L165">        PurchaseOrder purchaseOrder = this.createPurchaseOrder(buyer, input.getDate());</span>
+
+<span class="fc" id="L167">        productInputList.forEach(o -&gt; {</span>
+<span class="fc" id="L168">            this.createCartProduct(o.getQuantity(), o.getProductId(), purchaseOrder);</span>
+<span class="fc" id="L169">            this.updateCurrentQuantity(o.getQuantity(), o.getProductId());</span>
+<span class="fc" id="L170">        });</span>
+
+<span class="fc" id="L172">        Double totalPrice = this.calculateTotalCart(productInputList, productList);</span>
+
+<span class="fc" id="L174">        return OrderIntermediateDTO.builder()</span>
+<span class="fc" id="L175">                .createdID(purchaseOrder.getId())</span>
+<span class="fc" id="L176">                .totalPrice(totalPrice)</span>
+<span class="fc" id="L177">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
