@@ -29,18 +29,6 @@ pipeline {
              }
         }
 
-
-        stage("Code coverage") {
-             steps {
-                   jacoco(
-                         execPattern: '**/path_to_file/jacoco.exec',
-                         classPattern: '**/coverage/**',
-                         sourcePattern: '**/coverage/**',
-                         inclusionPattern: '**/*.class'
-                         )
-                   }
-        }
-
         stage("build & SonarQube analysis") {
             steps {
                     withSonarQubeEnv('My SonarQube Server') {
