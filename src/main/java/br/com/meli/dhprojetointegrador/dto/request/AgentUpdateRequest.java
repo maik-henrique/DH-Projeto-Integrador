@@ -12,15 +12,13 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class AgentUpdateRequest {
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
+    
     @NotNull(message = "O campo nome não pode ser nulo")
     private Long id;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private String name;
 
-    @NotBlank(message = "O campo nome não pode estar em branco")
     @NotNull(message = "O campo nome não pode ser nulo")
     private String password;
 }

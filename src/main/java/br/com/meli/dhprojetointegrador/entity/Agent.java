@@ -27,11 +27,11 @@ public class Agent {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank(message = "O campo nome não pode estar em branco")
+  
   @NotNull(message = "O campo nome não pode ser nulo")
   private String name;
 
-  @NotBlank(message = "O campo senha não pode estar em branco")
+  
   @NotNull(message = "O campo senha não pode ser nulo")
   @Size(min = 6, max = 8, message = "Senha tem que ser de 6 a 8 caracteres!")
   private String password;

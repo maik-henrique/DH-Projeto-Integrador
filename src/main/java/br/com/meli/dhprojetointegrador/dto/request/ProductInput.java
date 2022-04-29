@@ -16,11 +16,8 @@ public class ProductInput {
     @NumberFormat
     private Long productId;
 
-
     @NotNull(message = "O campo nome não pode ser nulo")
     @NumberFormat
     private Integer quantity;
-
-
 
 }

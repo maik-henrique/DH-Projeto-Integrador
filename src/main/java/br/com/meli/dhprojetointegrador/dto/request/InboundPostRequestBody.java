@@ -20,23 +20,19 @@ import javax.validation.constraints.NotNull;
 public class InboundPostRequestBody {
 
   @NotNull(message = "O campo nome não pode ser nulo")
-  @NotBlank(message = "O campo nome não pode estar em branco")
+  
   @DateTimeFormat
   private Date orderDate;
 
-  @NotBlank(message = "O campo nome não pode estar em branco")
   @NumberFormat
   @NotNull(message = "O campo nome não pode ser nulo")
   private Long agentId;
 
-  @NotBlank(message = "O campo nome não pode estar em branco")
   @NumberFormat
   @NotNull(message = "O campo nome não pode ser nulo")
   private Long sectionId;
 
-  @NotBlank(message = "O campo nome não pode estar em branco")
   @NotNull(message = "O campo nome não pode ser nulo")
   private Set<BatchStockDTO> batchStock;
-
 
 }

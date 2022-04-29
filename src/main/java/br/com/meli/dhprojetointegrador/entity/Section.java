@@ -21,7 +21,7 @@ public class Section {
     private Long id;
 
     @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
+    
     private String name;
 
     @NotNull(message = "O campo nome não pode ser nulo")

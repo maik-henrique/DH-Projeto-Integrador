@@ -27,7 +27,7 @@ public class Seller {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank(message = "O campo nome não pode estar em branco")
+  
   @NotNull(message = "O campo nome não pode ser nulo")
   private String name;
 
