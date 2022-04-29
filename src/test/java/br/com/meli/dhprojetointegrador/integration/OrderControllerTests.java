@@ -181,7 +181,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
      * Author: Micaela Alves
      * Test: Teste de integração do endpoint "/api/v1/fresh-products/orders"
      * Description: verifica se o endpoint retorna a lista de produtos de uma determinada order
-     * @throws Exception
+     *
      */
     @Test
     @DisplayName("Show Products in Purchase Order - when receiving valid id return all products")
@@ -190,7 +190,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
         Buyer buyer = setupBuyer();
         PurchaseOrder purchaseOrder = setupPurchaseOrder(buyer);
         purchaseOrderRepository.save(purchaseOrder);
-        CartProduct cartProduct = setupCartProduct(product1, purchaseOrder, LocalDate.of(2020, 4, 22));
+        CartProduct cartProduct = setupCartProduct(product1, purchaseOrder);
         cartProductRepository.save(cartProduct);
 
         MvcResult result = mock
@@ -212,7 +212,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
      * Author: Micaela Alves
      * Test: Teste de integração do endpoint "/api/v1/fresh-products/orders"
      * Description: verifica se o endpoint NotFound quando o id informado for invalido
-     * @throws Exception
+     *
      */
     @Test
     @DisplayName("Return 404 not found - when receiving invalid order id")
@@ -307,7 +307,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
         return inboundOrderRepository.save(inboundOrder);
     }
 
-    private CartProduct setupCartProduct(Product prod, PurchaseOrder order, LocalDate of) {
+    private CartProduct setupCartProduct(Product prod, PurchaseOrder order) {
         return CartProduct.builder()
                 .product(prod)
                 .purchaseOrder(order)
