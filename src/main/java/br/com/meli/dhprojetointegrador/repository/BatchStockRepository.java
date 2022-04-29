@@ -21,4 +21,6 @@ public interface BatchStockRepository extends JpaRepository<BatchStock, Long> {
                                               Sort sort);
 
 
+
+
 }

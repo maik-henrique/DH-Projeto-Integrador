@@ -39,7 +39,6 @@ public class BatchStockController {
       @RequestParam(defaultValue = "0", required = false) Integer numberOfDays) {
 
     List<BatchStock> batchStocks = batchStockService.filterStockBySection(sectionId, numberOfDays);
-
     return ResponseEntity.ok().body(batchStocks);
   }
 }
