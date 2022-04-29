@@ -29,13 +29,13 @@ pipeline {
              }
         }
 
-        stage("build & SonarQube analysis") {
+        /*stage("build & SonarQube analysis") {
              steps{
                     withSonarQubeEnv('sonarqube'){
                     sh 'mvn clean verify sonar:sonar -Dsonar.login=e59d919eca04f7ef6f89e9e29a2e30451f81e415'
                     }
              }
-        }
+        }*/
 
         stage("Quality Gate") {
             steps {
