@@ -25,16 +25,14 @@ pipeline {
              post {
                   success {
                   junit 'target/surefire-reports/**/*.xml'
+                  jacoco(
+                    execPattern: '**/path_to_file/jacoco.exec',
+                    classPattern: '**/coverage/**',
+                    sourcePattern: '**/coverage/**',
+                    inclusionPattern: '**/*.class'
+                  )
                    }
              }
-        }
-
-        stage('Archiving Reports') {
-            steps {
-                dir(path: '.') {
-                   publishHTML([allowMissing: true, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'target/site/jacoco/', reportFiles: 'index.html', reportName: 'Code Coverage', reportTitles: 'Code Coverage'])
-                }
-            }   
         }
 
         stage("build & SonarQube analysis") {
