@@ -1,15 +1,13 @@
 package br.com.meli.dhprojetointegrador.unit.service;
 
 import br.com.meli.dhprojetointegrador.entity.CartProduct;
-import br.com.meli.dhprojetointegrador.exception.BadRequestException;
+import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
 import br.com.meli.dhprojetointegrador.repository.CartProductRepository;
 import br.com.meli.dhprojetointegrador.service.CartProductService;
 import br.com.meli.dhprojetointegrador.unit.util.CardProductCreator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +58,6 @@ public class CartProductServiceTest {
     @DisplayName("TestPI-10 - getProductsByOrderId - Exception")
     public void getProductsByOrderId_should_return_error_when_invalid_id() {
         Mockito.when(repository.findByPurchaseOrderId(99)).thenReturn(new ArrayList());
-        assertThrows(BadRequestException.class, () -> service.getProductsByOrderId(99));
+        assertThrows(ResourceNotFound.class, () -> service.getProductsByOrderId(99));
     }
 }
