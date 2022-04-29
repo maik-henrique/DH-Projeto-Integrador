@@ -27,7 +27,6 @@ public class Product {
     
     private String name;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
     @DecimalMin(value = "0.0", inclusive = false)
     @Digits(integer = 3, fraction = 2)
     private BigDecimal price;

@@ -238,7 +238,7 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
         }
 
         private Product setupProduct(String name, Category category) {
-        Product product = Product.builder().name(name).category(category).price(BigDecimal.valueOf(32.000)).batchStockList(Collections.EMPTY_SET).build();
+        Product product = Product.builder().name(name).category(category).batchStockList(Collections.EMPTY_SET).build();
 
             productRepository.save(product);
             return product;
