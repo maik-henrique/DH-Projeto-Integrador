@@ -9,6 +9,7 @@ import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;

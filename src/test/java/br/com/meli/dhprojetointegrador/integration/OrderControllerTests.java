@@ -11,12 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -28,13 +24,10 @@ import java.util.List;
 import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+ 
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-@ActiveProfiles("test")
-@SpringBootTest
-@AutoConfigureMockMvc
-public class OrderControllerTests {
+public class OrderControllerTests extends BaseIntegrationControllerTests {
 
     @Autowired
     private MockMvc mock;
@@ -62,6 +55,12 @@ public class OrderControllerTests {
 
     @Autowired
     private InboundOrderRepository inboundOrderRepository;
+
+    @Autowired
+    private CartProductRepository cartProductRepository;
+
+    @Autowired
+    private PurchaseOrderRepository purchaseOrderRepository;
 
     @Test
     @DisplayName("Create Purchase Order - when receiving the right input function works properly")
@@ -183,6 +182,56 @@ public class OrderControllerTests {
         assertEquals(exceptionResponse.getTitle(), "Not Enough Products");
     }
 
+    /**
+     * Author: Micaela Alves
+     * Test: Teste de integração do endpoint "/api/v1/fresh-products/orders"
+     * Description: verifica se o endpoint retorna a lista de produtos de uma determinada order
+     *
+     */
+    @Test
+    @DisplayName("Show Products in Purchase Order - when receiving valid id return all products")
+    public void should_return_all_products_in_purchase_order() throws Exception{
+        Product product1 = setupProduct(1L, "Banana", new BigDecimal("2.50"));
+        Buyer buyer = setupBuyer();
+        PurchaseOrder purchaseOrder = setupPurchaseOrder(buyer);
+        purchaseOrderRepository.save(purchaseOrder);
+        CartProduct cartProduct = setupCartProduct(product1, purchaseOrder);
+        cartProductRepository.save(cartProduct);
+
+        MvcResult result = mock
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/orders/")
+                .param("idOrder", "1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String response = result.getResponse().getContentAsString();
+
+        List<CartProductDTO> products = objectMapper.readerForListOf(CartProductDTO.class).readValue(response);
+        assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+        assertNotNull(response);
+        assertFalse(products.isEmpty());
+
+    }
+
+    /**
+     * Author: Micaela Alves
+     * Test: Teste de integração do endpoint "/api/v1/fresh-products/orders"
+     * Description: verifica se o endpoint NotFound quando o id informado for invalido
+     *
+     */
+    @Test
+    @DisplayName("Return 404 not found - when receiving invalid order id")
+    public void should_return_not_found_when_invalid_orderId() throws Exception{
+        MvcResult result = mock
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/orders/")
+                        .param("idOrder", "1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
+
+    }
+
     private void setup() {
         setupBuyer();
         Warehouse warehouse = setupWarehouse();
@@ -271,4 +320,23 @@ public class OrderControllerTests {
 
         return inboundOrderRepository.save(inboundOrder);
     }
+
+    private CartProduct setupCartProduct(Product prod, PurchaseOrder order) {
+        return CartProduct.builder()
+                .product(prod)
+                .purchaseOrder(order)
+                .quantity(5)
+                .build();
+    }
+
+    private PurchaseOrder setupPurchaseOrder(Buyer buyer){
+        return PurchaseOrder.builder()
+                .id(1L)
+                .buyer(buyer)
+                .status(StatusEnum.ABERTO)
+                .date(LocalDate.of(2020, 4, 22))
+                .build();
+    }
+
+
 }

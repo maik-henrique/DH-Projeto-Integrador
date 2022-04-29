@@ -12,7 +12,7 @@ public class SectionService {
 
     private final SectionRepository sectionRepository;
 
-    public Section findSectionById(Long id) {
+    public Section findSectionById(Long id) throws BusinessValidatorException {
         return sectionRepository.findById(id)
                 .orElseThrow(() -> new BusinessValidatorException(String.format("Section of id %d not found", id)));
     }

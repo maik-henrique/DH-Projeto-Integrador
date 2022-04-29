@@ -60,9 +60,11 @@ public class OrderController {
     }
 
     /**
-     *
      * @param idOrder
      * @return
+     * Author: Micaela Alves
+     * Method: ShowProductsOrder
+     * Description: Controller retorna a lista de produtos pertencentes a uma PurchaseOrder
      */
     @GetMapping
     public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {

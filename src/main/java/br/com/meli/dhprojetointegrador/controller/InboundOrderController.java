@@ -24,12 +24,14 @@ public class InboundOrderController {
 	private final ModelMapper modelMapper;
 
 	/**
+	 * @Author: Maik
+	 *
 	 * Endpoint for updating InboundOrders, it assumes that the nested objects
 	 * already exists, such as Product, Section, etc. If it is not able to find
 	 * them, it will throw a BusinessValidationException, which will then translate
 	 * into a status 422 response.
 	 * 
-	 * @param inboundOrderUpdateRequest contract of the inbound order that needs to
+	 * inboundOrderUpdateRequest contract of the inbound order that needs to
 	 *                                  be updated
 	 * @return inboud order updated or exception in case it does not fulfill the
 	 *         request
@@ -49,11 +51,10 @@ public class InboundOrderController {
 	 * Description: salva o inbound order e cria os registros no stock conforme
 	 * necessário
 	 * 
-	 * @param inboundOrder an instance of InboundOrder to create
+	 * inboundOrder an instance of InboundOrder to create
 	 * @return instance of InboundOrder created
 	 *
 	 */
-
 	@PostMapping
 	public ResponseEntity<InboundOrderResponse> create(
 			@Valid @RequestBody InboundOrderPostRequest inboundOrderPostRequest) {

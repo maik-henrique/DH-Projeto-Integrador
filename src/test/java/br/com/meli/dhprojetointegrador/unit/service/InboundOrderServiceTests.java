@@ -4,7 +4,6 @@ import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
 import br.com.meli.dhprojetointegrador.service.*;
-import br.com.meli.dhprojetointegrador.service.validator.IInboundOrderValidator;
 import br.com.meli.dhprojetointegrador.unit.util.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -43,9 +41,6 @@ public class InboundOrderServiceTests {
     private ProductService productService;
 
     @Mock
-    private List<IInboundOrderValidator> validators;
-
-    @Mock
     private WarehouseService warehouseService;
 
     @BeforeEach
@@ -57,9 +52,7 @@ public class InboundOrderServiceTests {
     @Test
     public void update_shouldProperlyCallSaveWithUpdatedObject_whenAllNestedObjectsAreRetrievedProperly() {
         Set<BatchStock> batchStockList = Set.of();
-        Section section = Section.builder().id(1L).category(Category.builder()
-                .name(CategoryEnum.FRIOS).build())
-                .capacity(32.0f)
+        Section section = Section.builder().id(1L).category(Category.builder().name(CategoryEnum.FRIOS).build())
                 .build();
         Agent agent = Agent.builder().id(1L).build();
 
@@ -102,7 +95,6 @@ public class InboundOrderServiceTests {
         InboundOrder savedInboundOrder = inboundOrderService.create(inboundOrder);
 
         Assertions.assertThat(savedInboundOrder).isNotNull();
-
     }
 
 }

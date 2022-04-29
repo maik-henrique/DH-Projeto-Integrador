@@ -13,7 +13,7 @@ public class WarehouseService {
 
     private WarehouseRepository warehouseRepository;
 
-    public Warehouse findWarehouseIdBySection(Section section) {
+    public Warehouse findWarehouseIdBySection(Section section) throws BusinessValidatorException {
         return warehouseRepository.findBySections(section)
                 .orElseThrow(() -> new BusinessValidatorException("Warehouse not found, section id invalid"));
     }
