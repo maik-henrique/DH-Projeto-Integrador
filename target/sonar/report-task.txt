@@ -1,6 +1,6 @@
-projectKey=br.com.meli:dh-projeto-integrador
-serverUrl=http://localhost:9000
+projectKey=ProjetoIntegrador
+serverUrl=http://127.0.0.1:9000
 serverVersion=9.4.0.54424
-dashboardUrl=http://localhost:9000/dashboard?id=br.com.meli%3Adh-projeto-integrador
-ceTaskId=AYBzoBI5yikYle6_YhZW
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AYBzoBI5yikYle6_YhZW
+dashboardUrl=http://127.0.0.1:9000/dashboard?id=ProjetoIntegrador
+ceTaskId=AYBzwVc6W3YETug7bV-P
+ceTaskUrl=http://127.0.0.1:9000/api/ce/task?id=AYBzwVc6W3YETug7bV-P
