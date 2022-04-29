@@ -25,14 +25,11 @@ pipeline {
              post {
                   success {
                   junit 'target/surefire-reports/**/*.xml'
-                   }
-             }
-             post {
-                  always{
                   jacoco execPattern: "**/target/jacoco.exec"
                   cleanWs cleanWhenFailure: true
                   }
              }
+
         }
     }
 }
