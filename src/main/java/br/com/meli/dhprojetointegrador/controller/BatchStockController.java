@@ -2,6 +2,7 @@ package br.com.meli.dhprojetointegrador.controller;
 
 import java.util.List;
 
+import br.com.meli.dhprojetointegrador.dto.BatchStockDTO;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,10 +39,10 @@ public class BatchStockController {
    */
 
   @GetMapping("/due-date")
-  public ResponseEntity<List<BatchStock>> filterStockBySection(@RequestParam(required = true) long sectionId,
-      @RequestParam(defaultValue = "0", required = false) Integer numberOfDays,
-      @RequestParam(defaultValue = "ASC", required = false) Direction ordination,
-      @RequestParam(defaultValue = "FF, RF, FS", required = false) List<CategoryEnum> category) {
+  public ResponseEntity<List<BatchStockDTO>> filterStockBySection(@RequestParam(required = true) long sectionId,
+                                                                  @RequestParam(defaultValue = "0", required = false) Integer numberOfDays,
+                                                                  @RequestParam(defaultValue = "ASC", required = false) Direction ordination,
+                                                                  @RequestParam(defaultValue = "FF, RF, FS", required = false) List<CategoryEnum> category) {
 
     List<BatchStock> batchStocks = batchStockService.filterStockBySection(
         sectionId,
@@ -49,6 +50,6 @@ public class BatchStockController {
         ordination,
         category);
 
-    return ResponseEntity.ok().body(batchStocks);
+    return ResponseEntity.ok().body(BatchStockDTO.map(batchStocks));
   }
 }
