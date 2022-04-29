@@ -31,11 +31,9 @@ pipeline {
 
         stage("build & SonarQube analysis") {
             steps {
-                    withSonarQubeEnv('My SonarQube Server') {
                     sh 'mvn sonar:sonar -Dsonar.login=a11c99f38095ecc1bcf1be517a24961fe1b31261'
-              }
             }
-          }
+        }
 
         stage("Quality Gate") {
             steps {
