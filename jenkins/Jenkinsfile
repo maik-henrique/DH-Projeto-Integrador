@@ -18,7 +18,7 @@ pipeline {
                   }
             }
 
-        stage('Integration tests + Unit tests'){
+        stage('Integration tests + Unit tests + Code Coverage'){
             steps {
                   sh 'mvn clean install'
             }
