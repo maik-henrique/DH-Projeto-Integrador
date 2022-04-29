@@ -72,6 +72,16 @@ services:
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_logs:/opt/sonarqube/logs
 
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: "swagger-ui"
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./swagger/openapi.json:/openapi.json
+    environment:
+      SWAGGER_JSON: /openapi.json
+
 networks:
   sonarnet:
 
