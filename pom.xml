@@ -20,6 +20,7 @@
             **/config/**/*,
             **/exception/*,
             **/repository/**/*,
+            **/mapper/**/*,
             **/DhProjetoIntegradorApplication.java
         </sonar.exclusions>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -159,12 +160,13 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <exclude>br/com/meli/DH-Projeto-Integrador/dto/**/*</exclude>
-                                <exclude>br/com/meli/DH-Projeto-Integrador/entity/**/*</exclude>
-                                <exclude>br/com/meli/DH-Projeto-Integrador/config/**/*</exclude>
-                                <exclude>br/com/meli/DH-Projeto-Integrador/exception/**/*</exclude>
-                                <exclude>br/com/meli/DH-Projeto-Integrador/repository/**/*</exclude>
-                                <exclude>br/com/meli/DH-Projeto-Integrador/DhProjetoIntegradorApplication.class</exclude>
+                                <exclude>br/com/meli/dhprojetointegrador/dto/**/*</exclude>
+                                <exclude>br/com/meli/dhprojetointegrador/entity/**/*</exclude>
+                                <exclude>br/com/meli/dhprojetointegrador/config/**/*</exclude>
+                                <exclude>br/com/meli/dhprojetointegrador/exception/**/*</exclude>
+                                <exclude>br/com/meli/dhprojetointegrador/repository/**/*</exclude>
+                                <exclude>br/com/meli/dhprojetointegrador/mapper/**/*</exclude>
+                                <exclude>br/com/meli/dhprojetointegrador/DhProjetoIntegradorApplication.class</exclude>
                             </excludes>
                         </configuration>
 
