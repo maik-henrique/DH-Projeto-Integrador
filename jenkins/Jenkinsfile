@@ -20,7 +20,7 @@ pipeline {
 
         stage('Integration tests + Unit tests'){
             steps {
-                  sh 'mvn clean test'
+                  sh 'mvn clean install'
             }
              post {
                   success {
@@ -31,7 +31,7 @@ pipeline {
 
         stage("build & SonarQube analysis") {
             steps {
-                    sh 'mvn sonar:sonar -Dsonar.login=a11c99f38095ecc1bcf1be517a24961fe1b31261'
+                    sh 'mvn sonar:sonar -Dsonar.login=1357a598e805518c3aaefdb274ffbbe6ff8b39ef'
             }
         }
 
