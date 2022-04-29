@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+
   mysqlserver:
     image: mysql:8.0.23
     ports:
@@ -14,14 +15,16 @@ services:
       - mysql_data:/var/lib/mysql
       - mysql_config:/etc/mysql/conf.d
     container_name: mysqlserver
+
   redis:
     image: redis
     command: redis-server --requirepass Redis!
     ports:
       - "6379:6379"
     container_name: redis
+
   jenkins:
-    image: jenkins/jenkins:lts
+    image: jenkins/jenkins:lts-jdk11
     privileged: true
     user: root
     ports:
@@ -31,11 +34,14 @@ services:
       - DOCKER_HOST=tcp://docker:2376
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
+      - JENKINS_HOME=/var/jenkins_home
     container_name: jenkins
     volumes:
       - /var/jenkins/caches:/var/jenkins/caches
       - /var/run/docker.sock:/var/run/docker.sock
-    command: -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
+      - /var/jenkins_home:/var/jenkins_home
+    #command:
+    #-Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
 
   jmeter-master:
     image: vmarrazzo/jmeter
