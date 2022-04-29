@@ -24,15 +24,16 @@ public class BatchStockController {
 
   /**
    * Author: Pedro Dalpa
+   * Author: Mariana Galdino
    * Method: filterStockBySection
-   * Description: Busca estoque filtrando por seção e que a data de validade seja
-   * maior que a de hoje somada com o parâmetro
+   * Description: Busca estoque filtrando pelo parâmetros
    * 
-   * 
-   * @param sectionId    id of section to filter
-   * @param numberOfDays goes to sum this param in current date to filter
-   * @return list of batch stock that contains the filters
-   * @throws BusinessValidatorException in case section not found
+   * @param sectionId    id da seção para filtrar
+   * @param numberOfDays adicionar quantidade de dias a data atual
+   * @param ordination   ordenar por dada de validade (ASC ou DESC)
+   * @param category     filtrar por categoria (por padrão traz todas)
+   * @return lista os batch estoque utilizando os filtros
+   * @throws BusinessValidatorException se a seção nao for encontrada
    *
    */
 

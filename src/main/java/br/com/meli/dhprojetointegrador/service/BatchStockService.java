@@ -24,27 +24,31 @@ public class BatchStockService {
     private final SectionService sectionService;
 
     /**
-     * Returns a list of batch stocks that has a due date within the allowed range
-     * and selected section
+     * Author: Pedro Dalpa
+     * Author: Mariana Galdino
+     * Method: filterStockBySection
+     * Description: Busca estoque filtrando pelo parâmetros
+     * 
+     * @param sectionId    id da seção para filtrar
+     * @param numberOfDays adicionar quantidade de dias a data atual
+     * @param ordination   ordenar por dada de validade (ASC ou DESC)
+     * @param category     filtrar por categoria (por padrão traz todas)
+     * @return lista os batch estoque utilizando os filtros
+     * @throws BusinessValidatorException se a seção nao for encontrada
      *
-     * @param sectionId    id of the section that is the target of the request
-     * @param numberOfDays goes to sum this param in current date to filter
-     * @return list of batch stock that contains the filters
-     * @throws BusinessValidatorException in case section not found
      */
-
     public List<BatchStock> filterStockBySection(
             Long sectionId,
             Integer numberOfDays,
             Direction ordination,
-            List<CategoryEnum> categoryEnum) {
+            List<CategoryEnum> category) {
         sectionService.findSectionById(sectionId);
 
         LocalDate dueDate = addDaysInCurrentDate(numberOfDays);
 
         Sort sort = Sort.by(ordination, "dueDate");
 
-        List<BatchStock> batchStocks = batchStockRepository.findBySectionId(sectionId, dueDate, categoryEnum, sort);
+        List<BatchStock> batchStocks = batchStockRepository.findBySectionId(sectionId, dueDate, category, sort);
 
         return batchStocks;
     }
