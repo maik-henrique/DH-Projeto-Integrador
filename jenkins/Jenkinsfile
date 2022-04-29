@@ -30,11 +30,9 @@ pipeline {
         }
 
         stage("build & SonarQube analysis") {
-             script{
-
-                    def scannerHome = tool 'sonarqube'
+             steps{
                     withSonarQubeEnv('sonarqube'){
-                        sh 'mvn clean verify sonar:sonar -Dsonar.login=c24ceabb658e0fba6764961cf62ee8f5729ac928 -Dsonar.projectKey=ProjetoIntegrador -Dsonar.host.url=http://127.0.0.1:9000'
+                    sh 'mvn clean verify sonar:sonar -Dsonar.login=c24ceabb658e0fba6764961cf62ee8f5729ac928 -Dsonar.projectKey=ProjetoIntegrador -Dsonar.host.url=http://127.0.0.1:9000'
                     }
              }
         }
