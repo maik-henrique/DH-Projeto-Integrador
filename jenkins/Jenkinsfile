@@ -39,7 +39,7 @@ pipeline {
                          inclusionPattern: '**/*.class'
                          )
                    }
-
+        }
 
         stage("build & SonarQube analysis") {
             steps {
