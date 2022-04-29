@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: br.com.meli.dhprojetointegrador.unit.OrderServiceTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s - in br.com.meli.dhprojetointegrador.unit.OrderServiceTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s - in br.com.meli.dhprojetointegrador.unit.OrderServiceTest

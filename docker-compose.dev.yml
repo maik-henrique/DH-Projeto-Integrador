@@ -4,6 +4,7 @@ services:
 
   mysqlserver:
     image: mysql:8.0.23
+    container_name: mysqlserver
     ports:
       - 3307:3306
       - 80:80
@@ -14,17 +15,17 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - mysql_config:/etc/mysql/conf.d
-    container_name: mysqlserver
 
   redis:
     image: redis
+    container_name: redis
     command: redis-server --requirepass Redis!
     ports:
       - "6379:6379"
-    container_name: redis
 
   jenkins:
     image: jenkins/jenkins:lts-jdk11
+    container_name: jenkins
     privileged: true
     user: root
     ports:
@@ -35,7 +36,6 @@ services:
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
       - JENKINS_HOME=/var/jenkins_home
-    container_name: jenkins
     volumes:
       - /var/jenkins/caches:/var/jenkins/caches
       - /var/run/docker.sock:/var/run/docker.sock
@@ -52,6 +52,32 @@ services:
     ports:
     - 6000:6000
 
+  sonarqube:
+    image: sonarqube
+    container_name: sonarqube
+    depends_on:
+      - mysqlserver
+    expose:
+      - 9000
+    ports:
+      - "127.0.0.1:9000:9000"
+    networks:
+      - sonarnet
+    #environment:
+    #  SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
+    #  SONAR_JDBC_USERNAME: admin
+    #  SONAR_JDBC_PASSWORD:
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+networks:
+  sonarnet:
+
 volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
   mysql_data:
   mysql_config:
