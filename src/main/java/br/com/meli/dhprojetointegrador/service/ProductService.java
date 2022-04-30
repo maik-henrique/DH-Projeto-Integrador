@@ -2,26 +2,22 @@ package br.com.meli.dhprojetointegrador.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
 
 import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import br.com.meli.dhprojetointegrador.dto.response.WarehouseQuantity;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
-import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
-import br.com.meli.dhprojetointegrador.exception.NotImplementedException;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
+import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
 import lombok.AllArgsConstructor;
-
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -52,31 +48,35 @@ public class ProductService {
     /**
      * Author: Matheus Guerra
      * Method: Buscar todos os produtos de uma certa categoria
-     * Description: Serviço responsavel por retornar uma lista com todos os produtos presentes
+     * Description: Serviço responsavel por retornar uma lista com todos os produtos
+     * presentes
      * na aplicação filtrados por categoria;
      *
-     * @param category Um dos 3 valores possiveis para o atributo "name" da Class Category:
+     * @param category Um dos 3 valores possiveis para o atributo "name" da Class
+     *                 Category:
      *                 FS,
      *                 RF,
      *                 FF
      *
      * @return Se existir, retorna lista de produtos filtrados por categoria
      */
-    public List<Product> returnProductsByCategory(String category ){
+    public List<Product> returnProductsByCategory(String category) {
         return productRepository.findByCategory_Name(CategoryEnum.valueOf(category));
     }
 
     /**
      * Author: Bruno Mendes
      * Method: getProductByWarehouse
-     * Description: Busca os produtos e associação com cada warehouse e soma o total de produtos em cada warehouse
+     * Description: Busca os produtos e associação com cada warehouse e soma o total
+     * de produtos em cada warehouse
+     * 
      * @return ProductByWarehouseResponse
      */
     public ProductByWarehouseResponse getProductByWarehouse(Long id) {
         Product product = validateProduct.validateQuantity(1, id);
         List<WarehouseQuantity> warehouseQuantities = new ArrayList<>();
         Set<BatchStock> batchStockSet = product.getBatchStockList();
-        batchStockSet.forEach(b-> {
+        batchStockSet.forEach(b -> {
             WarehouseQuantity warehouseQuantity = WarehouseQuantity.builder()
                     .totalQuantity(b.getCurrentQuantity())
                     .warehouseCode(b.getInboundOrder().getSection().getWarehouse().getId())
@@ -84,9 +84,10 @@ public class ProductService {
             warehouseQuantities.add(warehouseQuantity);
         });
         List<WarehouseQuantity> warehouseQuantitiesFinal = new ArrayList<>();
-        warehouseQuantities.stream().forEach( w -> {
-            if (warehouseQuantitiesFinal.stream().anyMatch(ww-> ww.getWarehouseCode().equals(w.getWarehouseCode()))) {
-                WarehouseQuantity existing = warehouseQuantitiesFinal.stream().filter(ww-> ww.getWarehouseCode().equals(w.getWarehouseCode())).findFirst().get();
+        warehouseQuantities.stream().forEach(w -> {
+            if (warehouseQuantitiesFinal.stream().anyMatch(ww -> ww.getWarehouseCode().equals(w.getWarehouseCode()))) {
+                WarehouseQuantity existing = warehouseQuantitiesFinal.stream()
+                        .filter(ww -> ww.getWarehouseCode().equals(w.getWarehouseCode())).findFirst().get();
                 existing.setTotalQuantity(existing.getTotalQuantity() + w.getTotalQuantity());
             } else {
                 warehouseQuantitiesFinal.add(w);
@@ -96,5 +97,12 @@ public class ProductService {
                 .productId(id)
                 .warehouses(warehouseQuantitiesFinal)
                 .build();
+    }
+
+    public List<Product> orderProductsByPrice(Direction price) {
+
+        Sort sort = Sort.by(price, "price");
+        return productRepository.orderProductByPrice();
+
     }
 }
