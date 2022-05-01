@@ -2,15 +2,9 @@ package br.com.meli.dhprojetointegrador.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import lombok.AllArgsConstructor;
@@ -41,4 +35,7 @@ public class PurchaseOrder implements Serializable {
     private StatusEnum status;
 
     private LocalDate date;
+
+    @OneToMany(mappedBy = "purchaseOrder", cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+    private Set<PurchaseOrder> evaluation;
 }
