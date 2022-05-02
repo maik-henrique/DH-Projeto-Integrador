@@ -103,6 +103,35 @@ public class BatchStockControllerTest {
         System.out.println(batchStocks + "   AAAAAA \n\n\n\n");
 
     }
+    @Test
+    @DisplayName("Retornar batchstock pela categoria")
+    public void shouldReturnBatchstockFindByCategory() throws Exception {
+        setupBaseData(42.0f);
+
+
+        BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder()
+                .batchNumber(123L)
+                .currentQuantity(4)
+                .initialQuantity(4)
+                .currentTemperature(24.0f)
+                .minimumTemperature(19f)
+                .manufacturingDate(LocalDate.of(2022, 5, 23))
+                .manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25))
+                .dueDate(LocalDate.of(2022, 4, 22))
+                .productId(2L).build();
+
+        MvcResult result = mock
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/due-date").param("productCategory", "FF"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String responsePayload = result.getResponse().getContentAsString();
+        List<BatchStock> batchStocks = objectMapper.readerForListOf(BatchStock.class).readValue(responsePayload);
+
+        assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+        assertNotNull(responsePayload);
+
+    }
 
     private void setupBaseData(float newPoductVolume) {
         Category managedCategory = setupCategory(CategoryEnum.FF);
