@@ -18,13 +18,6 @@ public class BuyerService {
   private BuyerRepository buyerRepository;
   private ProductRepository productRepository;
 
-  /**
-   * Author: Micaela Alves
-   * Method: getProductsByOrderId
-   * Description: Recupera uma lista com todos os registros de CartProduct onde
-   * OrderId for igual ao especificado
-   *
-   **/
   public void saveFavorite(FavoriteProductRequest favoriteProductRequest) {
     Product product = productRepository.findById(favoriteProductRequest.getProductId())
         .orElseThrow(() -> new RuntimeException("No Batchstock found"));
@@ -36,6 +29,23 @@ public class BuyerService {
     products.add(product);
 
     products.addAll(buyer.getFavoriteProducts());
+
+    buyer.setFavoriteProducts(products);
+
+    buyerRepository.save(buyer);
+  }
+
+  public void removeFavorite(Long buyerId, Long productId) {
+    Product product = productRepository.findById(productId)
+        .orElseThrow(() -> new RuntimeException("No Batchstock found"));
+
+    Buyer buyer = buyerRepository.findById(buyerId)
+        .orElseThrow(() -> new RuntimeException("No Batchstock found"));
+
+    Set<Product> products = new HashSet<>();
+
+    products.addAll(buyer.getFavoriteProducts());
+    products.remove(product);
 
     buyer.setFavoriteProducts(products);
 
