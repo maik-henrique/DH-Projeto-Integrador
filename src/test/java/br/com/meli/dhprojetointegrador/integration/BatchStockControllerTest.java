@@ -1,32 +1,45 @@
 package br.com.meli.dhprojetointegrador.integration;
 
-import br.com.meli.dhprojetointegrador.dto.BatchStockDTO;
-import br.com.meli.dhprojetointegrador.dto.request.BatchStockUpdateRequest;
-import br.com.meli.dhprojetointegrador.entity.*;
-import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
-import br.com.meli.dhprojetointegrador.repository.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
+import br.com.meli.dhprojetointegrador.dto.BatchStockDTO;
+import br.com.meli.dhprojetointegrador.dto.request.BatchStockUpdateRequest;
+import br.com.meli.dhprojetointegrador.entity.Agent;
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.entity.Category;
+import br.com.meli.dhprojetointegrador.entity.InboundOrder;
+import br.com.meli.dhprojetointegrador.entity.Product;
+import br.com.meli.dhprojetointegrador.entity.Section;
+import br.com.meli.dhprojetointegrador.entity.Warehouse;
+import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
+import br.com.meli.dhprojetointegrador.repository.AgentRepository;
+import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
+import br.com.meli.dhprojetointegrador.repository.CategoryRepository;
+import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
+import br.com.meli.dhprojetointegrador.repository.ProductRepository;
+import br.com.meli.dhprojetointegrador.repository.SectionRepository;
+import br.com.meli.dhprojetointegrador.repository.WarehouseRepository;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -59,8 +72,6 @@ public class BatchStockControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-
-
     @Test
     @DisplayName("Retornar os BatchStocks de acordo com os parametros")
     public void shouldReturnAllBatchStockFindByParam() throws Exception {
@@ -75,7 +86,6 @@ public class BatchStockControllerTest {
                 .manufacturingDate(LocalDate.of(2022, 5, 23))
                 .manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25))
                 .dueDate(LocalDate.of(2022, 4, 22))
-                .
                 .productId(2L).build();
 
         MvcResult result = mock
@@ -88,23 +98,23 @@ public class BatchStockControllerTest {
 
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
         assertNotNull(responsePayload);
-        assertTrue(batchStocks.isEmpty());
+        assertFalse(batchStocks.isEmpty());
 
-        System.out.println(batchStocks);
+        System.out.println(batchStocks + "   AAAAAA \n\n\n\n");
 
     }
 
     private void setupBaseData(float newPoductVolume) {
-        Category managedCategory = setupCategory(CategoryEnum.FRIOS);
+        Category managedCategory = setupCategory(CategoryEnum.FF);
         Warehouse managedWarehouse = setupWarehouse();
         Section managedSection = setupSection(managedCategory, managedWarehouse);
         Product managedProduct = setupProduct(managedCategory, 2.0f);
 
         setupProduct(managedCategory, newPoductVolume);
 
-        BatchStock managedBatchStock = setupBatchStock(managedProduct);
+        InboundOrder manegeInboundOrder = setupInboundOrder(managedWarehouse, managedSection);
+        setupBatchStock(managedProduct, manegeInboundOrder);
 
-        setupInboundOrder(managedBatchStock, managedWarehouse, managedSection);
     }
 
     private Product setupProduct(Category managedCategory, float volume) {
@@ -135,23 +145,29 @@ public class BatchStockControllerTest {
         return warehouseRepository.save(warehouse);
     }
 
-    private BatchStock setupBatchStock(Product managedProduct) {
-        BatchStock batchStock = BatchStock.builder().batchNumber(123L).currentQuantity(3).initialQuantity(4)
+    private BatchStock setupBatchStock(Product managedProduct, InboundOrder inboundOrder) {
+        BatchStock batchStock = BatchStock.builder()
+                .batchNumber(123L)
+                .currentQuantity(3)
+                .initialQuantity(4)
                 .currentTemperature(24f)
                 .manufacturingDate(LocalDate.of(2020, 4, 22))
-                .manufacturingTime(LocalDateTime.of(2016, 10, 30, 14, 23, 25)).dueDate(LocalDate.of(2022, 4, 22))
+                .manufacturingTime(LocalDateTime.of(2016, 10, 30, 14, 23, 25))
+                .dueDate(LocalDate.of(2022, 05, 15))
+                .inboundOrder(inboundOrder)
                 .products(managedProduct)
-
                 .build();
 
         return batchStockRepository.save(batchStock);
     }
 
-    private InboundOrder setupInboundOrder(BatchStock managedBatchStock, Warehouse managedWarehouse,
-                                           Section managedSection) {
+    private InboundOrder setupInboundOrder(Warehouse managedWarehouse,
+            Section managedSection) {
 
-        InboundOrder inboundOrder = InboundOrder.builder().orderNumber(0L).batchStockList(Set.of(managedBatchStock))
-                .section(managedSection).orderDate(LocalDate.of(2020, 3, 4))
+        InboundOrder inboundOrder = InboundOrder.builder()
+                .orderNumber(0L)
+                .section(managedSection)
+                .orderDate(LocalDate.of(2020, 3, 4))
                 .agent(managedWarehouse.getAgent())
                 .build();
 
