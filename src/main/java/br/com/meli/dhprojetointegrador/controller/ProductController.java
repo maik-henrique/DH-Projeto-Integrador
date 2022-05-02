@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.meli.dhprojetointegrador.dto.request.freshproducts.FetchFreshProductsSortByRequest;
 import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import br.com.meli.dhprojetointegrador.dto.response.ProductDTO;
+import br.com.meli.dhprojetointegrador.dto.response.ProductResponseDto;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockCollection;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
@@ -42,10 +43,13 @@ public class ProductController {
      * 
      * @return lista de produtos
      */
+
     @GetMapping
-    public ResponseEntity<?> returnAllProducts() {
+    public ResponseEntity<List<ProductResponseDto>> returnAllProducts() {
+
         List<Product> products = productService.returnAllProducts();
-        return products == null || products.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(products);
+        return products == null || products.isEmpty() ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(ProductResponseDto.map(products));
     }
 
     /**

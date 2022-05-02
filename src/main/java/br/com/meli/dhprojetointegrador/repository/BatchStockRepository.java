@@ -22,10 +22,9 @@ public interface BatchStockRepository extends JpaRepository<BatchStock, Long> {
                         @Param("category") List<CategoryEnum> category,
                         Sort sort);
 
-        // @Param("dueDate") LocalDate dueDate, Pageable pageable
-        @Query("FROM BatchStock b WHERE b.products.id = :product AND b.dueDate >= :minimumDueDate AND  b.dueDate <= :maxDueDate")
+        @Query("FROM BatchStock b WHERE b.products.id = :product AND b.dueDate >= :minimumDueDate")
         List<BatchStock> findBatchStockByProducts(@Param("product") Long productId,
                         @Param("minimumDueDate") LocalDate minimumDueDate,
-                        @Param("maxDueDate") LocalDate maxDueDate, Sort sort);
+                        Sort sort);
 
 }
