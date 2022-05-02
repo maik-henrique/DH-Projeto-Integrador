@@ -39,6 +39,6 @@ public class Buyer implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "favorites_products", joinColumns = @JoinColumn(name = "buyer_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Buyer> buyers;
+    private Set<Product> favoriteProducts;
 
 }
