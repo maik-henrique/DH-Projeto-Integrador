@@ -102,7 +102,7 @@ public class ProductService {
     public List<Product> orderProductsByPrice(Direction price) {
 
         Sort sort = Sort.by(price, "price");
-        return productRepository.orderProductByPrice();
+        return productRepository.orderProductByPrice(sort);
 
     }
 }
