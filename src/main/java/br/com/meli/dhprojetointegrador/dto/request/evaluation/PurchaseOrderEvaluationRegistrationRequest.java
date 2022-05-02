@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -20,6 +19,6 @@ public class PurchaseOrderEvaluationRegistrationRequest {
     private Long purchaseOrderId;
 
     @NotNull
-    private Set<@Valid EvaluationDetailsRegistrationRequest> evaluation;
+    private @Valid EvaluationDetailsRegistrationRequest evaluation;
 
 }

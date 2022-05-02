@@ -38,4 +38,7 @@ public class PurchaseOrder implements Serializable {
 
     @OneToMany(mappedBy = "purchaseOrder", cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private Set<PurchaseOrder> evaluation;
+    
+    @OneToMany(mappedBy = "purchaseOrder")
+    private Set<CartProduct> cartProduct;
 }
