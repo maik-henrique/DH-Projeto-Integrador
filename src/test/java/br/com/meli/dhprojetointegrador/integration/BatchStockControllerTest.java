@@ -146,6 +146,7 @@ public class BatchStockControllerTest {
     }
 
     private BatchStock setupBatchStock(Product managedProduct, InboundOrder inboundOrder) {
+        LocalDate TODAY = LocalDate.now().plusDays(15);
         BatchStock batchStock = BatchStock.builder()
                 .batchNumber(123L)
                 .currentQuantity(3)
@@ -153,7 +154,7 @@ public class BatchStockControllerTest {
                 .currentTemperature(24f)
                 .manufacturingDate(LocalDate.of(2020, 4, 22))
                 .manufacturingTime(LocalDateTime.of(2016, 10, 30, 14, 23, 25))
-                .dueDate(LocalDate.of(2022, 05, 15))
+                .dueDate(TODAY)
                 .inboundOrder(inboundOrder)
                 .products(managedProduct)
                 .build();
