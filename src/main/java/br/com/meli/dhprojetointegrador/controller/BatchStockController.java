@@ -51,5 +51,7 @@ public class BatchStockController {
         category);
 
     return ResponseEntity.ok().body(BatchStockDTO.map(batchStocks));
+
+
   }
 }

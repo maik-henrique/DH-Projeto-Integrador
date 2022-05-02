@@ -26,8 +26,12 @@ public class BatchStockDTO {
     private LocalDate dueDate;
     private Long category_id;
 
-
-
+    /**
+    * Author: Pedro Dalpa
+    * Author: Mariana Galdino
+    * Method: DTO Constructo
+    * Description: Retorno da entidade DTO
+    **/
     public static BatchStockDTO map(BatchStock batchStock) {
         return BatchStockDTO.builder().batchNumber(batchStock.getBatchNumber()).dueDate(batchStock.getDueDate())
                 .product_id(batchStock.getProducts().getId()).currentQuantity(batchStock.getCurrentQuantity())

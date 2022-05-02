@@ -28,14 +28,13 @@ public class BatchStockService {
      * Author: Mariana Galdino
      * Method: filterStockBySection
      * Description: Busca estoque filtrando pelo parâmetros
-     * 
+     *
      * @param sectionId    id da seção para filtrar
      * @param numberOfDays adicionar quantidade de dias a data atual
      * @param ordination   ordenar por dada de validade (ASC ou DESC)
      * @param category     filtrar por categoria (por padrão traz todas)
      * @return lista os batch estoque utilizando os filtros
      * @throws BusinessValidatorException se a seção nao for encontrada
-     *
      */
     public List<BatchStock> filterStockBySection(
             Long sectionId,
@@ -63,21 +62,19 @@ public class BatchStockService {
      * @return lista de batchStock cuja busca foi bem sucedida
      * @throws ResourceNotFound caso nenhum produto seja encontrado
      * @Author: Maik
-     *          Retorna a lista de batch stocks que possuem o produto específicado e
-     *          com data de vencimento válida
+     * Retorna a lista de batch stocks que possuem o produto específicado e
+     * com data de vencimento válida
      */
     public List<BatchStock> findByProductId(Long productId, String sortBy) throws ResourceNotFound {
         Sort sort = Sort.by(sortBy);
-        LocalDate minimumDueDate = LocalDate.now(clock);
-        LocalDate maxdueDate = minimumDueDate.plusWeeks(DueDateEnum.MAX_DUEDATE_WEEKS.getDuedate());
 
-        List<BatchStock> batchStock = batchStockRepository.findBatchStockByProducts(productId, minimumDueDate,
-                maxdueDate, sort);
+        LocalDate minimumDueDate = LocalDate.now(clock).plusWeeks(DueDateEnum.MAX_DUEDATE_WEEKS.getDuedate());
+
+        List<BatchStock> batchStock = batchStockRepository.findBatchStockByProducts(productId, minimumDueDate, sort);
 
         if (batchStock.isEmpty()) {
-            throw new ResourceNotFound(String.format(
-                    "No stock was found for product of id %d or within the maximum due date of %s", productId,
-                    maxdueDate.toString()));
+            throw new ResourceNotFound(String.format("No stock was found for product of id %d and it needs to have a due date of at least %s", productId,
+                    minimumDueDate.toString()));
         }
 
         return batchStock;
