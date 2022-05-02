@@ -16,7 +16,7 @@ import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 public interface BatchStockRepository extends JpaRepository<BatchStock, Long> {
 
         @Query("FROM BatchStock b WHERE b.inboundOrder.section.id = :sectionId AND b.dueDate > :dueDate AND b.products.category.name IN :category")
-        public List<BatchStock> findBySectionId(
+        List<BatchStock> findBySectionId(
                         @Param("sectionId") Long sectionId,
                         @Param("dueDate") LocalDate dueDate,
                         @Param("category") List<CategoryEnum> category,
