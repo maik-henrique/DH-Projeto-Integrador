@@ -1,5 +1,6 @@
 package br.com.meli.dhprojetointegrador.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -99,10 +100,21 @@ public class ProductService {
                 .build();
     }
 
-    public List<Product> orderProductsByPrice(Direction price) {
+    /**
+     * Author: Pedro Dalpa
+     * Method: orderProductByPrice
+     * Description: Retorna todos os produtos ordenados pelo preço crescente ou
+     * decrescente e entre o intervalo de preço determinado
+     *
+     * @param price
+     * @param minValue
+     * @param maxValue
+     * @return Se existir, retorna lista de produtos filtrados por categoria
+     */
+    public List<Product> orderProductsByPrice(Direction price, BigDecimal minValue, BigDecimal maxValue) {
 
         Sort sort = Sort.by(price, "price");
-        return productRepository.orderProductByPrice(sort);
+        return productRepository.orderProductByPrice(minValue, maxValue, sort);
 
     }
 }

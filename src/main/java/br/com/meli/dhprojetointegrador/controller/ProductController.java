@@ -1,5 +1,6 @@
 package br.com.meli.dhprojetointegrador.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -107,17 +108,20 @@ public class ProductController {
      * Author: Pedro Dalpa
      * Method: orderProductByPrice
      * Description: Retorna todos os produtos ordenados pelo preço crescente ou
-     * decrescente
+     * decrescente e entre o intervalo de preço determinado
      *
      * @param price
-     *
+     * @param minValue
+     * @param maxValue
      * @return Se existir, retorna lista de produtos filtrados por categoria
      */
     @GetMapping("/list/price")
     public ResponseEntity<List<ProductDTO>> orderProductByPrice(
-            @RequestParam(defaultValue = "ASC", required = false) Direction price) {
+            @RequestParam(defaultValue = "ASC", required = false) Direction price,
+            @RequestParam(defaultValue = "0", required = false) BigDecimal minValue,
+            @RequestParam(defaultValue = "10000000000", required = false) BigDecimal maxValue) {
 
-        List<Product> products = productService.orderProductsByPrice(price);
+        List<Product> products = productService.orderProductsByPrice(price, minValue, maxValue);
 
         return ResponseEntity.ok(ProductDTO.map(products));
 
