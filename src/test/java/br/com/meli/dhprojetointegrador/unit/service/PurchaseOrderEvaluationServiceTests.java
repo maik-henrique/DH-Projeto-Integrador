@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -115,5 +116,23 @@ public class PurchaseOrderEvaluationServiceTests {
 
         List<PurchaseOrderEvaluation> evaluations = purchaseOrderEvaluationService.findEvaluationByBuyerId(1L);
         assertEquals(expectedList.size(), evaluations.size());
+    }
+
+    @Test
+    public void update_shouldThrowResourceNotFoundException_whenEvaluationIsNotFound() {
+        when(purchaseOrderEvaluationRepository.findById(anyLong())).thenReturn(Optional.empty());
+        PurchaseOrderEvaluation newPurchaseOrder = PurchaseOrderEvaluation.builder().id(1L).comment("Produto ruim de mais").build();
+        assertThrows(ResourceNotFoundException.class, () -> purchaseOrderEvaluationService.update(newPurchaseOrder));
+    }
+
+    @Test
+    public void update_shouldCallSaveWithUpdatedEvaluation_whenEvaluationExists() {
+        PurchaseOrderEvaluation oldEvaluation = PurchaseOrderEvaluation.builder().id(1L).comment("Produto bom de mais").build();
+        when(purchaseOrderEvaluationRepository.findById(anyLong())).thenReturn(Optional.of(oldEvaluation));
+
+        PurchaseOrderEvaluation newPurchaseOrder = PurchaseOrderEvaluation.builder().id(1L).comment("Produto ruim de mais").build();
+        purchaseOrderEvaluationService.update(newPurchaseOrder);
+
+        verify(purchaseOrderEvaluationRepository, times(1)).save(any(PurchaseOrderEvaluation.class));
     }
 }

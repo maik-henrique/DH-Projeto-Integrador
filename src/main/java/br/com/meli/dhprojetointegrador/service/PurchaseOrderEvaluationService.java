@@ -72,4 +72,17 @@ public class PurchaseOrderEvaluationService {
 	}
 
 
+	public void update(PurchaseOrderEvaluation purchaseOrderEvaluation) throws ResourceNotFoundException {
+		PurchaseOrderEvaluation oldPurchaseOrder = findById(purchaseOrderEvaluation);
+
+		oldPurchaseOrder.setComment(purchaseOrderEvaluation.getComment());
+
+		purchaseOrderEvaluationRepository.save(oldPurchaseOrder);
+	}
+
+	private PurchaseOrderEvaluation findById(PurchaseOrderEvaluation purchaseOrderEvaluation) throws ResourceNotFoundException {
+		return purchaseOrderEvaluationRepository.findById(purchaseOrderEvaluation.getId())
+				.orElseThrow(() -> new ResourceNotFoundException(String.format("Evaluation of id %d wasn't found",
+						purchaseOrderEvaluation.getId())));
+	}
 }

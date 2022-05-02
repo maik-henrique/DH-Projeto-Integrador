@@ -1,5 +1,6 @@
 package br.com.meli.dhprojetointegrador.controller;
 
+import br.com.meli.dhprojetointegrador.dto.request.evaluation.EvaluationUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.PurchaseOrderEvaluationRegistrationRequest;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationFetchResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationResponse;
@@ -52,5 +53,13 @@ public class PurchaseOrderEvaluationController {
         List<PurchaseOrderEvaluationFetchResponse> response = evaluations.stream().map(evaluation -> modelMapper.map(evaluation, PurchaseOrderEvaluationFetchResponse.class))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping
+    public ResponseEntity<?> updateEvaluation(@RequestBody EvaluationUpdateRequest evaluationUpdateRequest) {
+        PurchaseOrderEvaluation purchaseOrderEvaluation = modelMapper.map(evaluationUpdateRequest, PurchaseOrderEvaluation.class);
+        purchaseOrderEvaluationService.update(purchaseOrderEvaluation);
+
+        return ResponseEntity.noContent().build();
     }
 }

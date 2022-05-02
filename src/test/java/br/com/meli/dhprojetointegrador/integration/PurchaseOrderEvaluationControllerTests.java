@@ -3,6 +3,7 @@ package br.com.meli.dhprojetointegrador.integration;
 import br.com.meli.dhprojetointegrador.dto.request.ProductInput;
 import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.EvaluationDetailsRegistrationRequest;
+import br.com.meli.dhprojetointegrador.dto.request.evaluation.EvaluationUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.PurchaseOrderEvaluationRegistrationRequest;
 import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationFetchResponse;
@@ -26,8 +27,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationControllerTests {
@@ -61,7 +61,7 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
 
 
     @Test
-    public void save_shouldReturnedRegisteredEvaluation_whenProperRequestIsMade() throws Exception {
+    public void save_shouldReturnedRegisteredEvaluation_whenProperRequestIsSent() throws Exception {
         setup();
         createPurchaseOrder();
         final String expectedComment = "O produto muito bom";
@@ -190,6 +190,7 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
         assertEquals(expectedRating, itemResponse.getRating());
 
     }
+
     @Test
     public void findEvaluationsByBuyerId_shouldReturnedNotFound_whenEvaluationsAreNotFound() throws Exception {
         MvcResult mvcResult = mock.perform(get("/api/v1/evaluation/buyer/1"))
@@ -197,6 +198,65 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
         ExceptionPayloadResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ExceptionPayloadResponse.class);
 
         assertEquals("No evaluation was found for buyer of id 1", response.getDescription());
+        assertEquals(404, response.getStatusCode());
+        assertEquals("The target resource wasn't found", response.getTitle());
+    }
+
+    @Test
+    public void updateEvaluation_shouldReturnNoContent_whenOperationIsSucessful() throws Exception {
+        setup();
+        createPurchaseOrder();
+        final String expectedComment = "O produto muito bom";
+        final Long expectedProductId = 1L;
+        final Integer expectedRating = 10;
+
+        EvaluationDetailsRegistrationRequest evaluation = EvaluationDetailsRegistrationRequest.builder()
+                .productId(expectedProductId)
+                .comment(expectedComment)
+                .rating(expectedRating)
+                .build();
+        PurchaseOrderEvaluationRegistrationRequest request = PurchaseOrderEvaluationRegistrationRequest.builder()
+                .buyerId(1L)
+                .evaluation(evaluation)
+                .purchaseOrderId(1L)
+                .build();
+
+        String requestPayload = objectMapper.writeValueAsString(request);
+
+        mock.perform(post("/api/v1/evaluation")
+                .contentType(APPLICATION_JSON).content(requestPayload)
+        ).andExpect(status().isCreated())
+                .andReturn();
+
+        EvaluationUpdateRequest updatedEvaluation = EvaluationUpdateRequest.builder()
+                .id(1L)
+                .comment("New comment")
+                .build();
+
+        requestPayload = objectMapper.writeValueAsString(updatedEvaluation);
+
+        mock.perform(patch("/api/v1/evaluation").contentType(APPLICATION_JSON)
+                .content(requestPayload))
+                .andExpect(status().isNoContent())
+                .andReturn();
+    }
+
+    @Test
+    public void updateEvaluation_shouldReturnedNotFound_whenEvaluationsAreNotFound() throws Exception {
+        EvaluationUpdateRequest updatedEvaluation = EvaluationUpdateRequest.builder()
+                .id(1L)
+                .comment("New comment")
+                .build();
+
+        String payload = objectMapper.writeValueAsString(updatedEvaluation);
+
+        MvcResult mvcResult = mock.perform(patch("/api/v1/evaluation").contentType(APPLICATION_JSON)
+                .content(payload))
+
+                .andExpect(status().isNotFound()).andReturn();
+        ExceptionPayloadResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ExceptionPayloadResponse.class);
+
+        assertEquals("Evaluation of id 1 wasn't found", response.getDescription());
         assertEquals(404, response.getStatusCode());
         assertEquals("The target resource wasn't found", response.getTitle());
     }
@@ -219,7 +279,6 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
                 .contentType(APPLICATION_JSON).content(payload))
                 .andExpect(status().isCreated()).andExpect(status().isCreated());
     }
-
 
     private void setup() {
         setupBuyer();
