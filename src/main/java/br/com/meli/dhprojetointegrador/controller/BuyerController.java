@@ -22,11 +22,32 @@ public class BuyerController {
 
   private final BuyerService BuyerService;
 
+  /**
+   * Author: Pedro Dalpa
+   * Method: saveFavorite
+   * Description: adiciona produto a tabela de favorito ligado a usuário
+   *
+   * @param favoriteProductRequest
+   * 
+   * @return status 201
+   */
   @PostMapping("/favorite")
-  public ResponseEntity<FavoriteProductRequest> favorite(@RequestBody FavoriteProductRequest favoriteProductRequest) {
+  public ResponseEntity<FavoriteProductRequest> saveFavorite(
+      @RequestBody FavoriteProductRequest favoriteProductRequest) {
     BuyerService.saveFavorite(favoriteProductRequest);
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
+
+  /**
+   * Author: Pedro Dalpa
+   * Method: deleteFavorite
+   * Description: remove produto a tabela de favorito
+   *
+   * @param buyerId
+   * @param productId
+   * 
+   * @return status 204
+   */
 
   @DeleteMapping("/favorite/{buyerId}")
   public ResponseEntity<FavoriteProductRequest> deleteFavorite(
