@@ -37,7 +37,7 @@ public class PurchaseOrder implements Serializable {
     private LocalDate date;
 
     @OneToMany(mappedBy = "purchaseOrder", cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
-    private Set<PurchaseOrder> evaluation;
+    private Set<PurchaseOrderEvaluation> evaluation;
     
     @OneToMany(mappedBy = "purchaseOrder")
     private Set<CartProduct> cartProduct;

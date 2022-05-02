@@ -42,6 +42,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -204,7 +206,6 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
             String payloadFF = objectMapper.writeValueAsString(produtosFF);
             String payloadFS = objectMapper.writeValueAsString(produtosFS);
 
-
             MvcResult resultFF = mockMvc
                     .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/list").param("category", "FF"))
                     .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
@@ -237,7 +238,8 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
         }
 
         private Product setupProduct(String name, Category category) {
-        Product product = Product.builder().name(name).category(category).batchStockList(Collections.EMPTY_SET).build();
+        Product product = Product.builder().name(name).category(category).batchStockList(Collections.EMPTY_SET)
+                .purchaseOrderEvaluations(Set.of()).build();
 
             productRepository.save(product);
             return product;
