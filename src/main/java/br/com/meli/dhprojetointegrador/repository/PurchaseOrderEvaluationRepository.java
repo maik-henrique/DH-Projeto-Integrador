@@ -15,4 +15,6 @@ public interface PurchaseOrderEvaluationRepository extends JpaRepository<Purchas
 
     @Query("FROM PurchaseOrderEvaluation p WHERE p.purchaseOrder.buyer.id = :buyerId")
     List<PurchaseOrderEvaluation> findByBuyerId(@Param("buyerId") Long id);
+
+    List<PurchaseOrderEvaluation> findByProductId(Long productId);
 }

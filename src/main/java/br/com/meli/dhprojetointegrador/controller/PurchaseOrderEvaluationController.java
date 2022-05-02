@@ -2,9 +2,11 @@ package br.com.meli.dhprojetointegrador.controller;
 
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.EvaluationUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.PurchaseOrderEvaluationRegistrationRequest;
+import br.com.meli.dhprojetointegrador.dto.response.evaluation.ProductEvaluationDetailsResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationFetchResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationResponse;
 import br.com.meli.dhprojetointegrador.entity.PurchaseOrderEvaluation;
+import br.com.meli.dhprojetointegrador.entity.view.PurchaseOrderEvaluationView;
 import br.com.meli.dhprojetointegrador.service.PurchaseOrderEvaluationService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -56,10 +58,17 @@ public class PurchaseOrderEvaluationController {
     }
 
     @PatchMapping
-    public ResponseEntity<?> updateEvaluation(@RequestBody EvaluationUpdateRequest evaluationUpdateRequest) {
+    public ResponseEntity<?> updateEvaluation(@Valid @RequestBody EvaluationUpdateRequest evaluationUpdateRequest) {
         PurchaseOrderEvaluation purchaseOrderEvaluation = modelMapper.map(evaluationUpdateRequest, PurchaseOrderEvaluation.class);
         purchaseOrderEvaluationService.update(purchaseOrderEvaluation);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<?> findByProductId(@RequestParam Long productId) {
+        PurchaseOrderEvaluationView evaluations = purchaseOrderEvaluationService.findByProductId(productId);
+        ProductEvaluationDetailsResponse response = modelMapper.map(evaluations, ProductEvaluationDetailsResponse.class);
+        return ResponseEntity.ok(response);
     }
 }
