@@ -5,6 +5,7 @@ import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.response.BatchStockResponse;
 import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
 import br.com.meli.dhprojetointegrador.mapper.evaluation.PurchaseOrderEvaluationRegistrationRequestToPurchaseOrderEvaluationConverter;
+import br.com.meli.dhprojetointegrador.mapper.evaluation.PurchaseOrderEvaluationToPurchaseOrderEvaluationResponseConverter;
 import br.com.meli.dhprojetointegrador.mapper.freshproducts.BatchStockListToFreshProductsQueryResponseConverter;
 import lombok.AllArgsConstructor;
 import org.modelmapper.Converter;
@@ -28,6 +29,7 @@ public class ModelMapperConfig {
 
     private final BatchStockListToFreshProductsQueryResponseConverter batchStockListToFreshProductsQueryResponseConverter;
     private final PurchaseOrderEvaluationRegistrationRequestToPurchaseOrderEvaluationConverter purchaseOrderEvaluationRegistrationRequestToPurchaseOrderEvaluationConverter;
+    private final PurchaseOrderEvaluationToPurchaseOrderEvaluationResponseConverter purchaseOrderEvaluationToPurchaseOrderEvaluationResponseConverter;
 
     @Bean
     public ModelMapper getModelMapper() {
@@ -47,6 +49,7 @@ public class ModelMapperConfig {
 
         modelMapper.addConverter(batchStockListToFreshProductsQueryResponseConverter);
         modelMapper.addConverter(purchaseOrderEvaluationRegistrationRequestToPurchaseOrderEvaluationConverter);
+        modelMapper.addConverter(purchaseOrderEvaluationToPurchaseOrderEvaluationResponseConverter);
 
         return modelMapper;
     }

@@ -2,6 +2,7 @@ package br.com.meli.dhprojetointegrador.service;
 
 import java.util.List;
 
+import br.com.meli.dhprojetointegrador.service.validator.*;
 import org.springframework.stereotype.Service;
 
 import br.com.meli.dhprojetointegrador.entity.Buyer;
@@ -10,10 +11,6 @@ import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
 import br.com.meli.dhprojetointegrador.entity.PurchaseOrderEvaluation;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.repository.PurchaseOrderEvaluationRepository;
-import br.com.meli.dhprojetointegrador.service.validator.BuyerMatchValidator;
-import br.com.meli.dhprojetointegrador.service.validator.IPurchaseOrderEvaluationValidator;
-import br.com.meli.dhprojetointegrador.service.validator.PurchaseOrderCompletedValidator;
-import br.com.meli.dhprojetointegrador.service.validator.PurchaseOrderProductValidator;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -34,11 +31,10 @@ public class PurchaseOrderEvaluationService {
 	public PurchaseOrderEvaluation save(PurchaseOrderEvaluation purchaseOrderEvaluation)
 			throws BusinessValidatorException {
 		PurchaseOrder purchaseOrder = purchaseOrderEvaluation.getPurchaseOrder();
-
 		PurchaseOrder registeredPurchaseOrder = orderService.findPurchaseOrderById(purchaseOrder.getId());
-		initializeIInboundOrderValidators(purchaseOrderEvaluation, registeredPurchaseOrder);
 
-		validators.forEach(validator -> validator.validate());
+		initializeIInboundOrderValidators(purchaseOrderEvaluation, registeredPurchaseOrder);
+		validators.forEach(IPurchaseOrderEvaluationValidator::validate);
 
 		return purchaseOrderEvaluationRepository.save(purchaseOrderEvaluation);
 	}
@@ -48,7 +44,9 @@ public class PurchaseOrderEvaluationService {
 		Buyer buyer = purchaseOrderEvaluation.getPurchaseOrder().getBuyer();
 		Product product = purchaseOrderEvaluation.getProduct();
 
-		validators = List.of(new BuyerMatchValidator(queriedPurchaseOrder, buyer),
+		validators = List.of(new PurchaseAlreadyEvaluatedValidator(purchaseOrderEvaluationRepository, product,
+				queriedPurchaseOrder),
+				new BuyerMatchValidator(queriedPurchaseOrder, buyer),
 				new PurchaseOrderCompletedValidator(queriedPurchaseOrder),
 				new PurchaseOrderProductValidator(queriedPurchaseOrder, product));
 
