@@ -2,6 +2,8 @@ package br.com.meli.dhprojetointegrador.controller;
 
 import java.util.List;
 
+import br.com.meli.dhprojetointegrador.dto.BatchStockDTO;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.service.BatchStockService;
 import lombok.AllArgsConstructor;
@@ -22,24 +25,33 @@ public class BatchStockController {
 
   /**
    * Author: Pedro Dalpa
+   * Author: Mariana Galdino
    * Method: filterStockBySection
-   * Description: Busca estoque filtrando por seção e que a data de validade seja
-   * maior que a de hoje somada com o parâmetro
+   * Description: Busca estoque filtrando pelo parâmetros
    * 
-   * 
-   * @param sectionId    id of section to filter
-   * @param numberOfDays goes to sum this param in current date to filter
-   * @return list of batch stock that contains the filters
-   * @throws BusinessValidatorException in case section not found
+   * @param sectionId    id da seção para filtrar
+   * @param numberOfDays adicionar quantidade de dias a data atual
+   * @param ordination   ordenar por dada de validade (ASC ou DESC)
+   * @param category     filtrar por categoria (por padrão traz todas)
+   * @return lista os batch estoque utilizando os filtros
+   * @throws BusinessValidatorException se a seção nao for encontrada
    *
    */
 
   @GetMapping("/due-date")
-  public ResponseEntity<List<BatchStock>> filterStockBySection(@RequestParam(required = true) long sectionId,
-      @RequestParam(defaultValue = "0", required = false) Integer numberOfDays) {
+  public ResponseEntity<List<BatchStockDTO>> filterStockBySection(@RequestParam(required = true) long sectionId,
+                                                                  @RequestParam(defaultValue = "0", required = false) Integer numberOfDays,
+                                                                  @RequestParam(defaultValue = "ASC", required = false) Direction ordination,
+                                                                  @RequestParam(defaultValue = "FF, RF, FS", required = false) List<CategoryEnum> category) {
 
-    List<BatchStock> batchStocks = batchStockService.filterStockBySection(sectionId, numberOfDays);
+    List<BatchStock> batchStocks = batchStockService.filterStockBySection(
+        sectionId,
+        numberOfDays,
+        ordination,
+        category);
 
-    return ResponseEntity.ok().body(batchStocks);
+    return ResponseEntity.ok().body(BatchStockDTO.map(batchStocks));
+
+
   }
 }
