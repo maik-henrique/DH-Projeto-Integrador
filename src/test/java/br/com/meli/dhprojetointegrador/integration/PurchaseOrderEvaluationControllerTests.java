@@ -5,10 +5,12 @@ import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.EvaluationDetailsRegistrationRequest;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.PurchaseOrderEvaluationRegistrationRequest;
 import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
+import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationFetchResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationResponse;
 import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.repository.*;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationControllerTests {
@@ -56,6 +59,7 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
     @Autowired
     private InboundOrderRepository inboundOrderRepository;
 
+
     @Test
     public void save_shouldReturnedRegisteredEvaluation_whenProperRequestIsMade() throws Exception {
         setup();
@@ -80,7 +84,7 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
                 .contentType(APPLICATION_JSON).content(requestPayload)
         ).andExpect(status().isCreated())
                 .andReturn();
-        ;
+
         PurchaseOrderEvaluationResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
                 PurchaseOrderEvaluationResponse.class);
 
@@ -148,6 +152,54 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
 
     }
 
+    @Test
+    public void findEvaluationsByBuyerId_shouldReturnedEvaluations_whenThereAreEvaluationsRegistered() throws Exception {
+        setup();
+        createPurchaseOrder();
+        final String expectedComment = "O produto muito bom";
+        final Long expectedProductId = 1L;
+        final Integer expectedRating = 10;
+        final Long expetedBuyerId = 1L;
+
+        EvaluationDetailsRegistrationRequest evaluation = EvaluationDetailsRegistrationRequest.builder()
+                .productId(expectedProductId)
+                .comment(expectedComment)
+                .rating(expectedRating)
+                .build();
+        PurchaseOrderEvaluationRegistrationRequest request = PurchaseOrderEvaluationRegistrationRequest.builder()
+                .buyerId(expetedBuyerId)
+                .evaluation(evaluation)
+                .purchaseOrderId(1L)
+                .build();
+        String requestPayload = objectMapper.writeValueAsString(request);
+
+        mock.perform(post("/api/v1/evaluation")
+                .contentType(APPLICATION_JSON).content(requestPayload)
+        ).andExpect(status().isCreated());
+
+        MvcResult mvcResult = mock.perform(get("/api/v1/evaluation/buyer/1"))
+                .andExpect(status().isOk()).andReturn();
+
+        List<PurchaseOrderEvaluationFetchResponse> response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<PurchaseOrderEvaluationFetchResponse>>() {
+        });
+
+        PurchaseOrderEvaluationFetchResponse itemResponse = response.get(0);
+        assertEquals(1, itemResponse.getPurchaseId());
+        assertEquals(expectedProductId, itemResponse.getProductId());
+        assertEquals(expectedComment, itemResponse.getComment());
+        assertEquals(expectedRating, itemResponse.getRating());
+
+    }
+    @Test
+    public void findEvaluationsByBuyerId_shouldReturnedNotFound_whenEvaluationsAreNotFound() throws Exception {
+        MvcResult mvcResult = mock.perform(get("/api/v1/evaluation/buyer/1"))
+                .andExpect(status().isNotFound()).andReturn();
+        ExceptionPayloadResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ExceptionPayloadResponse.class);
+
+        assertEquals("No evaluation was found for buyer of id 1", response.getDescription());
+        assertEquals(404, response.getStatusCode());
+        assertEquals("The target resource wasn't found", response.getTitle());
+    }
 
     private void createPurchaseOrder() throws Exception {
         LocalDate date = LocalDate.of(2021, 4, 25);

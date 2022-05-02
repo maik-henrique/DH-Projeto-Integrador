@@ -1,7 +1,7 @@
 package br.com.meli.dhprojetointegrador.unit.service;
 
 import br.com.meli.dhprojetointegrador.entity.CartProduct;
-import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
+import br.com.meli.dhprojetointegrador.exception.ResourceNotFoundException;
 import br.com.meli.dhprojetointegrador.repository.CartProductRepository;
 import br.com.meli.dhprojetointegrador.service.CartProductService;
 import br.com.meli.dhprojetointegrador.unit.util.CardProductCreator;
@@ -58,6 +58,6 @@ public class CartProductServiceTest {
     @DisplayName("TestPI-10 - getProductsByOrderId - Exception")
     public void getProductsByOrderId_should_return_error_when_invalid_id() {
         Mockito.when(repository.findByPurchaseOrderId(99)).thenReturn(new ArrayList());
-        assertThrows(ResourceNotFound.class, () -> service.getProductsByOrderId(99));
+        assertThrows(ResourceNotFoundException.class, () -> service.getProductsByOrderId(99));
     }
 }

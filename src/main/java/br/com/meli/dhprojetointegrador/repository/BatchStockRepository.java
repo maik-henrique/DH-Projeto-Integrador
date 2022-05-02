@@ -20,5 +20,4 @@ public interface BatchStockRepository extends JpaRepository<BatchStock, Long> {
     List<BatchStock> findBatchStockByProducts(@Param("product") Long productId, @Param("minimumDueDate") LocalDate minimumDueDate,
                                               Sort sort);
 
-
 }

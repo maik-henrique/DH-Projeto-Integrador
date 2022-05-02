@@ -4,6 +4,7 @@ package br.com.meli.dhprojetointegrador.unit.service;
 import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
+import br.com.meli.dhprojetointegrador.exception.ResourceNotFoundException;
 import br.com.meli.dhprojetointegrador.repository.PurchaseOrderEvaluationRepository;
 import br.com.meli.dhprojetointegrador.service.OrderService;
 import br.com.meli.dhprojetointegrador.service.PurchaseOrderEvaluationService;
@@ -13,8 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -95,5 +98,22 @@ public class PurchaseOrderEvaluationServiceTests {
         when(purchaseOrderEvaluationRepository.existsByProductIdAndPurchaseOrderId(anyLong(), anyLong())).thenReturn(true);
 
         assertThrows(BusinessValidatorException.class, () -> purchaseOrderEvaluationService.save(purchaseOrderEvaluation));
+    }
+
+    @Test
+    public void findEvaluationByBuyerId_shouldThrowResourceNotFoundException_whenAnEmptyListIsReturnedFromRepository() {
+        when(purchaseOrderEvaluationRepository.findByBuyerId(anyLong())).thenReturn(List.of());
+
+        assertThrows(ResourceNotFoundException.class, () -> purchaseOrderEvaluationService.findEvaluationByBuyerId(1L));
+    }
+
+    @Test
+    public void findEvaluationByBuyerId_shouldNotThrowResourceNotFoundException_whenEvaluationsAreFound() {
+        PurchaseOrderEvaluation singleEvaluation = PurchaseOrderEvaluation.builder().build();
+        List<PurchaseOrderEvaluation> expectedList = List.of(singleEvaluation);
+        when(purchaseOrderEvaluationRepository.findByBuyerId(anyLong())).thenReturn(expectedList);
+
+        List<PurchaseOrderEvaluation> evaluations = purchaseOrderEvaluationService.findEvaluationByBuyerId(1L);
+        assertEquals(expectedList.size(), evaluations.size());
     }
 }

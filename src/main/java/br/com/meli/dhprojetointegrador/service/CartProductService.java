@@ -1,7 +1,7 @@
 package br.com.meli.dhprojetointegrador.service;
 
 import br.com.meli.dhprojetointegrador.entity.CartProduct;
-import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
+import br.com.meli.dhprojetointegrador.exception.ResourceNotFoundException;
 import br.com.meli.dhprojetointegrador.repository.CartProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class CartProductService{
     public List<CartProduct> getProductsByOrderId(long OrderId) {
         List<CartProduct> list = cartProdRepo.findByPurchaseOrderId(OrderId);
         if (list.isEmpty()) {
-            throw new ResourceNotFound("Order Id is not found");
+            throw new ResourceNotFoundException("Order Id is not found");
         }
         return list;
     }

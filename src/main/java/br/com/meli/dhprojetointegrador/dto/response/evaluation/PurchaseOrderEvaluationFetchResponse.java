@@ -7,8 +7,9 @@ import lombok.*;
 @Setter
 @Builder
 @AllArgsConstructor
-public class PurchaseOrderEvaluationResponse {
+public class PurchaseOrderEvaluationFetchResponse {
     private Long productId;
+    private Long purchaseId;
     private String comment;
     private Integer rating;
 }
