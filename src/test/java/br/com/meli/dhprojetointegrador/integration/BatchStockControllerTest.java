@@ -121,15 +121,18 @@ public class BatchStockControllerTest {
                 .productId(2L).build();
 
         MvcResult result = mock
-                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/due-date").param("productCategory", "FF"))
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/due-date/").param("category", "FF").param("sectionId", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
-        List<BatchStock> batchStocks = objectMapper.readerForListOf(BatchStock.class).readValue(responsePayload);
+        List<BatchStockDTO> batchStocks = objectMapper.readerForListOf(BatchStockDTO.class).readValue(responsePayload);
+
+        System.out.println(batchStocks.get(0).getCategory_id());
 
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
         assertNotNull(responsePayload);
+
 
     }
 
