@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 import br.com.meli.dhprojetointegrador.dto.request.ProductInput;
@@ -60,7 +59,7 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    //@CachePut(value = "UpdateStatusOrder", key = "#idorder")
+    // @CachePut(value = "UpdateStatusOrder", key = "#idorder")
     public PurchaseOrder atualizar(Long idorder) {
 
         try {

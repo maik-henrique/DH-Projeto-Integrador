@@ -1,19 +1,18 @@
 package br.com.meli.dhprojetointegrador.unit;
 
-import br.com.meli.dhprojetointegrador.entity.Buyer;
-import br.com.meli.dhprojetointegrador.exception.BuyerNotFoundException;
-import br.com.meli.dhprojetointegrador.repository.BuyerRepository;
-import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import javax.persistence.EntityNotFoundException;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import br.com.meli.dhprojetointegrador.entity.Buyer;
+import br.com.meli.dhprojetointegrador.exception.BuyerNotFoundException;
+import br.com.meli.dhprojetointegrador.repository.BuyerRepository;
+import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
 
 public class ValidateBuyerTest {
 
@@ -54,7 +53,7 @@ public class ValidateBuyerTest {
         when(buyerRepository.findById(2L)).thenThrow(new NoSuchElementException());
 
         try {
-            validateBuyer.getBuyer( 2L);
+            validateBuyer.getBuyer(2L);
         } catch (BuyerNotFoundException e) {
             assert true;
         }

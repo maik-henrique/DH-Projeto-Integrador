@@ -1,11 +1,14 @@
 package br.com.meli.dhprojetointegrador.dto.request;
 
+import javax.validation.constraints.NotNull;
 
-import lombok.*;
 import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter

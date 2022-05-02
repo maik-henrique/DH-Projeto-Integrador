@@ -1,14 +1,10 @@
 package br.com.meli.dhprojetointegrador.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
-import br.com.meli.dhprojetointegrador.entity.Category;
-import br.com.meli.dhprojetointegrador.entity.InboundOrder;
-import br.com.meli.dhprojetointegrador.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,8 +21,6 @@ public class BatchStockDTO {
     private int currentQuantity;
     private LocalDate dueDate;
     private Long category_id;
-
-
 
     public static BatchStockDTO map(BatchStock batchStock) {
         return BatchStockDTO.builder().batchNumber(batchStock.getBatchNumber()).dueDate(batchStock.getDueDate())
