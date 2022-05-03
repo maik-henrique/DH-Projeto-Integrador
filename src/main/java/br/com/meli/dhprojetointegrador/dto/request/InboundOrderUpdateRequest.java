@@ -17,20 +17,20 @@ import java.util.List;
 @AllArgsConstructor
 public class InboundOrderUpdateRequest {
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo orderNumber não pode ser nulo")
     private Long orderNumber;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo orderDate não pode ser nulo")
     private LocalDate orderDate;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O código sectionId não pode ser nulo")
     private Long sectionId;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O código agentId não pode ser nulo")
     private Long agentId;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo batchStock não pode ser nulo")
     private List<@Valid BatchStockUpdateRequest> batchStock;
 }

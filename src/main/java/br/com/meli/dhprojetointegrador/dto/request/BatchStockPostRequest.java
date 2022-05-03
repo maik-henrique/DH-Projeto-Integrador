@@ -23,35 +23,35 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BatchStockPostRequest {
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O código batchNumber não pode ser nulo")
     private Long batchNumber;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O código productId não pode ser nulo")
     private Long productId;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo currentTemperature não pode ser nulo")
     private Float currentTemperature;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo minimumTemperature não pode ser nulo")
     private Float minimumTemperature;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo initialQuantity não pode ser nulo")
     private Integer initialQuantity;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo currentQuantity não pode ser nulo")
     private Integer currentQuantity;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo dueDate não pode ser nulo")
     private LocalDate dueDate;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo manufacturingDate não pode ser nulo")
     private LocalDate manufacturingDate;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo manufacturingTime não pode ser nulo")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

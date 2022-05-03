@@ -29,11 +29,11 @@ public class Agent {
   private Long id;
 
   
-  @NotNull(message = "O campo nome não pode ser nulo")
+  @NotNull(message = "O campo name não pode ser nulo")
   private String name;
 
   
-  @NotNull(message = "O campo senha não pode ser nulo")
+  @NotNull(message = "O campo password não pode ser nulo")
   @Size(min = 6, max = 8, message = "Senha tem que ser de 6 a 8 caracteres!")
   private String password;
 

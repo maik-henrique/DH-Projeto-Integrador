@@ -30,20 +30,20 @@ public class Buyer implements Serializable {
     private Long id;
 
     
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo name não pode ser nulo")
     private String name;
 
     
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo password não pode ser nulo")
     @Size(min = 6, max = 8, message = "Senha tem que ser de 6 a 8 caracteres!")
     private String password;
 
     
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo email não pode ser nulo")
     @Email
     private String email;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo status não pode ser nulo")
     @Enumerated(EnumType.STRING)
     private BuyerStatusEnum status;
 

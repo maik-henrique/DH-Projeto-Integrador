@@ -30,11 +30,11 @@ public class PurchaseOrder implements Serializable {
     @JoinColumn(name = "buyer_id")
     private Buyer buyer;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo status não pode ser nulo")
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo date não pode ser nulo")
     @DateTimeFormat
     private LocalDate date;
 }

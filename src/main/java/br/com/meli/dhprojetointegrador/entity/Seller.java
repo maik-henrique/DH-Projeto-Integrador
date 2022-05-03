@@ -29,7 +29,7 @@ public class Seller {
   private Long id;
 
   
-  @NotNull(message = "O campo nome não pode ser nulo")
+  @NotNull(message = "O campo name não pode ser nulo")
   private String name;
 
   @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)

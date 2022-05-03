@@ -23,18 +23,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PurchaseOrderInput {
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo date não pode ser nulo")
     @DateTimeFormat
     private LocalDate date;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O código buyerId não pode ser nulo")
     @NumberFormat
     private Long buyerId;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo orderStatus não pode ser nulo")
     private StatusEnum orderStatus;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo products não pode ser nulo")
     private List<@Valid ProductInput> products;
 
 

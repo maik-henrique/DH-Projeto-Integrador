@@ -26,23 +26,23 @@ import org.springframework.format.annotation.NumberFormat;
 @Table(name = "batch_stock")
 public class BatchStock {
 
-    //@ApiModelProperty(value = "Código do bactchStock")
+    @ApiModelProperty(value = "Código do bactchStock")
     @Id
     private Long batchNumber;
 
     @NumberFormat
     private int currentQuantity;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo dueDate não pode ser nulo")
     private LocalDate dueDate;
 
     @NumberFormat
     private int initialQuantity;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo manufacturingDate não pode ser nulo")
     private LocalDate manufacturingDate;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo manufacturingTime não pode ser nulo")
     private LocalDateTime manufacturingTime;
     private float currentTemperature;
     private float minimumTemperature;

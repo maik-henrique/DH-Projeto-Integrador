@@ -20,7 +20,7 @@ public class InboundOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderNumber;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo orderDate não pode ser nulo")
     private LocalDate orderDate;
 
     @ApiModelProperty(value = "Código do agent")

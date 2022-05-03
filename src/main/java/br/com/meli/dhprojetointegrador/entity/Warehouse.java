@@ -31,7 +31,7 @@ public class Warehouse {
   private Long id;
 
   
-  @NotNull(message = "O campo nome não pode ser nulo")
+  @NotNull(message = "O campo name não pode ser nulo")
   private String name;
 
   @ApiModelProperty(value = "Código do agent")

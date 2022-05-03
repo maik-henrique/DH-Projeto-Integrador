@@ -11,13 +11,13 @@ import javax.validation.constraints.NotNull;
 public class AgentUpdateRequest {
 
     
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O código id não pode ser nulo")
     private Long id;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo name não pode ser nulo")
     private String name;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo password não pode ser nulo")
     private String password;
 
 

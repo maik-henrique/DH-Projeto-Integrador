@@ -45,8 +45,8 @@ public class BatchStockService {
     }
 
     /**
-     * @param productId id do produto alvo da requisição
-     * @param sortBy    campo base da ordenado do batchStock
+     *  id do produto alvo da requisição
+     * campo base da ordenado do batchStock
      * @return lista de batchStock cuja busca foi bem sucedida
      * @throws ResourceNotFound caso nenhum produto seja encontrado
      * @Author: Maik

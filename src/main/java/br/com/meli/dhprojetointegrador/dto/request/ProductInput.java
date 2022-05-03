@@ -11,11 +11,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ProductInput {
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O código productId não pode ser nulo")
     @NumberFormat
     private Long productId;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo quantity não pode ser nulo")
     @NumberFormat
     private Integer quantity;
 

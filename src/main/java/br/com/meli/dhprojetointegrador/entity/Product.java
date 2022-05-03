@@ -23,7 +23,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
+    @NotNull(message = "O campo name não pode ser nulo")
     private String name;
 
     @DecimalMin(value = "0.0", inclusive = false)

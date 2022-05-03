@@ -17,20 +17,19 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class InboundPostRequestBody {
 
-  @NotNull(message = "O campo nome não pode ser nulo")
-  
+  @NotNull(message = "O campo orderDate não pode ser nulo")
   @DateTimeFormat
   private Date orderDate;
 
   @NumberFormat
-  @NotNull(message = "O campo nome não pode ser nulo")
+  @NotNull(message = "O código agentId não pode ser nulo")
   private Long agentId;
 
   @NumberFormat
-  @NotNull(message = "O campo nome não pode ser nulo")
+  @NotNull(message = "O código sectionId não pode ser nulo")
   private Long sectionId;
 
-  @NotNull(message = "O campo nome não pode ser nulo")
+  @NotNull(message = "O campo batchStock não pode ser nulo")
   private Set<BatchStockDTO> batchStock;
 
 }
