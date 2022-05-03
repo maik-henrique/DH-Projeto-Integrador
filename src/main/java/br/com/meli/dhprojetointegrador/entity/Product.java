@@ -34,6 +34,7 @@ public class Product {
     private String name;
     private BigDecimal price;
     private float volume;
+    private String brand;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

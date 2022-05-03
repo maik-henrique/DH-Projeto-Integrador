@@ -22,4 +22,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("minValue") BigDecimal minValue,
             @Param("maxValue") BigDecimal maxValue,
             Sort sort);
+
+    @Query("SELECT p FROM Product p WHERE p.name LIKE %:name%")
+    List<Product> findByNameContainingIgnoreCase(@Param("name") String name);
+
+    @Query("SELECT p FROM Product p WHERE p.brand LIKE %:brand%")
+    List<Product> findByBrandContainingIgnoreCase(@Param("brand") String brand);
 }

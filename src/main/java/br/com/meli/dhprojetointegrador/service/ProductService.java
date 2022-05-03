@@ -117,4 +117,17 @@ public class ProductService {
         return productRepository.orderProductByPrice(minValue, maxValue, sort);
 
     }
+
+    public List<Product> findByName(String name) {
+
+        return productRepository.findByNameContainingIgnoreCase(name);
+
+    }
+
+    public List<Product> findByBrand(String brand) {
+
+        return productRepository.findByBrandContainingIgnoreCase(brand);
+
+    }
+
 }

@@ -127,4 +127,44 @@ public class ProductController {
 
     }
 
+    /**
+     * Author: Pedro Dalpa
+     * Method: orderProductByPrice
+     * Description: Retorna todos os produtos ordenados pelo preço crescente ou
+     * decrescente e entre o intervalo de preço determinado
+     *
+     * @param price
+     * @param minValue
+     * @param maxValue
+     * @return Se existir, retorna lista de produtos filtrados por categoria
+     */
+    @GetMapping("/list/name/{name}")
+    public ResponseEntity<List<ProductDTO>> listByName(@PathVariable String name) {
+
+        List<Product> products = productService.findByName(name);
+
+        return ResponseEntity.ok(ProductDTO.map(products));
+
+    }
+
+    /**
+     * Author: Pedro Dalpa
+     * Method: orderProductByPrice
+     * Description: Retorna todos os produtos ordenados pelo preço crescente ou
+     * decrescente e entre o intervalo de preço determinado
+     *
+     * @param price
+     * @param minValue
+     * @param maxValue
+     * @return Se existir, retorna lista de produtos filtrados por categoria
+     */
+    @GetMapping("/list/brand/{brand}")
+    public ResponseEntity<List<ProductDTO>> listByBrand(@PathVariable String brand) {
+
+        List<Product> products = productService.findByBrand(brand);
+
+        return ResponseEntity.ok(ProductDTO.map(products));
+
+    }
+
 }
