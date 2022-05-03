@@ -11,5 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WarehouseDTO {
-    List<Warehouse> warehouses;
+    private Long id;
+    private String name;
 }
