@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -34,11 +35,17 @@ public class PurchaseOrderEvaluationController {
      * @return dados da avaliação efetuada
      */
     @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody PurchaseOrderEvaluationRegistrationRequest evaluationRegistrationRequest) {
+    public ResponseEntity<?> save(@Valid @RequestBody PurchaseOrderEvaluationRegistrationRequest evaluationRegistrationRequest,
+                                  UriComponentsBuilder uriBuilder) {
         PurchaseOrderEvaluation purchaseOrderEvaluation = modelMapper.map(evaluationRegistrationRequest, PurchaseOrderEvaluation.class);
         PurchaseOrderEvaluation savedPurchaseEvaluation = purchaseOrderEvaluationService.save(purchaseOrderEvaluation);
         PurchaseOrderEvaluationResponse response = modelMapper.map(savedPurchaseEvaluation, PurchaseOrderEvaluationResponse.class);
-        URI location = URI.create("/" + purchaseOrderEvaluation.getId());
+
+        URI location = uriBuilder
+                .path("/api/v1/evaluation".concat("/{id}"))
+                .buildAndExpand(evaluationRegistrationRequest.getEvaluation().getProductId())
+                .toUri();
+
         return ResponseEntity.created(location).body(response);
     }
 
