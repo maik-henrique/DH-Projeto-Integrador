@@ -14,6 +14,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByCategory_Name(CategoryEnum category);
 
+    //Product getBySellerIdAndAndName(Long id, String name);
+
     List<Product> findBySellerIdAndAndName(Long id, String name);
 
     List<Product> findBySeller(Seller seller);

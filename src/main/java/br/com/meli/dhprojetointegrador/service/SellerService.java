@@ -7,6 +7,7 @@ import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.entity.Seller;
 import br.com.meli.dhprojetointegrador.exception.BadRequestException;
 import br.com.meli.dhprojetointegrador.exception.ProductNotFoundException;
+import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
 import br.com.meli.dhprojetointegrador.repository.CategoryRepository;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import br.com.meli.dhprojetointegrador.repository.SellerRepository;
@@ -25,16 +26,6 @@ public class SellerService {
     private ProductRepository productRepository;
     private SellerRepository sellerRepository;
     private CategoryRepository categoryRepository;
-
-    private Boolean verifyIfProductExists(String name, Long sellerId) {
-        try {
-            productRepository.findBySellerIdAndAndName(sellerId, name);
-            throw new BadRequestException("Product already registered");
-        } catch (Exception e) {
-            System.out.println(e);
-            return false;
-        }
-    }
 
     private Seller checkSeller(Long sellerId) {
         try {
@@ -65,18 +56,6 @@ public class SellerService {
         try {
             return fullProductResponseBuilder(productRepository.save(product));
         } catch (Exception e) {
-            System.out.println(e);
-            throw new BadRequestException("There was a problem creating the product on the database");
-        }
-    }
-
-    public FullProductResponse createProduct(NewProductRequest input) {
-        Boolean verifyProduct = verifyIfProductExists(input.getName(), input.getSellerId());
-        Seller seller = checkSeller(input.getSellerId());
-        Category category = checkCategory(input.getCategoryId());
-        if (!verifyProduct) {
-            return buildAndCreateProduct(input, seller, category);
-        } else {
             throw new BadRequestException("There was a problem creating the product on the database");
         }
     }
@@ -90,6 +69,12 @@ public class SellerService {
                 .category_id(product.getCategory().getId())
                 .seller_id(product.getSeller().getId())
                 .build();
+    }
+
+    public FullProductResponse createProduct(NewProductRequest input) {
+        Seller seller = checkSeller(input.getSellerId());
+        Category category = checkCategory(input.getCategoryId());
+        return buildAndCreateProduct(input, seller, category);
     }
 
     public List<FullProductResponse> getAllProducts(Long sellerId) {
