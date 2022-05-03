@@ -2,13 +2,13 @@ package br.com.meli.dhprojetointegrador.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import br.com.meli.dhprojetointegrador.dto.response.WarehouseQuantity;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
@@ -26,6 +26,7 @@ public class ProductService {
     @Autowired
     private ValidadeProduct validateProduct;
 
+    @Cacheable(value = "findProductById", key = "#id")
     public Product findProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new BusinessValidatorException(String.format("Product with id %d not found", id)));
@@ -39,6 +40,7 @@ public class ProductService {
      * 
      * @return lista de produtos
      */
+    @Cacheable(value = "returnAllProducts")
     public List<Product> returnAllProducts() {
         return productRepository.findAll();
     }
@@ -56,6 +58,7 @@ public class ProductService {
      *
      * @return Se existir, retorna lista de produtos filtrados por categoria
      */
+    @Cacheable(value = "returnProductsByCategory", key = "#category")
     public List<Product> returnProductsByCategory(String category ){
         return productRepository.findByCategory_Name(CategoryEnum.valueOf(category));
     }
@@ -66,6 +69,7 @@ public class ProductService {
      * Description: Busca os produtos e associação com cada warehouse e soma o total de produtos em cada warehouse
      * @return ProductByWarehouseResponse
      */
+    @Cacheable(value = "getProductByWarehouse", key = "#id")
     public ProductByWarehouseResponse getProductByWarehouse(Long id) {
         Product product = validateProduct.validateQuantity(1, id);
         List<WarehouseQuantity> warehouseQuantities = new ArrayList<>();

@@ -3,11 +3,7 @@ package br.com.meli.dhprojetointegrador.controller;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderPostRequest;
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
@@ -36,7 +32,7 @@ public class InboundOrderController {
 	 * @return inboud order updated or exception in case it does not fulfill the
 	 *         request
 	 */
-	@PutMapping
+	@PutMapping()
 	public ResponseEntity<?> update(@Valid @RequestBody InboundOrderUpdateRequest inboundOrderUpdateRequest) {
 		InboundOrder inboundOrder = modelMapper.map(inboundOrderUpdateRequest, InboundOrder.class);
 		InboundOrder updatedInboundOrder = inboundOrderService.update(inboundOrder);

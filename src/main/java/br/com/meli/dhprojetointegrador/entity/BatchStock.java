@@ -7,17 +7,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 @Entity
@@ -29,6 +26,7 @@ import org.springframework.format.annotation.NumberFormat;
 @Table(name = "batch_stock")
 public class BatchStock {
 
+    //@ApiModelProperty(value = "Código do bactchStock")
     @Id
     private Long batchNumber;
 
@@ -49,11 +47,13 @@ public class BatchStock {
     private float currentTemperature;
     private float minimumTemperature;
 
+    @ApiModelProperty(value = "nome do produto")
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     @JsonIgnore
     private Product products;
 
+    @ApiModelProperty(value = "inbounOrder Number")
     @ManyToOne
     @JoinColumn(name = "order_number")
     @JsonIgnore

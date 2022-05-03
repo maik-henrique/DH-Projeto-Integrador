@@ -4,6 +4,7 @@ import br.com.meli.dhprojetointegrador.entity.CartProduct;
 import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
 import br.com.meli.dhprojetointegrador.repository.CartProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class CartProductService{
      * Description: Recupera uma lista com todos os registros de CartProduct onde OrderId for igual ao especificado
      *
      **/
+    @Cacheable(value = "getProductsByOrderId", key = "#OrderId")
     public List<CartProduct> getProductsByOrderId(long OrderId) {
         List<CartProduct> list = cartProdRepo.findByPurchaseOrderId(OrderId);
         if (list.isEmpty()) {

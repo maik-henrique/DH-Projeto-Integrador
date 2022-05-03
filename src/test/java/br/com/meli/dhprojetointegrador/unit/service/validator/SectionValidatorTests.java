@@ -3,6 +3,9 @@ package br.com.meli.dhprojetointegrador.unit.service.validator;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.Optional;
+
+import br.com.meli.dhprojetointegrador.unit.util.SectionCreator;
+import br.com.meli.dhprojetointegrador.unit.util.WarehouseCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,8 +22,7 @@ import br.com.meli.dhprojetointegrador.repository.SectionRepository;
 import br.com.meli.dhprojetointegrador.repository.WarehouseRepository;
 import br.com.meli.dhprojetointegrador.service.SectionService;
 import br.com.meli.dhprojetointegrador.service.validator.SectionValidator;
-import br.com.meli.dhprojetointegrador.unit.util.SectionCreator;
-import br.com.meli.dhprojetointegrador.unit.util.WarehouseCreator;
+
 
 @ExtendWith(SpringExtension.class)
 public class SectionValidatorTests {

@@ -8,8 +8,8 @@ import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
-import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -27,6 +27,7 @@ public class ValidadeProduct {
      * Method: validateQuantity
      * Description: Valida se determinado produto possui estoque suficiente
      */
+    @CachePut(value = "validateQuantity", key = "#id")
     public Product validateQuantity(Integer qtd, Long id) {
         try {
             Product product = productRepository.findById(id).get();

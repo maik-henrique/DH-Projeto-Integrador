@@ -10,19 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.persistence.*;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 @Entity
@@ -34,13 +30,20 @@ import org.hibernate.validator.constraints.Range;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "name" }))
 public class Category {
 
+    @ApiModelProperty(value = "Código da category")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Enumerated(EnumType.STRING)
     private CategoryEnum name;
+
+    @Range(min = -22,max = 0, message = "Temperatura fora do indicado!")
     private float minimumTemperature;
+
+    @Range(min = -22,max = 0, message = "Temperatura fora do indicado!")
     private float maximumTemperature;
+
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private Set<Product> products;

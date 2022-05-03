@@ -1,6 +1,5 @@
 package br.com.meli.dhprojetointegrador.dto.response;
 
-import lombok.*;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

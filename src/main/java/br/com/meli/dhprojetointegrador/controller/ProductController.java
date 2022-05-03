@@ -5,11 +5,9 @@ import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockColl
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import java.util.List;
-
 import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import br.com.meli.dhprojetointegrador.dto.response.ProductResponseDto;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.service.BatchStockService;

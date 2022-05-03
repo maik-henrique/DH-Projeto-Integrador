@@ -1,13 +1,14 @@
 package br.com.meli.dhprojetointegrador.dto.request;
 
 
+import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
 import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,5 +36,6 @@ public class PurchaseOrderInput {
 
     @NotNull(message = "O campo nome não pode ser nulo")
     private List<@Valid ProductInput> products;
+
 
 }

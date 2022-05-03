@@ -1,13 +1,8 @@
 package br.com.meli.dhprojetointegrador.controller;
 
 import java.util.List;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.service.BatchStockService;
@@ -33,7 +28,6 @@ public class BatchStockController {
    * @throws BusinessValidatorException in case section not found
    *
    */
-
   @GetMapping("/due-date")
   public ResponseEntity<List<BatchStock>> filterStockBySection(@RequestParam(required = true) long sectionId,
       @RequestParam(defaultValue = "0", required = false) Integer numberOfDays) {

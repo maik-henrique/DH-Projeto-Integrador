@@ -6,9 +6,9 @@ import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
 import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,7 +29,7 @@ public class BatchStockService {
      * @return list of batch stock that contains the filters
      * @throws BusinessValidatorException in case section not found
      */
-
+    @Cacheable(value = "filterStockBySection", key = "#sectionId")
     public List<BatchStock> filterStockBySection(Long sectionId, Integer numberOfDays) {
         sectionService.findSectionById(sectionId);
 
@@ -52,6 +52,7 @@ public class BatchStockService {
      * @Author: Maik
      * Retorna a lista de batch stocks que possuem o produto específicado e com data de vencimento válida
      */
+    @Cacheable(value = "findByProductId", key = "#productId")
     public List<BatchStock> findByProductId(Long productId, String sortBy) throws ResourceNotFound {
         Sort sort = Sort.by(sortBy);
 

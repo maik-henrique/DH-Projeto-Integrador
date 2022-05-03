@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderPostRequest;
-import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.mapper.freshproducts.BatchStockListToFreshProductsQueryResponseConverter;
 import lombok.AllArgsConstructor;
 import br.com.meli.dhprojetointegrador.entity.Agent;

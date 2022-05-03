@@ -6,6 +6,7 @@ import br.com.meli.dhprojetointegrador.repository.BuyerRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
 
@@ -22,6 +23,7 @@ public class ValidateBuyer {
      * Method: getBuyer
      * Description: Valida se determinado comprador existe no banco de dados
      */
+    @CachePut(value = "getBuyer",key = "#id")
     public Buyer getBuyer(Long id) {
         try {
             Buyer buyer = buyerRepository.findById(id).get();
