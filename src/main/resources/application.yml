@@ -17,5 +17,7 @@ spring:
     host: localhost
     port: 6379
     password: Redis!
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
