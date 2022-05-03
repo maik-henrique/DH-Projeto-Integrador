@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "8af8973b-e48e-475d-9dfb-54649918d6ec",
+		"name": "Requisito 6 - Avaliação",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Registrar avaliação",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"buyerId\": 1,\n    \"purchaseOrderId\": 1,\n    \"evaluation\" : {\n        \"productId\": 1,\n        \"comment\": \"Produto muito ruim\",\n        \"rating\": 7\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/evaluation",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"evaluation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar avaliação",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"comment\": \"Mudei de ideia, o produto é muito bom\",\n    \"buyerId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/evaluation",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"evaluation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Avaliações de um vendedor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/evaluation/buyer/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"evaluation",
+						"buyer",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Avaliações de um produto",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/evaluation?productId=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"evaluation"
+					],
+					"query": [
+						{
+							"key": "productId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
