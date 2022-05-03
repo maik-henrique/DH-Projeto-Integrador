@@ -26,7 +26,7 @@ public class ProductService {
     @Autowired
     private ValidadeProduct validateProduct;
 
-    @Cacheable(value = "findProductById", key = "#id")
+    //@Cacheable(value = "findProductById", key = "#id")
     public Product findProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new BusinessValidatorException(String.format("Product with id %d not found", id)));
@@ -40,7 +40,7 @@ public class ProductService {
      * 
      * @return lista de produtos
      */
-    @Cacheable(value = "returnAllProducts")
+    //@Cacheable(value = "returnAllProducts")
     public List<Product> returnAllProducts() {
         return productRepository.findAll();
     }
@@ -58,7 +58,7 @@ public class ProductService {
      *
      * @return Se existir, retorna lista de produtos filtrados por categoria
      */
-    @Cacheable(value = "returnProductsByCategory", key = "#category")
+    //@Cacheable(value = "returnProductsByCategory", key = "#category")
     public List<Product> returnProductsByCategory(String category ){
         return productRepository.findByCategory_Name(CategoryEnum.valueOf(category));
     }
@@ -69,7 +69,7 @@ public class ProductService {
      * Description: Busca os produtos e associação com cada warehouse e soma o total de produtos em cada warehouse
      * @return ProductByWarehouseResponse
      */
-    @Cacheable(value = "getProductByWarehouse", key = "#id")
+    //@Cacheable(value = "getProductByWarehouse", key = "#id")
     public ProductByWarehouseResponse getProductByWarehouse(Long id) {
         Product product = validateProduct.validateQuantity(1, id);
         List<WarehouseQuantity> warehouseQuantities = new ArrayList<>();

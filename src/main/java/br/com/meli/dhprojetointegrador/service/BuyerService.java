@@ -31,7 +31,7 @@ public class BuyerService {
      * @Description: Listar todas as purchaseOrder referentes ao Buyer
      * @return
      */
-    @Cacheable(value = "listAllPurchases", key = "#id")
+    //@Cacheable(value = "listAllPurchases", key = "#id")
     public List<PurchaseOrder> listAllPurchases(Long id) {
         List<PurchaseOrder> purchaseOrders = purchaseOrderRepository.findByBuyerIdAndStatus(id, StatusEnum.FINALIZADO);
         return purchaseOrders;
@@ -44,7 +44,7 @@ public class BuyerService {
      * @Description: Listar todas as purchaseOrder referentes ao Buyer com um mesmo Status
      * @return
      */
-    @Cacheable(value = "listAllPurchasesWithStatus", key = "#id")
+    //@Cacheable(value = "listAllPurchasesWithStatus", key = "#id")
     public List<PurchaseOrder> listAllPurchasesWithStatus(Long id, StatusEnum status) {
         List<PurchaseOrder> purchaseOrdersStatus = purchaseOrderRepository.findByBuyerIdAndStatus(id, status);
         return purchaseOrdersStatus;
@@ -56,7 +56,7 @@ public class BuyerService {
      * @Description: Alterar os dados do buyer, pelo email/nome
      * @return
      */
-    @CachePut(value = "updateDataBuyer", key = "#buyer")
+    //@CachePut(value = "updateDataBuyer", key = "#buyer")
     public Buyer updateDataBuyer(Buyer buyer) {
 
         try {
@@ -85,7 +85,7 @@ public class BuyerService {
      * @Description: Desativar a conta a partir de email e password, setando Ativo e Inativo
      * @return
      */
-    @CacheEvict(value = "deactivateBuyer", key = "#id")
+    //@CacheEvict(value = "deactivateBuyer", key = "#id")
     public Buyer deactivateBuyer(Long id) {
 
         try{

@@ -14,7 +14,7 @@ public class WarehouseService {
 
     private WarehouseRepository warehouseRepository;
 
-    @Cacheable(value = "findWarehouseIdBySection", key = "#section")
+    //@Cacheable(value = "findWarehouseIdBySection", key = "#section")
     public Warehouse findWarehouseIdBySection(Section section) throws BusinessValidatorException {
         return warehouseRepository.findBySections(section)
                 .orElseThrow(() -> new BusinessValidatorException("Warehouse not found, section id invalid"));

@@ -35,7 +35,7 @@ public class InboundOrderService {
      * @return instância atualizada de InboundOrder
      * @throws BusinessValidatorException Caso não consiga finalizar a atualização
      */
-    @CachePut(value = "update", key = "#inboundOrder")
+    //@CachePut(value = "update", key = "#inboundOrder")
     public InboundOrder update(InboundOrder inboundOrder) throws BusinessValidatorException {
 
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
@@ -85,7 +85,7 @@ public class InboundOrderService {
      * @throws BusinessValidatorException in case it fails to created the
      *                                    InboundOrder properly
      */
-    @CacheEvict(value = "create", key = "#inboundOrder")
+    //@CacheEvict(value = "create", key = "#inboundOrder")
     public InboundOrder create(InboundOrder inboundOrder) throws BusinessValidatorException {
         Section section = sectionService.findSectionById(inboundOrder.getSection().getId());
         Agent agent = agentService.findAgentById(inboundOrder.getAgent().getId());

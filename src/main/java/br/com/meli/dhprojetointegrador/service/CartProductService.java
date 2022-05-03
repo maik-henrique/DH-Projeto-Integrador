@@ -20,7 +20,7 @@ public class CartProductService{
      * Description: Recupera uma lista com todos os registros de CartProduct onde OrderId for igual ao especificado
      *
      **/
-    @Cacheable(value = "getProductsByOrderId", key = "#OrderId")
+    //@Cacheable(value = "getProductsByOrderId", key = "#OrderId")
     public List<CartProduct> getProductsByOrderId(long OrderId) {
         List<CartProduct> list = cartProdRepo.findByPurchaseOrderId(OrderId);
         if (list.isEmpty()) {

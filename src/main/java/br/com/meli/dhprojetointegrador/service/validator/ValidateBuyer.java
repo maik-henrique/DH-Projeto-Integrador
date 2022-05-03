@@ -23,7 +23,7 @@ public class ValidateBuyer {
      * Method: getBuyer
      * Description: Valida se determinado comprador existe no banco de dados
      */
-    @CachePut(value = "getBuyer",key = "#id")
+    //@CachePut(value = "getBuyer",key = "#id")
     public Buyer getBuyer(Long id) {
         try {
             Buyer buyer = buyerRepository.findById(id).get();

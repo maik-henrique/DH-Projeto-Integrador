@@ -13,7 +13,7 @@ public class SectionService {
 
     private final SectionRepository sectionRepository;
 
-    @Cacheable(value = "findSectionById", key = "#id")
+    //@Cacheable(value = "findSectionById", key = "#id")
     public Section findSectionById(Long id) throws BusinessValidatorException {
         return sectionRepository.findById(id)
                 .orElseThrow(() -> new BusinessValidatorException(String.format("Section of id %d not found", id)));

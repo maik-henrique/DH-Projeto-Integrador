@@ -38,7 +38,7 @@ public class BatchStockService {
      * @throws BusinessValidatorException se a seção nao for encontrada
      */
 
-    @Cacheable(value = "filterStockBySection", key = "#sectionId")
+    //@Cacheable(value = "filterStockBySection", key = "#sectionId")
     public List<BatchStock> filterStockBySection(
             Long sectionId,
             Integer numberOfDays,
@@ -68,7 +68,7 @@ public class BatchStockService {
      * Retorna a lista de batch stocks que possuem o produto específicado e
      * com data de vencimento válida
      */
-    @Cacheable(value = "findByProductId", key = "#productId")
+    //@Cacheable(value = "findByProductId", key = "#productId")
     public List<BatchStock> findByProductId(Long productId, String sortBy) throws ResourceNotFound {
         Sort sort = Sort.by(sortBy);
 
