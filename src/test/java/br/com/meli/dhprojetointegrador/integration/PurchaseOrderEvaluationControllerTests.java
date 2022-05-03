@@ -222,7 +222,6 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
         final String expectedComment = "O produto muito bom";
         final Long expectedProductId = 1L;
         final Integer expectedRating = 10;
-        final Long expetedBuyerId = 1L;
 
         PurchaseOrderEvaluationRegistrationRequest request = getDefaultRequest(expectedComment, expectedProductId, expectedRating, 1L);
         String requestPayload = objectMapper.writeValueAsString(request);

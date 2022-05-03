@@ -14,6 +14,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(indexes = {
+        @Index(name = "PRODUCT_INDEX", columnList = "fk_product_id")
+})
 public class PurchaseOrderEvaluation implements Serializable {
 
     private static final long serialVersionUID = -5732848803941349298L;
