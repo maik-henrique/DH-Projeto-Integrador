@@ -24,6 +24,7 @@ public class ProductDTO {
   private Long categoryId;
   private String sellerName;
   private Long sellerId;
+  private String brand;
 
   public static ProductDTO map(Product product) {
     return ProductDTO.builder()
@@ -34,6 +35,7 @@ public class ProductDTO {
         .categoryId(product.getCategory().getId())
         .sellerName(product.getSeller().getName())
         .sellerId(product.getSeller().getId())
+        .brand(product.getBrand())
         .build();
   }
 

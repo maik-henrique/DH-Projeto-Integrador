@@ -129,14 +129,13 @@ public class ProductController {
 
     /**
      * Author: Pedro Dalpa
-     * Method: orderProductByPrice
-     * Description: Retorna todos os produtos ordenados pelo preço crescente ou
-     * decrescente e entre o intervalo de preço determinado
+     * Method: listByName
+     * Description: Retorna todos os produtos filtrados pelo nome
      *
-     * @param price
-     * @param minValue
-     * @param maxValue
-     * @return Se existir, retorna lista de produtos filtrados por categoria
+     * @param name
+     * 
+     * @return Se existir, retorna lista de produtos que contenham a string passada
+     *         em alguma parte do nome
      */
     @GetMapping("/list/name/{name}")
     public ResponseEntity<List<ProductDTO>> listByName(@PathVariable String name) {
@@ -149,14 +148,13 @@ public class ProductController {
 
     /**
      * Author: Pedro Dalpa
-     * Method: orderProductByPrice
-     * Description: Retorna todos os produtos ordenados pelo preço crescente ou
-     * decrescente e entre o intervalo de preço determinado
+     * Method: listByBrand
+     * Description: Retorna todos os produtos filtrados pela marca
      *
-     * @param price
-     * @param minValue
-     * @param maxValue
-     * @return Se existir, retorna lista de produtos filtrados por categoria
+     * @param brand
+     * 
+     * @return Se existir, retorna lista de produtos que contenham a string passada
+     *         em alguma parte da marca
      */
     @GetMapping("/list/brand/{brand}")
     public ResponseEntity<List<ProductDTO>> listByBrand(@PathVariable String brand) {

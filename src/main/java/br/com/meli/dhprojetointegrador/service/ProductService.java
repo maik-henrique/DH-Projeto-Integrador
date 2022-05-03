@@ -118,12 +118,32 @@ public class ProductService {
 
     }
 
+    /**
+     * Author: Pedro Dalpa
+     * Method: listByName
+     * Description: Retorna todos os produtos filtrados pelo nome
+     *
+     * @param name
+     * 
+     * @return Se existir, retorna lista de produtos que contenham a string passada
+     *         em alguma parte do nome
+     */
     public List<Product> findByName(String name) {
 
         return productRepository.findByNameContainingIgnoreCase(name);
 
     }
 
+    /**
+     * Author: Pedro Dalpa
+     * Method: listByBrand
+     * Description: Retorna todos os produtos filtrados pela marca
+     *
+     * @param brand
+     * 
+     * @return Se existir, retorna lista de produtos que contenham a string passada
+     *         em alguma parte da marca
+     */
     public List<Product> findByBrand(String brand) {
 
         return productRepository.findByBrandContainingIgnoreCase(brand);
