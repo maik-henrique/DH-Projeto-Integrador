@@ -23,10 +23,10 @@ import static org.mockito.Mockito.when;
 
 public class SellerServiceTest {
     ProductRepository productRepository = mock(ProductRepository.class);
-    SellerRepository sellerRepositry = mock(SellerRepository.class);
+    SellerRepository sellerRepository = mock(SellerRepository.class);
     CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
-    private final SellerService sellerservice = new SellerService(productRepository, sellerRepositry, categoryRepository);
+    private final SellerService sellerservice = new SellerService(productRepository, sellerRepository, categoryRepository);
 
     NewProductRequest newProductRequest = NewProductRequest.builder()
             .name("sorvete")
@@ -111,7 +111,7 @@ public class SellerServiceTest {
     @Test
     @DisplayName("TestPI-68 - createProduct")
     public void createProduct_should_return_correct_FullProductResponse() {
-        when(sellerRepositry.getById(3L)).thenReturn(seller);
+        when(sellerRepository.getById(3L)).thenReturn(seller);
         when(categoryRepository.getById(4L)).thenReturn(category);
         when(productRepository.save(Mockito.any(Product.class))).thenReturn(product);
 
@@ -133,7 +133,7 @@ public class SellerServiceTest {
     @Test
     @DisplayName("TestPI-68 - getAllProducts")
     public void getAllProducts_should_return_correct_list_of_FullProductResponse() {
-        when(sellerRepositry.getById(3L)).thenReturn(seller);
+        when(sellerRepository.getById(3L)).thenReturn(seller);
         when(productRepository.findBySeller(seller)).thenReturn(List.of(product, product2));
 
         List<FullProductResponse> result = sellerservice.getAllProducts(3L);

@@ -14,11 +14,11 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/fresh-products/seller")
+@RequestMapping("/api/v1/fresh-products/seller/products")
 @AllArgsConstructor
 public class SellerController {
 
-    public static final String baseUri = "api/v1/fresh-products/seller";
+    public static final String baseUri = "api/v1/fresh-products/seller/products";
 
     private SellerService sellerService;
 
@@ -27,7 +27,7 @@ public class SellerController {
      * Method: createNewProduct
      * Description: Controller para realizar a operação de criar um novo produto
      */
-    @PostMapping("/products")
+    @PostMapping
     public ResponseEntity<FullProductResponse> createNewProduct(@Valid @RequestBody NewProductRequest input,
                                                                                 UriComponentsBuilder uriBuilder) {
         FullProductResponse result = sellerService.createProduct(input);
@@ -43,7 +43,7 @@ public class SellerController {
      * Method: getProducts
      * Description: Controller para realizar a operação de recuperar produtos
      */
-    @GetMapping("/products")
+    @GetMapping
     public ResponseEntity<List<FullProductResponse>> getProducts(@RequestParam(name = "sellerId") Long sellerId,
                                                                           @RequestParam(name = "name", required = false) String name) {
         if (name == null) {
@@ -60,7 +60,7 @@ public class SellerController {
      * Method: updateProduct
      * Description: Controller para realizar a operação de atualizar nome e/ou preco de um produto
      */
-    @PatchMapping("/products")
+    @PatchMapping
     public ResponseEntity<FullProductResponse> updateProduct(@RequestParam(name = "productId") Long productId,
                                                                     @RequestParam(name = "name", required = false) String name,
                                                                     @RequestParam(name = "price", required = false) BigDecimal price) {

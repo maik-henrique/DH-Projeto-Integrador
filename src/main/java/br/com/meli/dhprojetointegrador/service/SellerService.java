@@ -28,6 +28,7 @@ public class SellerService {
     private CategoryRepository categoryRepository;
 
     private Seller checkSeller(Long sellerId) {
+        System.out.println(sellerId);
         try {
             return sellerRepository.getById(sellerId);
         } catch (Exception e) {
@@ -100,7 +101,11 @@ public class SellerService {
      **/
     public List<FullProductResponse> getAllProductsByName(Long sellerId, String name) {
         checkSeller(sellerId);
-        return productRepository.findBySellerIdAndAndName(sellerId, name).stream().map(p -> fullProductResponseBuilder(p)).collect(Collectors.toList());
+        try{
+            return productRepository.findBySellerIdAndAndName(sellerId, name).stream().map(p -> fullProductResponseBuilder(p)).collect(Collectors.toList());
+        } catch ( Exception e) {
+            throw new ProductNotFoundException("Produto nao encontrado");
+        }
     }
 
     /**
