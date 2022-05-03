@@ -2,6 +2,11 @@ package br.com.meli.dhprojetointegrador.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.entity.Category;
 import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import lombok.AllArgsConstructor;
@@ -44,12 +49,31 @@ public class BatchStockDTO {
     private LocalDateTime manufacturingTime;
 
     @NotNull(message = "O campo dueDate não pode ser nulo")
+
     private LocalDate dueDate;
+    private Long category_id;
 
     @NotNull(message = "O campo inboundOrder não pode ser nulo")
     private InboundOrder inboundOrder;
 
     @NotNull(message = "O campo products não pode ser nulo")
     private Product products;
+
+    /**
+    * Author: Pedro Dalpa
+    * Author: Mariana Galdino
+    * Method: DTO Constructo
+    * Description: Retorno da entidade DTO
+    **/
+    public static BatchStockDTO map(BatchStock batchStock) {
+        return BatchStockDTO.builder().batchNumber(batchStock.getBatchNumber()).dueDate(batchStock.getDueDate())
+                .product_id(batchStock.getProducts().getId()).currentQuantity(batchStock.getCurrentQuantity())
+                .category_id(batchStock.getProducts().getCategory().getId())
+                .build();
+    }
+
+    public static List<BatchStockDTO> map(List<BatchStock> batchStocks) {
+        return batchStocks.stream().map(e -> map(e)).collect(Collectors.toList());
+    }
 
 }

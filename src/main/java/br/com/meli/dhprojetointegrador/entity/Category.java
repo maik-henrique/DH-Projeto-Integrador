@@ -1,6 +1,8 @@
 package br.com.meli.dhprojetointegrador.entity;
 
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,7 +29,6 @@ import org.hibernate.validator.constraints.Range;
 @Getter
 @Setter
 @Builder
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "name" }))
 public class Category {
 
     @ApiModelProperty(value = "Código da category")

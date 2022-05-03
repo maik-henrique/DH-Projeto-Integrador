@@ -50,12 +50,10 @@ public class BatchStock {
     @ApiModelProperty(value = "nome do produto")
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    @JsonIgnore
     private Product products;
 
     @ApiModelProperty(value = "inbounOrder Number")
     @ManyToOne
     @JoinColumn(name = "order_number")
-    @JsonIgnore
     private InboundOrder inboundOrder;
 }
