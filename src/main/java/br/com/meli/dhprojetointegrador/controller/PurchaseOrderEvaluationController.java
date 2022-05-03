@@ -2,7 +2,6 @@ package br.com.meli.dhprojetointegrador.controller;
 
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.EvaluationUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.PurchaseOrderEvaluationRegistrationRequest;
-import br.com.meli.dhprojetointegrador.dto.response.evaluation.ProductEvaluationDetailsResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationByProductResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationFetchResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationResponse;
@@ -58,6 +57,13 @@ public class PurchaseOrderEvaluationController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Faz a atualização de comentário de uma avaliação, caso a avaliação esteja presente nos registros
+     *
+     * @author Maik
+     * @param evaluationUpdateRequest avaliação que será atualizada
+     * @return status 204 caso a atualização seja bem sucedidad, ou 404 caso a avaliação não seja encontrada
+     */
     @PatchMapping
     public ResponseEntity<?> updateEvaluation(@Valid @RequestBody EvaluationUpdateRequest evaluationUpdateRequest) {
         PurchaseOrderEvaluation purchaseOrderEvaluation = modelMapper.map(evaluationUpdateRequest, PurchaseOrderEvaluation.class);
@@ -66,6 +72,13 @@ public class PurchaseOrderEvaluationController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Lista as avaliações feitas sobre um determinado produto
+     *
+     * @author Maik
+     * @param productId id do produto que será usado como argumento para a procura de avaliações
+     * @return lista de avaliações encontradas ou 404 caso não haja nenhuma correspondente
+     */
     @GetMapping
     public ResponseEntity<?> findByProductId(@RequestParam Long productId) {
         PurchaseOrderEvaluationView evaluations = purchaseOrderEvaluationService.findByProductId(productId);
