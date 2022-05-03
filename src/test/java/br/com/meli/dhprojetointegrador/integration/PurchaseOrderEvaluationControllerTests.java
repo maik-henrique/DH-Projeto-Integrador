@@ -175,13 +175,14 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
         String requestPayload = objectMapper.writeValueAsString(request);
 
         mock.perform(post("/api/v1/evaluation")
-                .contentType(APPLICATION_JSON).content(requestPayload)
-        ).andExpect(status().isCreated())
+                .contentType(APPLICATION_JSON).content(requestPayload))
+                .andExpect(status().isCreated())
                 .andReturn();
 
         EvaluationUpdateRequest updatedEvaluation = EvaluationUpdateRequest.builder()
                 .id(1L)
                 .comment("New comment")
+                .purchaseOrderBuyerId(1L)
                 .build();
 
         requestPayload = objectMapper.writeValueAsString(updatedEvaluation);
@@ -196,6 +197,7 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
     public void updateEvaluation_shouldReturnedNotFound_whenEvaluationIsNotFound() throws Exception {
         EvaluationUpdateRequest updatedEvaluation = EvaluationUpdateRequest.builder()
                 .id(1L)
+                .purchaseOrderBuyerId(1L)
                 .comment("New comment")
                 .build();
 
@@ -203,11 +205,10 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
 
         MvcResult mvcResult = mock.perform(patch("/api/v1/evaluation").contentType(APPLICATION_JSON)
                 .content(payload))
-
                 .andExpect(status().isNotFound()).andReturn();
         ExceptionPayloadResponse response = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), ExceptionPayloadResponse.class);
 
-        assertEquals("Evaluation of id 1 wasn't found", response.getDescription());
+        assertEquals("No evaluation found with id 1 that was done by a buyer of id 1", response.getDescription());
         assertEquals(404, response.getStatusCode());
         assertEquals("The target resource wasn't found", response.getTitle());
     }

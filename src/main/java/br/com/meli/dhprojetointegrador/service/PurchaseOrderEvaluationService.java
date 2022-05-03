@@ -44,10 +44,10 @@ public class PurchaseOrderEvaluationService {
      * Lista e retorna caso encontre todas as avaliações já efetuadas pelo buyer, caso não encontre nenhuma ou o
      * buyer não exista, lança uma exceção
      *
+     * @author Maik
      * @param id identificação do Buyer, refere-se a sua chave primária
      * @return lista de avaliações feitas pelo buyer
      * @throws ResourceNotFoundException caso nenhuma avaliação feita pelo buyer seja encontrada
-     * @author Maik
      */
     public List<PurchaseOrderEvaluation> findEvaluationByBuyerId(Long id) throws ResourceNotFoundException {
         List<PurchaseOrderEvaluation> buyerEvaluations = purchaseOrderEvaluationRepository.findByBuyerId(id);
@@ -59,8 +59,16 @@ public class PurchaseOrderEvaluationService {
         return buyerEvaluations;
     }
 
+    /**
+     * Atualiza o comentário de uma avaliação de um dado comprador
+     *
+     * @author Maik
+     * @param purchaseOrderEvaluation avaliação que será com os campos atualizados
+     * @throws ResourceNotFoundException caso nenhuma avaliação correspondente seja encontrada
+     */
     public void update(PurchaseOrderEvaluation purchaseOrderEvaluation) throws ResourceNotFoundException {
-        PurchaseOrderEvaluation oldPurchaseOrder = findById(purchaseOrderEvaluation);
+        Buyer buyer = purchaseOrderEvaluation.getPurchaseOrder().getBuyer();
+        PurchaseOrderEvaluation oldPurchaseOrder = findByIdAndBuyerId(purchaseOrderEvaluation.getId(), buyer.getId());
 
         oldPurchaseOrder.setComment(purchaseOrderEvaluation.getComment());
 
@@ -86,10 +94,10 @@ public class PurchaseOrderEvaluationService {
                 .build();
     }
 
-    private PurchaseOrderEvaluation findById(PurchaseOrderEvaluation purchaseOrderEvaluation) throws ResourceNotFoundException {
-        return purchaseOrderEvaluationRepository.findById(purchaseOrderEvaluation.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Evaluation of id %d wasn't found",
-                        purchaseOrderEvaluation.getId())));
+    private PurchaseOrderEvaluation findByIdAndBuyerId(Long id, Long buyerId) throws ResourceNotFoundException {
+        return purchaseOrderEvaluationRepository.findByIdAndBuyerId(id, buyerId)
+                .orElseThrow(() -> new ResourceNotFoundException(String
+                        .format("No evaluation found with id %d that was done by a buyer of id %d", id, buyerId)));
     }
 
     private void initializeIInboundOrderValidators(PurchaseOrderEvaluation purchaseOrderEvaluation,

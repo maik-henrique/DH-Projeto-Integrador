@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PurchaseOrderEvaluationRepository extends JpaRepository<PurchaseOrderEvaluation, Long> {
@@ -17,4 +18,7 @@ public interface PurchaseOrderEvaluationRepository extends JpaRepository<Purchas
     List<PurchaseOrderEvaluation> findByBuyerId(@Param("buyerId") Long id);
 
     List<PurchaseOrderEvaluation> findByProductId(Long productId);
+
+    @Query("FROM PurchaseOrderEvaluation p WHERE p.purchaseOrder.buyer.id = :buyerId AND p.id = :id")
+    Optional<PurchaseOrderEvaluation> findByIdAndBuyerId(@Param("id") Long id, @Param("buyerId") Long buyerId);
 }

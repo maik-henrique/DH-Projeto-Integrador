@@ -121,17 +121,29 @@ public class PurchaseOrderEvaluationServiceTests {
 
     @Test
     public void update_shouldThrowResourceNotFoundException_whenEvaluationIsNotFound() {
-        when(purchaseOrderEvaluationRepository.findById(anyLong())).thenReturn(Optional.empty());
-        PurchaseOrderEvaluation newPurchaseOrder = PurchaseOrderEvaluation.builder().id(1L).comment("Produto ruim de mais").build();
+        Buyer buyer = Buyer.builder().id(1L).build();
+        PurchaseOrder purchaseOrder = PurchaseOrder.builder().buyer(buyer).build();
+        PurchaseOrderEvaluation newPurchaseOrder = PurchaseOrderEvaluation.builder().id(1L)
+                .purchaseOrder(purchaseOrder)
+                .comment("Produto ruim de mais").build();
+
+        when(purchaseOrderEvaluationRepository.findByIdAndBuyerId(anyLong(), anyLong())).thenReturn(Optional.empty());
+
         assertThrows(ResourceNotFoundException.class, () -> purchaseOrderEvaluationService.update(newPurchaseOrder));
     }
 
     @Test
     public void update_shouldCallSaveWithUpdatedEvaluation_whenEvaluationExists() {
-        PurchaseOrderEvaluation oldEvaluation = PurchaseOrderEvaluation.builder().id(1L).comment("Produto bom de mais").build();
-        when(purchaseOrderEvaluationRepository.findById(anyLong())).thenReturn(Optional.of(oldEvaluation));
+        PurchaseOrderEvaluation oldEvaluation = PurchaseOrderEvaluation.builder().id(1L)
+                .comment("Produto bom de mais").build();
 
-        PurchaseOrderEvaluation newPurchaseOrder = PurchaseOrderEvaluation.builder().id(1L).comment("Produto ruim de mais").build();
+        when(purchaseOrderEvaluationRepository.findByIdAndBuyerId(anyLong(), anyLong()))
+                .thenReturn(Optional.of(oldEvaluation));
+
+        Buyer buyer = Buyer.builder().id(1L).build();
+        PurchaseOrder purchaseOrder = PurchaseOrder.builder().buyer(buyer).build();
+        PurchaseOrderEvaluation newPurchaseOrder = PurchaseOrderEvaluation.builder().id(1L).purchaseOrder(purchaseOrder)
+                .comment("Produto ruim de mais").build();
         purchaseOrderEvaluationService.update(newPurchaseOrder);
 
         verify(purchaseOrderEvaluationRepository, times(1)).save(any(PurchaseOrderEvaluation.class));
