@@ -6,11 +6,13 @@ import br.com.meli.dhprojetointegrador.dto.request.evaluation.EvaluationDetailsR
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.EvaluationUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.PurchaseOrderEvaluationRegistrationRequest;
 import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
+import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationByProductResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationFetchResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationResponse;
 import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.repository.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -59,25 +61,15 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
     @Autowired
     private InboundOrderRepository inboundOrderRepository;
 
-
     @Test
     public void save_shouldReturnedRegisteredEvaluation_whenProperRequestIsSent() throws Exception {
         setup();
-        createPurchaseOrder();
+        setupPurchaseOrder();
         final String expectedComment = "O produto muito bom";
         final Long expectedProductId = 1L;
         final Integer expectedRating = 10;
 
-        EvaluationDetailsRegistrationRequest evaluation = EvaluationDetailsRegistrationRequest.builder()
-                .productId(expectedProductId)
-                .comment(expectedComment)
-                .rating(expectedRating)
-                .build();
-        PurchaseOrderEvaluationRegistrationRequest request = PurchaseOrderEvaluationRegistrationRequest.builder()
-                .buyerId(1L)
-                .evaluation(evaluation)
-                .purchaseOrderId(1L)
-                .build();
+        PurchaseOrderEvaluationRegistrationRequest request = getDefaultRequest(expectedComment, expectedProductId, expectedRating, 1L);
         String requestPayload = objectMapper.writeValueAsString(request);
 
         MvcResult mvcResult = mock.perform(post("/api/v1/evaluation")
@@ -96,21 +88,12 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
     @Test
     public void save_shouldReturnedUnprocessableEntity_whenPurchasWasAlreadyEvaluated() throws Exception {
         setup();
-        createPurchaseOrder();
+        setupPurchaseOrder();
         final String expectedComment = "O produto muito bom";
         final Long expectedProductId = 1L;
         final Integer expectedRating = 10;
 
-        EvaluationDetailsRegistrationRequest evaluation = EvaluationDetailsRegistrationRequest.builder()
-                .productId(expectedProductId)
-                .comment(expectedComment)
-                .rating(expectedRating)
-                .build();
-        PurchaseOrderEvaluationRegistrationRequest request = PurchaseOrderEvaluationRegistrationRequest.builder()
-                .buyerId(1L)
-                .evaluation(evaluation)
-                .purchaseOrderId(1L)
-                .build();
+        PurchaseOrderEvaluationRegistrationRequest request = getDefaultRequest(expectedComment, expectedProductId, expectedRating, 1L);
         String requestPayload = objectMapper.writeValueAsString(request);
 
         mock.perform(post("/api/v1/evaluation").contentType(APPLICATION_JSON).content(requestPayload))
@@ -125,7 +108,6 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
         assertEquals("Purchase of id 1 and product of id 1 were already evaluated", exceptionPayloadResponse.getDescription());
         assertEquals("An error occurred during business validation processing", exceptionPayloadResponse.getTitle());
         assertEquals(422, exceptionPayloadResponse.getStatusCode());
-
     }
 
     @Test
@@ -134,43 +116,23 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
         final Long expectedProductId = 1L;
         final Integer expectedRating = 10;
 
-        EvaluationDetailsRegistrationRequest evaluation = EvaluationDetailsRegistrationRequest.builder()
-                .productId(expectedProductId)
-                .comment(expectedComment)
-                .rating(expectedRating)
-                .build();
-        PurchaseOrderEvaluationRegistrationRequest request = PurchaseOrderEvaluationRegistrationRequest.builder()
-                .buyerId(1L)
-                .evaluation(evaluation)
-                .purchaseOrderId(1L)
-                .build();
+        PurchaseOrderEvaluationRegistrationRequest request = getDefaultRequest(expectedComment, expectedProductId, expectedRating, 1L);
         String requestPayload = objectMapper.writeValueAsString(request);
 
         mock.perform(post("/api/v1/evaluation")
                 .contentType(APPLICATION_JSON).content(requestPayload)
         ).andExpect(status().isUnprocessableEntity());
-
     }
 
     @Test
     public void findEvaluationsByBuyerId_shouldReturnedEvaluations_whenThereAreEvaluationsRegistered() throws Exception {
         setup();
-        createPurchaseOrder();
+        setupPurchaseOrder();
         final String expectedComment = "O produto muito bom";
         final Long expectedProductId = 1L;
         final Integer expectedRating = 10;
-        final Long expetedBuyerId = 1L;
 
-        EvaluationDetailsRegistrationRequest evaluation = EvaluationDetailsRegistrationRequest.builder()
-                .productId(expectedProductId)
-                .comment(expectedComment)
-                .rating(expectedRating)
-                .build();
-        PurchaseOrderEvaluationRegistrationRequest request = PurchaseOrderEvaluationRegistrationRequest.builder()
-                .buyerId(expetedBuyerId)
-                .evaluation(evaluation)
-                .purchaseOrderId(1L)
-                .build();
+        PurchaseOrderEvaluationRegistrationRequest request = getDefaultRequest(expectedComment, expectedProductId, expectedRating, 1L);
         String requestPayload = objectMapper.writeValueAsString(request);
 
         mock.perform(post("/api/v1/evaluation")
@@ -188,7 +150,6 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
         assertEquals(expectedProductId, itemResponse.getProductId());
         assertEquals(expectedComment, itemResponse.getComment());
         assertEquals(expectedRating, itemResponse.getRating());
-
     }
 
     @Test
@@ -205,22 +166,12 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
     @Test
     public void updateEvaluation_shouldReturnNoContent_whenOperationIsSucessful() throws Exception {
         setup();
-        createPurchaseOrder();
+        setupPurchaseOrder();
         final String expectedComment = "O produto muito bom";
         final Long expectedProductId = 1L;
         final Integer expectedRating = 10;
 
-        EvaluationDetailsRegistrationRequest evaluation = EvaluationDetailsRegistrationRequest.builder()
-                .productId(expectedProductId)
-                .comment(expectedComment)
-                .rating(expectedRating)
-                .build();
-        PurchaseOrderEvaluationRegistrationRequest request = PurchaseOrderEvaluationRegistrationRequest.builder()
-                .buyerId(1L)
-                .evaluation(evaluation)
-                .purchaseOrderId(1L)
-                .build();
-
+        PurchaseOrderEvaluationRegistrationRequest request = getDefaultRequest(expectedComment, expectedProductId, expectedRating, 1L);
         String requestPayload = objectMapper.writeValueAsString(request);
 
         mock.perform(post("/api/v1/evaluation")
@@ -242,7 +193,7 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
     }
 
     @Test
-    public void updateEvaluation_shouldReturnedNotFound_whenEvaluationsAreNotFound() throws Exception {
+    public void updateEvaluation_shouldReturnedNotFound_whenEvaluationIsNotFound() throws Exception {
         EvaluationUpdateRequest updatedEvaluation = EvaluationUpdateRequest.builder()
                 .id(1L)
                 .comment("New comment")
@@ -261,7 +212,57 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
         assertEquals("The target resource wasn't found", response.getTitle());
     }
 
-    private void createPurchaseOrder() throws Exception {
+    @Test
+    public void findByProductId_shouldReturnListOfEvaluationAndAverage_whenEvaluationExists() throws Exception {
+        setup();
+        setupPurchaseOrder();
+        setupPurchaseOrder();
+
+        final String expectedComment = "O produto muito bom";
+        final Long expectedProductId = 1L;
+        final Integer expectedRating = 10;
+        final Long expetedBuyerId = 1L;
+
+        PurchaseOrderEvaluationRegistrationRequest request = getDefaultRequest(expectedComment, expectedProductId, expectedRating, 1L);
+        String requestPayload = objectMapper.writeValueAsString(request);
+
+        mock.perform(post("/api/v1/evaluation")
+                .contentType(APPLICATION_JSON).content(requestPayload)
+        ).andExpect(status().isCreated());
+
+        request.getEvaluation().setRating(6);
+        request.setPurchaseOrderId(2L);
+
+        requestPayload = objectMapper.writeValueAsString(request);
+
+        mock.perform(post("/api/v1/evaluation")
+                .contentType(APPLICATION_JSON).content(requestPayload)).
+                andExpect(status().isCreated());
+
+        MvcResult mvcResult = mock.perform(get("/api/v1/evaluation").param("productId", "1"))
+                .andExpect(status().isOk()).andReturn();
+
+        String responseContent = mvcResult.getResponse().getContentAsString();
+        PurchaseOrderEvaluationByProductResponse response = objectMapper.readValue(responseContent, PurchaseOrderEvaluationByProductResponse.class);
+
+        assertEquals(2, response.getEvaluations().size());
+        assertEquals(8.0d, response.getAverageRate());
+    }
+
+    @Test
+    public void findByProductId_shouldReturnStatusNotFound_whenNoEvaluationWasFound() throws Exception {
+        MvcResult mvcResult = mock.perform(get("/api/v1/evaluation").param("productId", "1"))
+                .andExpect(status().isNotFound()).andReturn();
+
+        ExceptionPayloadResponse exceptionPayloadResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                ExceptionPayloadResponse.class);
+
+        assertEquals("The target resource wasn't found", exceptionPayloadResponse.getTitle());
+        assertEquals("No evaluations were found that refered to the product of id 1", exceptionPayloadResponse.getDescription());
+        assertEquals(404, exceptionPayloadResponse.getStatusCode());
+    }
+
+    private void setupPurchaseOrder() throws Exception {
         LocalDate date = LocalDate.of(2021, 4, 25);
 
         ProductInput product1 = ProductInput.builder().productId(1L).quantity(5).build();
@@ -358,6 +359,19 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
                 .build();
 
         return inboundOrderRepository.save(inboundOrder);
+    }
+
+    private PurchaseOrderEvaluationRegistrationRequest getDefaultRequest(String expectedComment, Long expectedProductId, Integer expectedRating, long l) throws JsonProcessingException {
+        EvaluationDetailsRegistrationRequest evaluation = EvaluationDetailsRegistrationRequest.builder()
+                .productId(expectedProductId)
+                .comment(expectedComment)
+                .rating(expectedRating)
+                .build();
+        return PurchaseOrderEvaluationRegistrationRequest.builder()
+                .buyerId(l)
+                .evaluation(evaluation)
+                .purchaseOrderId(1L)
+                .build();
     }
 
 }

@@ -12,13 +12,13 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class PurchaseOrderEvaluationRegistrationRequest {
 
-    @NotNull
+    @NotNull(message = "buyerId must not be null")
     private Long buyerId;
 
-    @NotNull
+    @NotNull(message = "purchaseOrderId must not be null")
     private Long purchaseOrderId;
 
-    @NotNull
+    @NotNull(message = "evaluation must not be null")
     private @Valid EvaluationDetailsRegistrationRequest evaluation;
 
 }

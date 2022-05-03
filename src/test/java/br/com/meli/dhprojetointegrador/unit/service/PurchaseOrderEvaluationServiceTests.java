@@ -2,6 +2,7 @@ package br.com.meli.dhprojetointegrador.unit.service;
 
 
 import br.com.meli.dhprojetointegrador.entity.*;
+import br.com.meli.dhprojetointegrador.entity.view.PurchaseOrderEvaluationView;
 import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.exception.ResourceNotFoundException;
@@ -134,5 +135,26 @@ public class PurchaseOrderEvaluationServiceTests {
         purchaseOrderEvaluationService.update(newPurchaseOrder);
 
         verify(purchaseOrderEvaluationRepository, times(1)).save(any(PurchaseOrderEvaluation.class));
+    }
+
+    @Test
+    public void findByProductId_shouldThrowResourceNotFoundException_whenNoEvaluationIsFound() {
+        when(purchaseOrderEvaluationRepository.findByProductId(anyLong())).thenReturn(List.of());
+
+        assertThrows(ResourceNotFoundException.class, () -> purchaseOrderEvaluationService.findByProductId(anyLong()));
+    }
+
+    @Test
+    public void findByProductId_shouldReturnPurchaseOrderEvaluationView_whenEvaluationsAreFound() {
+        PurchaseOrderEvaluation firstEvaluation = PurchaseOrderEvaluation.builder().rating(9).build();
+        PurchaseOrderEvaluation secondEvaluation = PurchaseOrderEvaluation.builder().rating(10).build();
+        List<PurchaseOrderEvaluation> evaluations = List.of(firstEvaluation, secondEvaluation);
+
+        when(purchaseOrderEvaluationRepository.findByProductId(anyLong())).thenReturn(evaluations);
+
+        PurchaseOrderEvaluationView evaluationsView = purchaseOrderEvaluationService.findByProductId(1L);
+
+        assertEquals(9.5, evaluationsView.getAverageRate());
+        assertEquals(2, evaluationsView.getEvaluations().size());
     }
 }

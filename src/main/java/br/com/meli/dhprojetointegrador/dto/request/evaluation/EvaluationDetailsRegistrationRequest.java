@@ -10,10 +10,10 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 public class EvaluationDetailsRegistrationRequest {
-    @NotNull
+    @NotNull(message = "productId must not be null")
     private Long productId;
     private String comment;
 
-    @NotNull
+    @NotNull(message = "rating must not be null")
     private Integer rating;
 }

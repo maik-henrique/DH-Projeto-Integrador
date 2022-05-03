@@ -3,6 +3,7 @@ package br.com.meli.dhprojetointegrador.controller;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.EvaluationUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.PurchaseOrderEvaluationRegistrationRequest;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.ProductEvaluationDetailsResponse;
+import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationByProductResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationFetchResponse;
 import br.com.meli.dhprojetointegrador.dto.response.evaluation.PurchaseOrderEvaluationResponse;
 import br.com.meli.dhprojetointegrador.entity.PurchaseOrderEvaluation;
@@ -68,7 +69,7 @@ public class PurchaseOrderEvaluationController {
     @GetMapping
     public ResponseEntity<?> findByProductId(@RequestParam Long productId) {
         PurchaseOrderEvaluationView evaluations = purchaseOrderEvaluationService.findByProductId(productId);
-        ProductEvaluationDetailsResponse response = modelMapper.map(evaluations, ProductEvaluationDetailsResponse.class);
+        PurchaseOrderEvaluationByProductResponse response = modelMapper.map(evaluations, PurchaseOrderEvaluationByProductResponse.class);
         return ResponseEntity.ok(response);
     }
 }

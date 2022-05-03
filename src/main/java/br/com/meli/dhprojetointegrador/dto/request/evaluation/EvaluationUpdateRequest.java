@@ -11,9 +11,9 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 public class EvaluationUpdateRequest {
-    @NotNull
+    @NotNull(message = "id must not be null")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "comment must not be blank")
     private String comment;
 }

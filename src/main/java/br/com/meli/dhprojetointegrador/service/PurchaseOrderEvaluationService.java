@@ -59,19 +59,6 @@ public class PurchaseOrderEvaluationService {
         return buyerEvaluations;
     }
 
-    private void initializeIInboundOrderValidators(PurchaseOrderEvaluation purchaseOrderEvaluation,
-                                                   PurchaseOrder queriedPurchaseOrder) {
-        Buyer buyer = purchaseOrderEvaluation.getPurchaseOrder().getBuyer();
-        Product product = purchaseOrderEvaluation.getProduct();
-
-        validators = List.of(new PurchaseAlreadyEvaluatedValidator(purchaseOrderEvaluationRepository, product,
-                        queriedPurchaseOrder),
-                new BuyerMatchValidator(queriedPurchaseOrder, buyer),
-                new PurchaseOrderCompletedValidator(queriedPurchaseOrder),
-                new PurchaseOrderProductValidator(queriedPurchaseOrder, product));
-    }
-
-
     public void update(PurchaseOrderEvaluation purchaseOrderEvaluation) throws ResourceNotFoundException {
         PurchaseOrderEvaluation oldPurchaseOrder = findById(purchaseOrderEvaluation);
 
@@ -103,6 +90,18 @@ public class PurchaseOrderEvaluationService {
         return purchaseOrderEvaluationRepository.findById(purchaseOrderEvaluation.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Evaluation of id %d wasn't found",
                         purchaseOrderEvaluation.getId())));
+    }
+
+    private void initializeIInboundOrderValidators(PurchaseOrderEvaluation purchaseOrderEvaluation,
+                                                   PurchaseOrder queriedPurchaseOrder) {
+        Buyer buyer = purchaseOrderEvaluation.getPurchaseOrder().getBuyer();
+        Product product = purchaseOrderEvaluation.getProduct();
+
+        validators = List.of(new PurchaseAlreadyEvaluatedValidator(purchaseOrderEvaluationRepository, product,
+                        queriedPurchaseOrder),
+                new BuyerMatchValidator(queriedPurchaseOrder, buyer),
+                new PurchaseOrderCompletedValidator(queriedPurchaseOrder),
+                new PurchaseOrderProductValidator(queriedPurchaseOrder, product));
     }
 
 }
