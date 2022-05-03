@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -65,6 +66,15 @@ public class SellerServiceTest {
             .seller(seller)
             .build();
 
+    Product product2Updated = Product.builder()
+            .id(2L)
+            .name("maca")
+            .price(BigDecimal.valueOf(1.30))
+            .volume(0.15F)
+            .category(category)
+            .seller(seller)
+            .build();
+
 
     FullProductResponse fullProductResponse = FullProductResponse.builder()
             .id(1L)
@@ -83,6 +93,16 @@ public class SellerServiceTest {
             .seller_id(3L)
             .category_id(4L)
             .build();
+
+    FullProductResponse fullProductResponse2Updated = FullProductResponse.builder()
+            .id(2L)
+            .name("maca")
+            .price(BigDecimal.valueOf(1.30))
+            .volume(0.15F)
+            .seller_id(3L)
+            .category_id(4L)
+            .build();
+
     /**
      * @Author: Bruno Mendes
      * @Teste: Teste unitario função createProduct
@@ -151,5 +171,26 @@ public class SellerServiceTest {
         assert result.get(0).getSeller_id().equals(fullProductResponse2.getSeller_id());
         assert result.get(0).getCategory_id().equals(fullProductResponse2.getCategory_id());
         assert result.get(0).getVolume() == fullProductResponse2.getVolume();
+    }
+
+    /**
+     * @Author: Bruno Mendes
+     * @Teste: Teste unitario função updateProduct
+     * @Description: valida funcionamento correto da função
+     */
+    @Test
+    @DisplayName("TestPI-68 - updateproduct")
+    public void updateProduct_should_return_correct_FullProductResponse() {
+        when(productRepository.findById(2L)).thenReturn(Optional.of(product2));
+        when(productRepository.save(Mockito.any(Product.class))).thenReturn(product2Updated);
+
+        FullProductResponse result = sellerservice.updateProduct(2L, "maca", BigDecimal.valueOf(1.30));
+
+        assert result.getId().equals(fullProductResponse2Updated.getId());
+        assert result.getName().equals(fullProductResponse2Updated.getName());
+        assert result.getPrice().equals(fullProductResponse2Updated.getPrice());
+        assert result.getSeller_id().equals(fullProductResponse2Updated.getSeller_id());
+        assert result.getCategory_id().equals(fullProductResponse2Updated.getCategory_id());
+        assert result.getVolume() == fullProductResponse2Updated.getVolume();
     }
 }
