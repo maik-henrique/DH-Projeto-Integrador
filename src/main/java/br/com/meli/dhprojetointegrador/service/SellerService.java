@@ -71,22 +71,43 @@ public class SellerService {
                 .build();
     }
 
+    /**
+     * Author: Bruno Mendes
+     * Method: createProduct
+     * Description: valida o seller e a categoria e cria um produto no banco de dados
+     **/
+
     public FullProductResponse createProduct(NewProductRequest input) {
         Seller seller = checkSeller(input.getSellerId());
         Category category = checkCategory(input.getCategoryId());
         return buildAndCreateProduct(input, seller, category);
     }
 
+    /**
+     * Author: Bruno Mendes
+     * Method: getAllProducts
+     * Description: valida se um vendedor existe e retorna uma lista com seus produtos
+     **/
     public List<FullProductResponse> getAllProducts(Long sellerId) {
         Seller seller = checkSeller(sellerId);
         return productRepository.findBySeller(seller).stream().map(p -> fullProductResponseBuilder(p)).collect(Collectors.toList());
     }
 
+    /**
+     * Author: Bruno Mendes
+     * Method: getAllProductsByName
+     * Description: valida se um vendedor existe e retorna uma lista de produtos com determinando nome
+     **/
     public List<FullProductResponse> getAllProductsByName(Long sellerId, String name) {
         checkSeller(sellerId);
         return productRepository.findBySellerIdAndAndName(sellerId, name).stream().map(p -> fullProductResponseBuilder(p)).collect(Collectors.toList());
     }
 
+    /**
+     * Author: Bruno Mendes
+     * Method: updateProduct
+     * Description: Verifica se determinado produto existe e atualiza seu preco e nome se forem passados como parametro
+     **/
     public FullProductResponse updateProduct(Long productId, String name, BigDecimal price) {
         try {
             Product product = productRepository.findById(productId).get();
