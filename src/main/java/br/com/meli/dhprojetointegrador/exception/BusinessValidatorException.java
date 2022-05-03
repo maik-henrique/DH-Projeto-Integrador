@@ -1,7 +1,6 @@
 package br.com.meli.dhprojetointegrador.exception;
 
 import org.springframework.http.HttpStatus;
-
 import lombok.Getter;
 
 /**

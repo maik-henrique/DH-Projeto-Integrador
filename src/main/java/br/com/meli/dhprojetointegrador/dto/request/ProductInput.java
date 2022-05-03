@@ -4,7 +4,6 @@ package br.com.meli.dhprojetointegrador.dto.request;
 import lombok.*;
 import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter

@@ -5,11 +5,9 @@ import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockColl
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import java.util.List;
-
 import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import br.com.meli.dhprojetointegrador.dto.response.ProductResponseDto;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.service.BatchStockService;
@@ -35,18 +33,17 @@ public class ProductController {
      * Description: Serviço responsavel por retornar todos os produtos presentes na
      * aplicação;
      *
-     * 
+     *
      * @return lista de produtos
      */
-
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> returnAllProducts() {
 
         List<Product> products = productService.returnAllProducts();
-            return products == null || products.isEmpty()?ResponseEntity.notFound().build():
-                    ResponseEntity.ok(ProductResponseDto.map(products));
+        return products == null || products.isEmpty()?ResponseEntity.notFound().build():
+                ResponseEntity.ok(ProductResponseDto.map(products));
     }
-    
+
     /**
      * Author: Matheus Guerra e Maik
      * Method: Buscar todos os produtos de uma certa categoria ou busca lotes em que um determinado produto está contido
@@ -92,4 +89,3 @@ public class ProductController {
     }
 
 }
-

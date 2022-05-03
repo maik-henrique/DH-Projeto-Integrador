@@ -72,9 +72,9 @@ public class InboundOrderControllerTests extends BaseIntegrationControllerTests 
         String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
 
         MvcResult result = mock
-                    .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
-                            .contentType(MediaType.APPLICATION_JSON).content(payload))
-                    .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+                .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
+                        .contentType(MediaType.APPLICATION_JSON).content(payload))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
 
         String responsePaylaod = result.getResponse().getContentAsString();
@@ -212,7 +212,8 @@ public class InboundOrderControllerTests extends BaseIntegrationControllerTests 
     }
 
     private Warehouse setupWarehouse() {
-        Agent agent = Agent.builder().name("007").build();
+        Agent agent = Agent.builder().name("007")
+                .password("senhaa").build();
         Warehouse warehouse = Warehouse.builder().id(1L).name("Galpao do joao").agent(agent).build();
         agent.setWarehouse(warehouse);
 
