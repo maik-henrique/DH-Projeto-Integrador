@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.*;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -17,20 +18,20 @@ import java.util.List;
 @AllArgsConstructor
 public class InboundOrderUpdateRequest {
 
-    @NotNull(message = "O campo orderNumber não pode ser nulo")
+    @NotNull(message = "orderNumber must not be null")
     private Long orderNumber;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull(message = "O campo orderDate não pode ser nulo")
+    @NotNull(message = "orderDate must not be null")
     private LocalDate orderDate;
 
-    @NotNull(message = "O código sectionId não pode ser nulo")
+    @NotNull(message = "sectionId must not be null")
     private Long sectionId;
 
-    @NotNull(message = "O código agentId não pode ser nulo")
+    @NotNull(message = "agentId must not be null")
     private Long agentId;
 
-    @NotNull(message = "O campo batchStock não pode ser nulo")
+    @NotNull(message = "batchStock must not be null")
     private List<@Valid BatchStockUpdateRequest> batchStock;
 }

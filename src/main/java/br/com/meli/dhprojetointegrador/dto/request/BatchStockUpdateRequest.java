@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
+
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,36 +19,35 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class BatchStockUpdateRequest {
-
-    @NotNull(message = "O código batchNumber não pode ser nulo")
+    @NotNull(message = "batchNumber must not be null")
     private Long batchNumber;
 
-    @NotNull(message = "O código produto não pode ser nulo")
+    @NotNull(message = "productId must not be null")
     private Long productId;
 
-    @NotNull(message = "O campo currentTemperature não pode ser nulo")
+    @NotNull(message = "currentTemperature must not be null")
     private Float currentTemperature;
 
-    @NotNull(message = "O campo minimumTemperature não pode ser nulo")
+    @NotNull(message = "minimumTemperature must not be null")
     private Float minimumTemperature;
 
-    @NotNull(message = "O campo initialQuantity não pode ser nulo")
+    @NotNull(message = "initialQuantity must not be null")
     private Integer initialQuantity;
 
-    @NotNull(message = "O campo currentQuantity não pode ser nulo")
+    @NotNull(message = "currentQuantity must not be null")
     private Integer currentQuantity;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull(message = "O campo dueDate não pode ser nulo")
+    @NotNull(message = "dueDate must not be null")
     private LocalDate dueDate;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull(message = "O campo manufacturingDate não pode ser nulo")
+    @NotNull(message = "manufacturingDate must not be null")
     private LocalDate manufacturingDate;
 
-    @NotNull(message = "O campo manufacturingTime não pode ser nulo")
+    @NotNull(message = "manufacturingTime must not be null")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

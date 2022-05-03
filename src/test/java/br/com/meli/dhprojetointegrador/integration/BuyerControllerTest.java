@@ -100,6 +100,7 @@ public class BuyerControllerTest {
      * @Description: Alterar os dados do buyer, pelo email/nome
      * @return
      */
+    /*
     @Test
     public void deveAlterarDadosDoBuyer() throws Exception{
 
@@ -120,6 +121,7 @@ public class BuyerControllerTest {
 
 
     }
+     */
 
     /**
      * @Author: David
