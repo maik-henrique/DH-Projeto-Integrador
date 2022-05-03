@@ -1,17 +1,20 @@
 package br.com.meli.dhprojetointegrador.service;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
+
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.enums.DueDateEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
 import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
-import java.time.Clock;
-import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -21,21 +24,30 @@ public class BatchStockService {
     private final SectionService sectionService;
 
     /**
-     * Returns a list of batch stocks that has a due date within the allowed range
-     * and selected section
+     * Author: Pedro Dalpa
+     * Author: Mariana Galdino
+     * Method: filterStockBySection
+     * Description: Busca estoque filtrando pelo parâmetros
      *
-     * @param sectionId    id of the section that is the target of the request
-     * @param numberOfDays goes to sum this param in current date to filter
-     * @return list of batch stock that contains the filters
-     * @throws BusinessValidatorException in case section not found
+     * @param sectionId    id da seção para filtrar
+     * @param numberOfDays adicionar quantidade de dias a data atual
+     * @param ordination   ordenar por dada de validade (ASC ou DESC)
+     * @param category     filtrar por categoria (por padrão traz todas)
+     * @return lista os batch estoque utilizando os filtros
+     * @throws BusinessValidatorException se a seção nao for encontrada
      */
-
-    public List<BatchStock> filterStockBySection(Long sectionId, Integer numberOfDays) {
+    public List<BatchStock> filterStockBySection(
+            Long sectionId,
+            Integer numberOfDays,
+            Direction ordination,
+            List<CategoryEnum> category) {
         sectionService.findSectionById(sectionId);
 
         LocalDate dueDate = addDaysInCurrentDate(numberOfDays);
 
-        List<BatchStock> batchStocks = batchStockRepository.findBySectionId(sectionId, dueDate);
+        Sort sort = Sort.by(ordination, "dueDate");
+
+        List<BatchStock> batchStocks = batchStockRepository.findBySectionId(sectionId, dueDate, category, sort);
 
         return batchStocks;
     }
@@ -50,7 +62,8 @@ public class BatchStockService {
      * @return lista de batchStock cuja busca foi bem sucedida
      * @throws ResourceNotFound caso nenhum produto seja encontrado
      * @Author: Maik
-     * Retorna a lista de batch stocks que possuem o produto específicado e com data de vencimento válida
+     * Retorna a lista de batch stocks que possuem o produto específicado e
+     * com data de vencimento válida
      */
     public List<BatchStock> findByProductId(Long productId, String sortBy) throws ResourceNotFound {
         Sort sort = Sort.by(sortBy);
