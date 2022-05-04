@@ -19,14 +19,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
+ 
 
 @ContextConfiguration
 @WithMockUser(username = "jooj", roles = {"BUYER"})
@@ -76,6 +77,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
 
         PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
                 .date(date)
+                .orderStatus(StatusEnum.ABERTO)
                 .products(List.of(product1, product2))
                 .buyerId(1L)
                 .build();
@@ -105,6 +107,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
 
         PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
                 .date(date)
+                .orderStatus(StatusEnum.ABERTO)
                 .products(List.of(product1, product2))
                 .buyerId(10L)
                 .build();
@@ -134,6 +137,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
 
         PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
                 .date(date)
+                .orderStatus(StatusEnum.ABERTO)
                 .products(List.of(product1, product2))
                 .buyerId(1L)
                 .build();
@@ -154,7 +158,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
 
     @Test
     @DisplayName("Create Purchase Order - throws correct error when receive a quantity larger than in stock")
-    public void function_PurchaseOrderProductRegistration_should_trow_NotEnoughProductsException() throws Exception {
+    public void function_PurchaseOrderProductRegistration_should_throw_NotEnoughProductsException() throws Exception {
         setup();
         LocalDate date = LocalDate.of(2021, 04, 25);
 
@@ -162,6 +166,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
         ProductInput product2 = ProductInput.builder().productId(2L).quantity(5).build();
 
         PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
+                .orderStatus(StatusEnum.ABERTO)
                 .date(date)
                 .products(List.of(product1, product2))
                 .buyerId(1L)
@@ -267,7 +272,10 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
     }
 
     private Warehouse setupWarehouse() {
-        Agent agent = Agent.builder().name("007").build();
+        Agent agent = Agent.builder()
+                .name("007")
+                .build();
+
         Warehouse warehouse = Warehouse.builder().id(1L).name("warehouse 01").agent(agent).build();
         agent.setWarehouse(warehouse);
 
@@ -275,7 +283,11 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
     }
 
     private Category setupCategory(CategoryEnum categoryEnum) {
-        Category category = Category.builder().name(categoryEnum).build();
+        Category category = Category.builder().name(categoryEnum)
+                .maximumTemperature(32.0F)
+                .minimumTemperature(-10.0F)
+                .maximumTemperature(-10.0F)
+                .build();
         return categoryRepository.save(category);
     }
 
@@ -291,6 +303,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
                 .batchNumber(batchNumber)
                 .currentQuantity(15).initialQuantity(15)
                 .currentTemperature(24f)
+                .minimumTemperature(32)
                 .manufacturingDate(LocalDate.of(2020, 4, 22))
                 .manufacturingTime(LocalDateTime.of(2016, 10, 30, 14, 23, 25)).dueDate(LocalDate.of(2022, 4, 22))
                 .products(managedProduct).build();

@@ -75,9 +75,9 @@ public class InboundOrderControllerTests extends BaseIntegrationControllerTests 
         String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
 
         MvcResult result = mock
-                    .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
-                            .contentType(MediaType.APPLICATION_JSON).content(payload))
-                    .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+                .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
+                        .contentType(MediaType.APPLICATION_JSON).content(payload))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
 
         String responsePaylaod = result.getResponse().getContentAsString();

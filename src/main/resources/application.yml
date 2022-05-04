@@ -1,4 +1,5 @@
 spring:
+
   profiles:
     active: local
   jpa:
@@ -11,12 +12,18 @@ spring:
     url: ${DATABASE_URL}
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
+
   cache:
     type: redis
   redis:
     host: localhost
     port: 6379
-    password: Redis!
+    database: 0
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 
 security:
   jwt:

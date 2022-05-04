@@ -8,7 +8,7 @@ import org.springframework.retry.annotation.EnableRetry;
 
 @EnableRetry
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class})
-//@EnableCaching
+@EnableCaching
 public class DhProjetoIntegradorApplication {
 
     public static void main(String[] args) {

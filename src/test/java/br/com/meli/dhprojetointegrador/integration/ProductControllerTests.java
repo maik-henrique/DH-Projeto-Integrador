@@ -8,7 +8,9 @@ import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.enums.DueDateEnum;
 import br.com.meli.dhprojetointegrador.repository.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,7 +166,7 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
 
     }
     private Product setupProducts(String name, Float volume) throws Exception {
-        Product product = Product.builder().name(name).volume(volume).build();
+        Product product = Product.builder().name(name).volume(volume).price(BigDecimal.valueOf(22)).build();
         productRepository.save(product);
         return product;
     }
@@ -197,7 +199,6 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
 
             String payloadFF = objectMapper.writeValueAsString(produtosFF);
             String payloadFS = objectMapper.writeValueAsString(produtosFS);
-
 
             MvcResult resultFF = mockMvc
                     .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/list").param("category", "FF"))
@@ -280,11 +281,13 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
 
             BatchStockPostRequest frangoBatchStock = BatchStockPostRequest.builder().batchNumber(123L).currentQuantity(32)
                     .currentTemperature(17.0f).dueDate(notExpiredDueDate).initialQuantity(42).minimumTemperature(17.0f)
+                    .currentQuantity(21)
                     .productId(frangoManaged.getId()).manufacturingDate(LocalDate.of(2022, 3, 22))
                     .manufacturingTime(LocalDateTime.of(2022, 3, 22, 3, 22, 1)).build();
 
             BatchStockPostRequest carneBatchStock = BatchStockPostRequest.builder().batchNumber(124L).currentQuantity(32)
                     .currentTemperature(17.0f).dueDate(notExpiredDueDate).initialQuantity(42).minimumTemperature(17f)
+                    .currentQuantity(21)
                     .productId(carneManaged.getId()).manufacturingDate(LocalDate.of(2022, 3, 22))
                     .manufacturingTime(LocalDateTime.of(2022, 3, 22, 3, 22, 1)).build();
 

@@ -1,7 +1,6 @@
 package br.com.meli.dhprojetointegrador.dto.response;
 
 import java.util.List;
-
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
