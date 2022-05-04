@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -30,6 +30,8 @@ public class PurchaseOrderInput {
     @NotNull
     @NumberFormat
     private Long buyerId;
+
+    private StatusEnum orderStatus;
 
     private List<@Valid ProductInput> products;
 

@@ -37,11 +37,9 @@ public class BatchStock {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    @JsonIgnore
     private Product products;
 
     @ManyToOne
     @JoinColumn(name = "order_number")
-    @JsonIgnore
     private InboundOrder inboundOrder;
 }

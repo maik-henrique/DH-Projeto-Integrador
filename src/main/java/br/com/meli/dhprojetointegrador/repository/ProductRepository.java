@@ -5,7 +5,6 @@ import java.util.List;
 import br.com.meli.dhprojetointegrador.entity.Seller;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 

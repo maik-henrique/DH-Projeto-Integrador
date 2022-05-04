@@ -11,7 +11,7 @@ public class SectionCreator {
     return Section.builder()
         .name("Section")
         .warehouse(Warehouse.builder().name("Warehouse 1").id(1L).build())
-        .capacity(10)
+        .capacity(10F)
         .id(1L)
         .category(Category.builder().name(CategoryEnum.CONGELADOS).build())
         .build();
