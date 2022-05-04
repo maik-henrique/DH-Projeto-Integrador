@@ -1,24 +1,7 @@
 package br.com.meli.dhprojetointegrador.integration;
 
-import br.com.meli.dhprojetointegrador.dto.request.BatchStockUpdateRequest;
-import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
-import br.com.meli.dhprojetointegrador.dto.response.BatchStockResponse;
-import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
-import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
-import br.com.meli.dhprojetointegrador.entity.*;
-import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
-import br.com.meli.dhprojetointegrador.repository.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,222 +9,260 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WithMockUser(username = "jooj", roles = {"AGENT", "ADMIN"})
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import br.com.meli.dhprojetointegrador.dto.request.BatchStockUpdateRequest;
+import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
+import br.com.meli.dhprojetointegrador.dto.response.BatchStockResponse;
+import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
+import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
+import br.com.meli.dhprojetointegrador.entity.Agent;
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.entity.Category;
+import br.com.meli.dhprojetointegrador.entity.InboundOrder;
+import br.com.meli.dhprojetointegrador.entity.Product;
+import br.com.meli.dhprojetointegrador.entity.Section;
+import br.com.meli.dhprojetointegrador.entity.Warehouse;
+import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
+import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
+import br.com.meli.dhprojetointegrador.repository.CategoryRepository;
+import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
+import br.com.meli.dhprojetointegrador.repository.ProductRepository;
+import br.com.meli.dhprojetointegrador.repository.SectionRepository;
+import br.com.meli.dhprojetointegrador.repository.WarehouseRepository;
+
+@WithMockUser(username = "jooj", roles = { "AGENT", "ADMIN" })
 public class InboundOrderControllerTests extends BaseIntegrationControllerTests {
 
-    @Autowired
-    private MockMvc mock;
-    @Autowired
-    private SectionRepository sectionRepository;
-    @Autowired
-    private WarehouseRepository warehouseRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private InboundOrderRepository inboundOrderRepository;
-    @Autowired
-    private BatchStockRepository batchStockRepository;
-    @Autowired
-    private ObjectMapper objectMapper;
+        @Autowired
+        private MockMvc mock;
+        @Autowired
+        private SectionRepository sectionRepository;
+        @Autowired
+        private WarehouseRepository warehouseRepository;
+        @Autowired
+        private CategoryRepository categoryRepository;
+        @Autowired
+        private ProductRepository productRepository;
+        @Autowired
+        private InboundOrderRepository inboundOrderRepository;
+        @Autowired
+        private BatchStockRepository batchStockRepository;
+        @Autowired
+        private ObjectMapper objectMapper;
 
+        @Test
+        @DisplayName("Inbound Order - Proper setting of the of values")
+        public void update_shouldUpdateInboundOrderField_whenProperRequestIsSent() throws Exception {
+                setupBaseData(2.0f);
 
-    @Test
-    @DisplayName("Inbound Order - Proper setting of the of values")
-    public void update_shouldUpdateInboundOrderField_whenProperRequestIsSent() throws Exception {
-        setupBaseData(2.0f);
+                BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder()
+                                .batchNumber(1L)
+                                .currentQuantity(4)
+                                .initialQuantity(4)
+                                .currentTemperature(24.0f)
+                                .minimumTemperature(19f)
+                                .manufacturingDate(LocalDate.of(2022, 5, 23))
+                                .manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25))
+                                .dueDate(LocalDate.of(2022, 4, 22))
+                                .productId(2L).build();
 
-        BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder()
-                .batchNumber(1L)
-                .currentQuantity(4)
-                .initialQuantity(4)
-                .currentTemperature(24.0f)
-                .minimumTemperature(19f)
-                .manufacturingDate(LocalDate.of(2022, 5, 23))
-                .manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25))
-                .dueDate(LocalDate.of(2022, 4, 22))
-                .productId(2L).build();
+                InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1L)
+                                .orderDate(LocalDate.of(2020, 3, 3))
+                                .orderNumber(1L)
+                                .batchStock(List.of(expectedBatchStock)).sectionId(1L)
+                                .build();
 
-        InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1L)
-                .orderDate(LocalDate.of(2020, 3, 3))
-                .orderNumber(1L)
-                .batchStock(List.of(expectedBatchStock)).sectionId(1L)
-                .build();
+                String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
 
-        String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
+                MvcResult result = mock
+                                .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
+                                                .contentType(MediaType.APPLICATION_JSON).content(payload))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
-        MvcResult result = mock
-                .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
-                        .contentType(MediaType.APPLICATION_JSON).content(payload))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+                String responsePaylaod = result.getResponse().getContentAsString();
+                InboundOrderResponse inboundOrderResponse = objectMapper.readValue(responsePaylaod,
+                                InboundOrderResponse.class);
 
+                assertNotNull(inboundOrderResponse);
 
-        String responsePaylaod = result.getResponse().getContentAsString();
-        InboundOrderResponse inboundOrderResponse = objectMapper.readValue(responsePaylaod, InboundOrderResponse.class);
+                BatchStockResponse batchStockResponse = inboundOrderResponse.getBatchStock().get(0);
 
-        assertNotNull(inboundOrderResponse);
+                assertNotNull(batchStockResponse);
+                assertEquals(expectedBatchStock.getBatchNumber(), batchStockResponse.getBatchNumber());
+                assertEquals(expectedBatchStock.getCurrentQuantity(), batchStockResponse.getCurrentQuantity());
+                assertEquals(expectedBatchStock.getCurrentTemperature(), batchStockResponse.getCurrentTemperature());
+                assertEquals(expectedBatchStock.getCurrentQuantity(), batchStockResponse.getCurrentQuantity());
+                assertEquals(expectedBatchStock.getDueDate(), batchStockResponse.getDueDate());
+                assertEquals(expectedBatchStock.getInitialQuantity(), batchStockResponse.getInitialQuantity());
+                assertEquals(expectedBatchStock.getProductId(), batchStockResponse.getProductId());
+                assertEquals(expectedBatchStock.getManufacturingTime(), batchStockResponse.getManufacturingTime());
+                assertEquals(expectedBatchStock.getManufacturingDate(), batchStockResponse.getManufacturingDate());
+        }
 
-        BatchStockResponse batchStockResponse = inboundOrderResponse.getBatchStock().get(0);
+        @Test
+        @DisplayName("Inbound Order - Mismatch of product and section category")
+        public void update_shouldReturnUnprossebleEntityResponse_whenCategoyOfTheProductDoesNotMatch()
+                        throws Exception {
+                setupBaseData(2.0f);
+                setupBaseDataExtraProduct(CategoryEnum.CONGELADOS, 2.0f);
 
-        assertNotNull(batchStockResponse);
-        assertEquals(expectedBatchStock.getBatchNumber(), batchStockResponse.getBatchNumber());
-        assertEquals(expectedBatchStock.getCurrentQuantity(), batchStockResponse.getCurrentQuantity());
-        assertEquals(expectedBatchStock.getCurrentTemperature(), batchStockResponse.getCurrentTemperature());
-        assertEquals(expectedBatchStock.getCurrentQuantity(), batchStockResponse.getCurrentQuantity());
-        assertEquals(expectedBatchStock.getDueDate(), batchStockResponse.getDueDate());
-        assertEquals(expectedBatchStock.getInitialQuantity(), batchStockResponse.getInitialQuantity());
-        assertEquals(expectedBatchStock.getProductId(), batchStockResponse.getProductId());
-        assertEquals(expectedBatchStock.getManufacturingTime(), batchStockResponse.getManufacturingTime());
-        assertEquals(expectedBatchStock.getManufacturingDate(), batchStockResponse.getManufacturingDate());
-    }
+                BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder().batchNumber(123L)
+                                .currentQuantity(4).initialQuantity(4).currentTemperature(24.0f).minimumTemperature(19f)
+                                .manufacturingDate(LocalDate.of(2022, 5, 23))
+                                .manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25))
+                                .dueDate(LocalDate.of(2022, 4, 22))
+                                .productId(3L).build();
 
-    @Test
-    @DisplayName("Inbound Order - Mismatch of product and section category")
-    public void update_shouldReturnUnprossebleEntityResponse_whenCategoyOfTheProductDoesNotMatch() throws Exception {
-        setupBaseData(2.0f);
-        setupBaseDataExtraProduct(CategoryEnum.CONGELADOS, 2.0f);
+                InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1L)
+                                .orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L)
+                                .batchStock(List.of(expectedBatchStock)).sectionId(1L)
+                                .build();
 
-        BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder().batchNumber(123L)
-                .currentQuantity(4).initialQuantity(4).currentTemperature(24.0f).minimumTemperature(19f)
-                .manufacturingDate(LocalDate.of(2022, 5, 23))
-                .manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25)).dueDate(LocalDate.of(2022, 4, 22))
-                .productId(3L).build();
+                String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
 
-        InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1L)
-                .orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock)).sectionId(1L)
-                .build();
+                MvcResult result = mock
+                                .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
+                                                .contentType(MediaType.APPLICATION_JSON).content(payload))
+                                .andExpect(MockMvcResultMatchers.status()
+                                                .isUnprocessableEntity())
+                                .andReturn();
 
-        String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
+                String responsePaylaod = result.getResponse().getContentAsString();
+                ExceptionPayloadResponse payloadResponse = objectMapper.readValue(responsePaylaod,
+                                ExceptionPayloadResponse.class);
 
-        MvcResult result = mock
-                .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
-                        .contentType(MediaType.APPLICATION_JSON).content(payload))
-                .andExpect(MockMvcResultMatchers.status()
-                        .isUnprocessableEntity())
-                .andReturn();
+                assertNotNull(payloadResponse);
+                assertEquals("An error occurred during business validation processing", payloadResponse.getTitle());
+                assertEquals(422, payloadResponse.getStatusCode());
+                assertEquals("Product's category from product 3 is invalid, the expected was FRIOS",
+                                payloadResponse.getDescription());
+        }
 
-        String responsePaylaod = result.getResponse().getContentAsString();
-        ExceptionPayloadResponse payloadResponse = objectMapper.readValue(responsePaylaod, ExceptionPayloadResponse.class);
+        @Test
+        @DisplayName("Inbound Order Update - Volume of inbound order exceeds the section capacity")
+        public void update_shouldReturnUnprossebleEntityResponse_whenProductsVolumeExceedTheSectionCapacity()
+                        throws Exception {
+                setupBaseData(42.0f);
 
-        assertNotNull(payloadResponse);
-        assertEquals("An error occurred during business validation processing", payloadResponse.getTitle());
-        assertEquals(422, payloadResponse.getStatusCode());
-        assertEquals("Product's category from product 3 is invalid, the expected was FRIOS",
-                payloadResponse.getDescription());
-    }
+                BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder()
+                                .batchNumber(123L)
+                                .currentQuantity(4)
+                                .initialQuantity(4)
+                                .currentTemperature(24.0f)
+                                .minimumTemperature(19f)
+                                .manufacturingDate(LocalDate.of(2022, 5, 23))
+                                .manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25))
+                                .dueDate(LocalDate.of(2022, 4, 22))
+                                .productId(2L).build();
 
-    @Test
-    @DisplayName("Inbound Order Update - Volume of inbound order exceeds the section capacity")
-    public void update_shouldReturnUnprossebleEntityResponse_whenProductsVolumeExceedTheSectionCapacity() throws Exception {
-        setupBaseData(42.0f);
+                InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1L)
+                                .orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L)
+                                .batchStock(List.of(expectedBatchStock))
+                                .sectionId(1L)
+                                .build();
 
-        BatchStockUpdateRequest expectedBatchStock = BatchStockUpdateRequest.builder()
-                .batchNumber(123L)
-                .currentQuantity(4)
-                .initialQuantity(4)
-                .currentTemperature(24.0f)
-                .minimumTemperature(19f)
-                .manufacturingDate(LocalDate.of(2022, 5, 23))
-                .manufacturingTime(LocalDateTime.of(2016, 12, 30, 14, 23, 25))
-                .dueDate(LocalDate.of(2022, 4, 22))
-                .productId(2L).build();
+                String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
 
-        InboundOrderUpdateRequest inboundOrderUpdateRequest = InboundOrderUpdateRequest.builder().agentId(1L)
-                .orderDate(LocalDate.of(2020, 3, 3)).orderNumber(1L).batchStock(List.of(expectedBatchStock))
-                .sectionId(1L)
-                .build();
+                MvcResult result = mock
+                                .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
+                                                .contentType(MediaType.APPLICATION_JSON).content(payload))
+                                .andExpect(MockMvcResultMatchers.status()
+                                                .isUnprocessableEntity())
+                                .andReturn();
 
-        String payload = objectMapper.writeValueAsString(inboundOrderUpdateRequest);
+                String responsePaylaod = result.getResponse().getContentAsString();
+                ExceptionPayloadResponse payloadResponse = objectMapper.readValue(responsePaylaod,
+                                ExceptionPayloadResponse.class);
 
-        MvcResult result = mock
-                .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/inboundorder")
-                        .contentType(MediaType.APPLICATION_JSON).content(payload))
-                .andExpect(MockMvcResultMatchers.status()
-                        .isUnprocessableEntity())
-                .andReturn();
+                assertNotNull(payloadResponse);
+                assertEquals("An error occurred during business validation processing", payloadResponse.getTitle());
+                assertEquals(422, payloadResponse.getStatusCode());
 
-        String responsePaylaod = result.getResponse().getContentAsString();
-        ExceptionPayloadResponse payloadResponse = objectMapper.readValue(responsePaylaod, ExceptionPayloadResponse.class);
+                assertEquals(String.format(
+                                "Section has capacity of %.2f, which is incompatible with the inbound order total volume which is %.2f",
+                                32.0f,
+                                42.0f), payloadResponse.getDescription());
+        }
 
-        assertNotNull(payloadResponse);
-        assertEquals("An error occurred during business validation processing", payloadResponse.getTitle());
-        assertEquals(422, payloadResponse.getStatusCode());
+        private void setupBaseData(float newPoductVolume) {
+                Category managedCategory = setupCategory(CategoryEnum.FRIOS);
+                Warehouse managedWarehouse = setupWarehouse();
+                Section managedSection = setupSection(managedCategory, managedWarehouse);
+                Product managedProduct = setupProduct(managedCategory, 2.0f);
 
-        assertEquals(String.format(
-                "Section has capacity of %.2f, which is incompatible with the inbound order total volume which is %.2f", 32.0f,
-                42.0f), payloadResponse.getDescription());
-    }
+                setupProduct(managedCategory, newPoductVolume);
 
-    private void setupBaseData(float newPoductVolume) {
-        Category managedCategory = setupCategory(CategoryEnum.FRIOS);
-        Warehouse managedWarehouse = setupWarehouse();
-        Section managedSection = setupSection(managedCategory, managedWarehouse);
-        Product managedProduct = setupProduct(managedCategory, 2.0f);
+                BatchStock managedBatchStock = setupBatchStock(managedProduct);
 
-        setupProduct(managedCategory, newPoductVolume);
+                setupInboundOrder(managedBatchStock, managedWarehouse, managedSection);
+        }
 
-        BatchStock managedBatchStock = setupBatchStock(managedProduct);
+        private void setupBaseDataExtraProduct(CategoryEnum categoryEnum, float volume) {
+                Category managedCategory = setupCategory(categoryEnum);
+                setupProduct(managedCategory, volume);
+        }
 
-        setupInboundOrder(managedBatchStock, managedWarehouse, managedSection);
-    }
+        private Product setupProduct(Category managedCategory, float volume) {
+                Product product = Product.builder().name("Bauru").category(managedCategory).volume(volume)
+                                .price(BigDecimal.valueOf(32)).build();
 
-    private void setupBaseDataExtraProduct(CategoryEnum categoryEnum, float volume) {
-        Category managedCategory = setupCategory(categoryEnum);
-        setupProduct(managedCategory, volume);
-    }
+                productRepository.save(product);
+                return product;
+        }
 
-    private Product setupProduct(Category managedCategory, float volume) {
-        Product product = Product.builder().name("Bauru").category(managedCategory).volume(volume)
-                .price(BigDecimal.valueOf(32)).build();
+        private Category setupCategory(CategoryEnum categoryEnum) {
+                Category category = Category.builder().name(categoryEnum).build();
+                return categoryRepository.save(category);
+        }
 
-        productRepository.save(product);
-        return product;
-    }
+        private Section setupSection(Category managedCategory, Warehouse managedWarehouse) {
+                Section section = Section.builder().category(managedCategory).name("Cold section").capacity(32.0f)
+                                .warehouse(managedWarehouse).build();
 
-    private Category setupCategory(CategoryEnum categoryEnum) {
-        Category category = Category.builder().name(categoryEnum).build();
-        return categoryRepository.save(category);
-    }
+                return sectionRepository.save(section);
+        }
 
-    private Section setupSection(Category managedCategory, Warehouse managedWarehouse) {
-        Section section = Section.builder().category(managedCategory).name("Cold section").capacity(32.0f)
-                .warehouse(managedWarehouse).build();
+        private Warehouse setupWarehouse() {
+                Agent agent = Agent.builder().name("007").build();
+                Warehouse warehouse = Warehouse.builder().id(1L).name("Galpao do joao").agent(agent).build();
+                agent.setWarehouse(warehouse);
 
-        return sectionRepository.save(section);
-    }
+                return warehouseRepository.save(warehouse);
+        }
 
-    private Warehouse setupWarehouse() {
-        Agent agent = Agent.builder().name("007").build();
-        Warehouse warehouse = Warehouse.builder().id(1L).name("Galpao do joao").agent(agent).build();
-        agent.setWarehouse(warehouse);
+        private BatchStock setupBatchStock(Product managedProduct) {
+                BatchStock batchStock = BatchStock.builder().batchNumber(123L).currentQuantity(3).initialQuantity(4)
+                                .currentTemperature(24f)
 
-        return warehouseRepository.save(warehouse);
-    }
+                                .manufacturingDate(LocalDate.of(2020, 4, 22))
+                                .manufacturingTime(LocalDateTime.of(2016, 10, 30, 14, 23, 25))
+                                .dueDate(LocalDate.of(2022, 4, 22))
+                                .products(managedProduct).build();
 
-    private BatchStock setupBatchStock(Product managedProduct) {
-        BatchStock batchStock = BatchStock.builder().batchNumber(123L).currentQuantity(3).initialQuantity(4)
-                .currentTemperature(24f)
+                return batchStockRepository.save(batchStock);
+        }
 
-                .manufacturingDate(LocalDate.of(2020, 4, 22))
-                .manufacturingTime(LocalDateTime.of(2016, 10, 30, 14, 23, 25)).dueDate(LocalDate.of(2022, 4, 22))
-                .products(managedProduct).build();
+        private InboundOrder setupInboundOrder(BatchStock managedBatchStock, Warehouse managedWarehouse,
+                        Section managedSection) {
 
-        return batchStockRepository.save(batchStock);
-    }
+                InboundOrder inboundOrder = InboundOrder.builder().orderNumber(0L)
+                                .batchStockList(Set.of(managedBatchStock))
+                                .section(managedSection).orderDate(LocalDate.of(2020, 3, 4))
+                                .agent(managedWarehouse.getAgent())
+                                .build();
 
-    private InboundOrder setupInboundOrder(BatchStock managedBatchStock, Warehouse managedWarehouse,
-                                           Section managedSection) {
-
-        InboundOrder inboundOrder = InboundOrder.builder().orderNumber(0L).batchStockList(Set.of(managedBatchStock))
-                .section(managedSection).orderDate(LocalDate.of(2020, 3, 4))
-                .agent(managedWarehouse.getAgent())
-                .build();
-
-        return inboundOrderRepository.save(inboundOrder);
-    }
+                return inboundOrderRepository.save(inboundOrder);
+        }
 
 }

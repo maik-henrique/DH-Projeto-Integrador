@@ -1,22 +1,22 @@
 package br.com.meli.dhprojetointegrador.config;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * Elemento da cadeia de responsabilidade do filtro que é recebe as exceções lançadas durante a validação de credenciais
+ * Elemento da cadeia de responsabilidade do filtro que é recebe as exceções
+ * lançadas durante a validação de credenciais
  * e os direciona para tratamento no ControllerAdvice.
+ * 
  * @author Maik
  */
 @Slf4j
@@ -28,8 +28,11 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter {
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     /**
-     * Repassa a tarefa de filtragem para o próximo elemento da cadeia, caso capture uma exceção, encaminha por meio
-     * do handlerExceptionResolver ao ControllerAdvice para tratamento e retorno de payload adequado
+     * Repassa a tarefa de filtragem para o próximo elemento da cadeia, caso capture
+     * uma exceção, encaminha por meio
+     * do handlerExceptionResolver ao ControllerAdvice para tratamento e retorno de
+     * payload adequado
+     * 
      * @author Maik
      */
     @Override

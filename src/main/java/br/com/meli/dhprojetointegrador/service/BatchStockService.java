@@ -4,10 +4,6 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -19,7 +15,6 @@ import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
 import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 
 @Service
 @AllArgsConstructor
@@ -62,15 +57,16 @@ public class BatchStockService {
     }
 
     /**
-     *  id do produto alvo da requisição
+     * id do produto alvo da requisição
      * campo base da ordenado do batchStock
+     * 
      * @return lista de batchStock cuja busca foi bem sucedida
      * @throws ResourceNotFound caso nenhum produto seja encontrado
      * @Author: Maik
      *          Retorna a lista de batch stocks que possuem o produto específicado e
      *          com data de vencimento válida
      */
-    //@Cacheable(value = "findByProductId", key = "#productId")
+    // @Cacheable(value = "findByProductId", key = "#productId")
     public List<BatchStock> findByProductId(Long productId, String sortBy) throws ResourceNotFound {
         Sort sort = Sort.by(sortBy);
 

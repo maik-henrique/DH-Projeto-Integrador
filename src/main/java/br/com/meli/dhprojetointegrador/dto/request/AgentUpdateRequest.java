@@ -1,7 +1,10 @@
 package br.com.meli.dhprojetointegrador.dto.request;
 
-import lombok.*;
-import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @Getter

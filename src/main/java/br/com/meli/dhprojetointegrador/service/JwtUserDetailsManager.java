@@ -1,22 +1,24 @@
 package br.com.meli.dhprojetointegrador.service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import br.com.meli.dhprojetointegrador.entity.Role;
 import br.com.meli.dhprojetointegrador.entity.User;
 import br.com.meli.dhprojetointegrador.enums.RoleType;
 import br.com.meli.dhprojetointegrador.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
- * Implementação voltada a abstração de 'UserDetailsManager' sendo utilizado para fazer o gerenciamento de um UserDetails
+ * Implementação voltada a abstração de 'UserDetailsManager' sendo utilizado
+ * para fazer o gerenciamento de um UserDetails
+ * 
  * @author Maik
  */
 @Slf4j
@@ -27,15 +29,17 @@ public class JwtUserDetailsManager implements ICustomUserDetailsService<User> {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * Carrega um usuário da base de dados com base em seu username, caso não o encontre, lança uma exceção
+     * Carrega um usuário da base de dados com base em seu username, caso não o
+     * encontre, lança uma exceção
+     * 
      * @param username usado para a busca
      * @return UserDetails com as especificações do usuário
      * @throws UsernameNotFoundException caso o usuário não seja encontrado
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("User with the username %s wasn't found", username)));
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException(String.format("User with the username %s wasn't found", username)));
         log.debug("User with username {} was successfully found", user.getUsername());
         return user;
     }
@@ -46,7 +50,8 @@ public class JwtUserDetailsManager implements ICustomUserDetailsService<User> {
 
         Set<Role> roles = user.getAuthorities()
                 .stream()
-                .map(grantedAuthority -> Role.builder().role(RoleType.valueOfIgnoreCase(grantedAuthority.getAuthority())).build())
+                .map(grantedAuthority -> Role.builder()
+                        .role(RoleType.valueOfIgnoreCase(grantedAuthority.getAuthority())).build())
                 .collect(Collectors.toSet());
 
         User userToBePersisted = User.builder()
