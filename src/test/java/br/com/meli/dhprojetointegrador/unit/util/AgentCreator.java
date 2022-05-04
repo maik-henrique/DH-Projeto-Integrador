@@ -8,7 +8,6 @@ public class AgentCreator {
     return Agent.builder()
         .name("Agente")
         .warehouse(WarehouseCreator.createValidWarehouse())
-        .password("1234")
         .id(1L)
         .build();
   }

@@ -59,6 +59,12 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    /**
+     * Author: David
+     * Methodo: Mudar Cart para Aberto ou Finalizado na Order
+     * Description: Modifique o pedido existente. torná-lo do tipo de carrinho para
+     * modificar - ABERTO/FINALIZADO
+     */
     // @CachePut(value = "UpdateStatusOrder", key = "#idorder")
     public PurchaseOrder atualizar(Long idorder) {
 
@@ -152,6 +158,7 @@ public class OrderService {
      * Description: Recebe uma ordem de compras, realiza as validações e implementa
      * a compra e retorna o preço total do carrinho
      */
+    // @CacheEvict(value = "createOrder", key = "#input")
     public OrderIntermediateDTO createOrder(PurchaseOrderInput input) {
 
         Buyer buyer = validateBuyer.getBuyer(input.getBuyerId());

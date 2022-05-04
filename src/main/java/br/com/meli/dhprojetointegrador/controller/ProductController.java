@@ -41,10 +41,9 @@ public class ProductController {
      * Description: Serviço responsavel por retornar todos os produtos presentes na
      * aplicação;
      *
-     * 
+     *
      * @return lista de produtos
      */
-
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> returnAllProducts() {
 

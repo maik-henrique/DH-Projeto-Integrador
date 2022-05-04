@@ -2,9 +2,7 @@ package br.com.meli.dhprojetointegrador.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

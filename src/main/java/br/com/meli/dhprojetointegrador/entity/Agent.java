@@ -1,3 +1,4 @@
+
 package br.com.meli.dhprojetointegrador.entity;
 
 import javax.persistence.*;
@@ -22,11 +23,13 @@ public class Agent {
 
   private String name;
 
-  private String password;
-
   @OneToOne
   @MapsId
   @JoinColumn(name = "agent_id")
   private Warehouse warehouse;
+
+  @OneToOne
+  @JoinColumn(name = "fk_user_id")
+  private User user;
 
 }

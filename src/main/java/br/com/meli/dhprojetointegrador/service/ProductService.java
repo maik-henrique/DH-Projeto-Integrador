@@ -29,6 +29,7 @@ public class ProductService {
     @Autowired
     private ValidadeProduct validateProduct;
 
+    // @Cacheable(value = "findProductById", key = "#id")
     public Product findProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new BusinessValidatorException(String.format("Product with id %d not found", id)));
@@ -42,6 +43,7 @@ public class ProductService {
      * 
      * @return lista de produtos
      */
+    // @Cacheable(value = "returnAllProducts")
     public List<Product> returnAllProducts() {
         return productRepository.findAll();
     }
@@ -61,7 +63,13 @@ public class ProductService {
      *
      * @return Se existir, retorna lista de produtos filtrados por categoria
      */
+    <<<<<<<HEAD
+
     public List<Product> returnProductsByCategory(String category) {
+=======
+    //@Cacheable(value = "returnProductsByCategory", key = "#category")
+    public List<Product> returnProductsByCategory(String category ){
+>>>>>>> 42fb6619dcb8fad4a688470c8e6a17279b3918b1
         return productRepository.findByCategory_Name(CategoryEnum.valueOf(category));
     }
 
@@ -73,6 +81,7 @@ public class ProductService {
      * 
      * @return ProductByWarehouseResponse
      */
+    // @Cacheable(value = "getProductByWarehouse", key = "#id")
     public ProductByWarehouseResponse getProductByWarehouse(Long id) {
         Product product = validateProduct.validateQuantity(1, id);
         List<WarehouseQuantity> warehouseQuantities = new ArrayList<>();

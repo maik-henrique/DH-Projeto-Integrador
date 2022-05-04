@@ -28,6 +28,7 @@ public class ValidadeProduct {
      * Method: validateQuantity
      * Description: Valida se determinado produto possui estoque suficiente
      */
+    // @CachePut(value = "validateQuantity", key = "#id")
     public Product validateQuantity(Integer qtd, Long id) {
         try {
             Product product = productRepository.findById(id).get();
