@@ -20,9 +20,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final FilterChainExceptionHandler filterChainExceptionHandler;
 
     private static final String[] BUYER_ENDPOINTS = {".*/fresh-products/",".*/fresh-products/list.*", ".*/fresh-products/orders.*"};
-    private static final String[] AGENT_ENDPOINTS = {".*/inboundorder.*", ".*/fresh-products/due-date.*", "*/fresh-products/list.*",
+    private static final String[] AGENT_ENDPOINTS = {".*/inboundorder.*", ".*/fresh-products/due-date.*", ".*/fresh-products/list.*",
             ".*/fresh-products/warehouse.*"};
-    
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
