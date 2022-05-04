@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -27,6 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
  
 
+@ContextConfiguration
+@WithMockUser(username = "jooj", roles = {"BUYER"})
 public class OrderControllerTests extends BaseIntegrationControllerTests {
 
     @Autowired
@@ -251,7 +255,6 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
         Buyer buyer = Buyer.builder()
                 .id(1L)
                 .name("Bruno")
-                .password("123456")
                 .email("bruno@email.com")
                 .build();
 
@@ -271,7 +274,6 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
     private Warehouse setupWarehouse() {
         Agent agent = Agent.builder()
                 .name("007")
-                .password("password")
                 .build();
 
         Warehouse warehouse = Warehouse.builder().id(1L).name("warehouse 01").agent(agent).build();

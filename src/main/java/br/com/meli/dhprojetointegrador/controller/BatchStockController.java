@@ -3,6 +3,8 @@ package br.com.meli.dhprojetointegrador.controller;
 import java.util.List;
 
 import br.com.meli.dhprojetointegrador.dto.BatchStockDTO;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

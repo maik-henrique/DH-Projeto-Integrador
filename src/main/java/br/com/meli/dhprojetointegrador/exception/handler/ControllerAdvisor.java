@@ -3,10 +3,14 @@ package br.com.meli.dhprojetointegrador.exception.handler;
 import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadDTO;
 import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
 import br.com.meli.dhprojetointegrador.exception.*;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -143,5 +147,76 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 				.build();
 
 		return new ResponseEntity<>(exceptionPayload, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(AuthException.class)
+	protected ResponseEntity<?> handleAuthException(AuthException exception) {
+		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+				.timestamp(LocalDateTime.now())
+				.title(exception.getTitle())
+				.statusCode(exception.getHttpStatus().value())
+				.description(exception.getMessage())
+				.build();
+
+		return new ResponseEntity<>(exceptionPayload, exception.getHttpStatus());
+	}
+
+	@ExceptionHandler(MalformedJwtException.class)
+	protected ResponseEntity<?> handleMalformedJwtException(MalformedJwtException exception) {
+		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Malformed JWT token")
+				.statusCode(HttpStatus.BAD_REQUEST.value())
+				.description("The provided JWT token couldn't be read")
+				.build();
+
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(UsernameNotFoundException.class)
+	protected ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException exception) {
+		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+				.timestamp(LocalDateTime.now())
+				.title("User not found")
+				.statusCode(HttpStatus.UNAUTHORIZED.value())
+				.description(exception.getMessage())
+				.build();
+
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(ExpiredJwtException.class)
+	protected ResponseEntity<?> handleExpiredJwtException(ExpiredJwtException exception) {
+		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Token expirado")
+				.statusCode(HttpStatus.UNAUTHORIZED.value())
+				.description("Token fornecido é inválido")
+				.build();
+
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(value= {JpaSystemException.class})
+	protected ResponseEntity<Object> handleIllegalArgumentException(JpaSystemException ex) {
+		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Invalid field")
+				.statusCode(HttpStatus.CONFLICT.value())
+				.description(ex.getMostSpecificCause().getMessage())
+				.build();
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(value= {DataIntegrityViolationException.class})
+	protected ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+
+		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Invalid field")
+				.statusCode(HttpStatus.CONFLICT.value())
+				.description(ex.getMostSpecificCause().getMessage())
+				.build();
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);
 	}
 }
