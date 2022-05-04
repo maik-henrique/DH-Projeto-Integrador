@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "7024dec0-49e2-4caa-aaa2-c21b11819645",
+		"name": "ProjetoIntegrador",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Requisito 2 - PUT - David",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/fresh-products/orders/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"orders",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 1 - POST",
+			"request": {
+				"method": "POST",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 1 - PUT",
+			"request": {
+				"method": "PUT",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 2 - GET",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 2 - GET",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 2 - POST - Bruno",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"buyerId\": 1,\n    \"date\": \"2021-04-25\",\n    \"products\": [\n        {\n            \"productId\": 1,\n            \"quantity\": 5\n        },\n        {\n            \"productId\": 6,\n            \"quantity\": 5\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/fresh-products/orders/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"orders",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 2 - GET",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 3 - GET",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 3 - GET",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 4 - GET - Bruno",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/fresh-products/warehouse/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"warehouse",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 5 - GET",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 5 - GET",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
