@@ -25,4 +25,8 @@ spring:
       matching-strategy: ant_path_matcher
 
 
-
+security:
+  jwt:
+    signing-key: ${SIGNING-KEY:abacate}
+    token-duration-in-minutes: ${TOKEN-DURATION-IN-MINUTES:60}
+    enabled: ${SECURITY_ENABLED:true}

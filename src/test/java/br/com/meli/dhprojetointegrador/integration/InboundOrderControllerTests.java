@@ -13,27 +13,29 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@WithMockUser(username = "jooj", roles = {"AGENT", "ADMIN"})
 public class InboundOrderControllerTests extends BaseIntegrationControllerTests {
 
     @Autowired
     private MockMvc mock;
     @Autowired
     private SectionRepository sectionRepository;
-    @Autowired
-    private AgentRepository agentRepository;
     @Autowired
     private WarehouseRepository warehouseRepository;
     @Autowired
@@ -46,6 +48,7 @@ public class InboundOrderControllerTests extends BaseIntegrationControllerTests 
     private BatchStockRepository batchStockRepository;
     @Autowired
     private ObjectMapper objectMapper;
+
 
     @Test
     @DisplayName("Inbound Order - Proper setting of the of values")
@@ -212,8 +215,7 @@ public class InboundOrderControllerTests extends BaseIntegrationControllerTests 
     }
 
     private Warehouse setupWarehouse() {
-        Agent agent = Agent.builder().name("007")
-                .password("senhaa").build();
+        Agent agent = Agent.builder().name("007").build();
         Warehouse warehouse = Warehouse.builder().id(1L).name("Galpao do joao").agent(agent).build();
         agent.setWarehouse(warehouse);
 
