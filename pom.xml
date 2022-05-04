@@ -13,6 +13,7 @@
     <version>0.0.0</version>
     <name>dh-projeto-integrador</name>
     <description>Projeto Integrador DH</description>
+
     <properties>
         <java.version>11</java.version>
         <sonar.exclusions>**/dto/**/*,
@@ -26,6 +27,7 @@
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -122,17 +124,8 @@
             <version>2.9.2</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
-      </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>

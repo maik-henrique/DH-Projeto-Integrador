@@ -4,6 +4,10 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -37,8 +41,6 @@ public class BatchStockService {
      * @return lista os batch estoque utilizando os filtros
      * @throws BusinessValidatorException se a seção nao for encontrada
      */
-
-    //@Cacheable(value = "filterStockBySection", key = "#sectionId")
     public List<BatchStock> filterStockBySection(
             Long sectionId,
             Integer numberOfDays,
