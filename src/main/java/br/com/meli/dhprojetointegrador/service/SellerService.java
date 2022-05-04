@@ -26,7 +26,7 @@ public class SellerService {
 
     public Seller putSellerName(Long id, String newName){
 
-        Seller seller = sellerRepository.getById(id);
+        Seller seller = sellerRepository.findById(id).get();
         seller.setName(newName);
 
         return sellerRepository.save(seller);
@@ -34,7 +34,7 @@ public class SellerService {
 
     public Seller putSellerAccountStatus(Long id, Boolean newStatus){
 
-        Seller seller = sellerRepository.getById(id);
+        Seller seller = sellerRepository.findById(id).get();
         seller.setStatusActiveAccount(newStatus);
 
         return sellerRepository.save(seller);
