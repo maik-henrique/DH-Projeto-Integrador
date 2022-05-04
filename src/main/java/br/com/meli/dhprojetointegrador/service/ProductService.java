@@ -129,7 +129,7 @@ public class ProductService {
      *         em alguma parte do nome
      */
     public List<Product> findByName(String name) {
-
+        List<Product> test = productRepository.findByNameContainingIgnoreCase(name);
         return productRepository.findByNameContainingIgnoreCase(name);
 
     }
