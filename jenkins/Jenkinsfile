@@ -1,63 +1,35 @@
 def COLOR_MAP = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
 
 pipeline {
-    agent {
-        docker {
-            image 'maven'
-            args '-v /root/.m2:/root/.m2'
-        }
+    agent any
+    tools {
+           maven 'MAVEN_HOME'
+           jdk 'JAVA_HOME'
     }
+
     stages {
-        stage('Checkout') {
-            steps {
-                slackSend channel: 'jenkins-ci', color: '#33AFFF', message: "*STARTED*: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'\n *More info at:* ${env.BUILD_URL}", teamDomain: 'devteam', tokenCredentialId: 'slack'
-                git branch: 'develop', credentialsId: 'github', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git/src/test'
-            }
-        }
 
-        stage('Build + Unit tests') {
+         stage('Initialize'){
             steps {
-                    sh 'mvn clean test'
-            }   
-        }
-        stage('Archiving Reports') {
-            steps {
-                dir(path: '.') {
-                    publishHTML([allowMissing: true, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'target/site/jacoco/', reportFiles: 'index.html', reportName: 'Code Coverage', reportTitles: 'Code Coverage'])
-                    step([$class: 'JUnitResultArchiver', testResults: 'target/surefire-reports/TEST-*.xml'])
-                }
-            }   
-        }
-        stage('Integration tests'){
-            steps {
-                git credentialsId: 'github', url: 'https://github.com/maik-henrique/DH-Projeto-Integrador.git/src/test'
-                sh 'mvn clean install'
-                cucumber failedFeaturesNumber: -1, failedScenariosNumber: -1, failedStepsNumber: -1, fileIncludePattern: 'target/*.json', pendingStepsNumber: -1, skippedStepsNumber: -1, sortingMethod: 'ALPHABETICAL', undefinedStepsNumber: -1                       
+                  sh '''
+                      echo "PATH = ${PATH}"
+                      echo "MAVEN_HOME = ${MAVEN_HOME}"
+                  '''
+                  }
             }
-         }     
-    }
-          stage("build & SonarQube analysis") {
-            agent any
-            steps {
-              withSonarQubeEnv('My SonarQube Server') {
-                sh 'mvn sonar:sonar -Dsonar.login=a11c99f38095ecc1bcf1be517a24961fe1b31261'
-              }
-            }
-          }
-          stage("Quality Gate") {
-            steps {
-              timeout(time: 1, unit: 'HOURS') {
-                waitForQualityGate abortPipeline: true
-              }
-          }
-    }
-    post {
-        always {
 
-            slackSend channel: 'jenkins-ci', teamDomain: 'devteam', tokenCredentialId: 'slack',
-                color: COLOR_MAP[currentBuild.currentResult],
-                message: "*${currentBuild.currentResult}:* Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'\n *More info at:* ${env.BUILD_URL}"
-            
+        stage('Integration tests + Unit tests + Code Coverage'){
+            steps {
+                  sh 'mvn clean install'
+            }
+             post {
+                  success {
+                  junit 'target/surefire-reports/**/*.xml'
+                  jacoco execPattern: "**/target/jacoco.exec"
+                  cleanWs cleanWhenFailure: true
+                  }
+             }
+
         }
-    }        
+    }
 }

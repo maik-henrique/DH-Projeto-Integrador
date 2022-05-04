@@ -2,9 +2,10 @@ package br.com.meli.dhprojetointegrador.unit.service.validator;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.util.Optional;
 
+import br.com.meli.dhprojetointegrador.unit.util.SectionCreator;
+import br.com.meli.dhprojetointegrador.unit.util.WarehouseCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +13,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import br.com.meli.dhprojetointegrador.entity.Category;
 import br.com.meli.dhprojetointegrador.entity.Section;
 import br.com.meli.dhprojetointegrador.entity.Warehouse;
@@ -22,8 +22,7 @@ import br.com.meli.dhprojetointegrador.repository.SectionRepository;
 import br.com.meli.dhprojetointegrador.repository.WarehouseRepository;
 import br.com.meli.dhprojetointegrador.service.SectionService;
 import br.com.meli.dhprojetointegrador.service.validator.SectionValidator;
-import br.com.meli.dhprojetointegrador.unit.util.SectionCreator;
-import br.com.meli.dhprojetointegrador.unit.util.WarehouseCreator;
+
 
 @ExtendWith(SpringExtension.class)
 public class SectionValidatorTests {
@@ -61,7 +60,7 @@ public class SectionValidatorTests {
         Warehouse warehouse = warehouseRepository.save(Warehouse.builder().name("Warehouse 1").build());
 
         Section section = Section.builder().category(frios).name("Section 2")
-                .warehouse(warehouse).capacity(10).id(1L).build();
+                .warehouse(warehouse).capacity(10F).id(1L).build();
 
         sectionRepository.save(section);
 

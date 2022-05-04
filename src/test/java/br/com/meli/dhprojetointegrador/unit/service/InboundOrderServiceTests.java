@@ -52,7 +52,9 @@ public class InboundOrderServiceTests {
     @Test
     public void update_shouldProperlyCallSaveWithUpdatedObject_whenAllNestedObjectsAreRetrievedProperly() {
         Set<BatchStock> batchStockList = Set.of();
-        Section section = Section.builder().id(1L).category(Category.builder().name(CategoryEnum.FRIOS).build())
+        Section section = Section.builder().id(1L).category(Category.builder()
+                .name(CategoryEnum.FRIOS).build())
+                .capacity(2.2f)
                 .build();
         Agent agent = Agent.builder().id(1L).build();
 
