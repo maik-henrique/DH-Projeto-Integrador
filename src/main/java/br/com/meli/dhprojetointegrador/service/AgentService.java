@@ -3,11 +3,14 @@ package br.com.meli.dhprojetointegrador.service;
 import br.com.meli.dhprojetointegrador.entity.Agent;
 import br.com.meli.dhprojetointegrador.entity.Warehouse;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
+import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
 import br.com.meli.dhprojetointegrador.repository.AgentRepository;
 import br.com.meli.dhprojetointegrador.repository.WarehouseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -23,6 +26,7 @@ public class AgentService {
 
     public Agent create(Agent agent){
         Warehouse warehouse = warehouseRepository.getById(agent.getWarehouse().getId());
+        System.out.println(warehouse);
         Agent newAgent = Agent.builder()
                 .name(agent.getName())
                 .password(agent.getPassword())
@@ -31,4 +35,7 @@ public class AgentService {
         return agentRepository.save(newAgent);
     }
 
+    public List<Agent> getAll() {
+        return agentRepository.findAll();
+    }
 }

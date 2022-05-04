@@ -1,21 +1,17 @@
 package br.com.meli.dhprojetointegrador.controller;
 
 import br.com.meli.dhprojetointegrador.dto.request.AgentPostRequest;
+import br.com.meli.dhprojetointegrador.dto.response.AgentCollection;
 import br.com.meli.dhprojetointegrador.dto.response.AgentResponseDTO;
 import br.com.meli.dhprojetointegrador.entity.Agent;
-import br.com.meli.dhprojetointegrador.entity.Warehouse;
 import br.com.meli.dhprojetointegrador.service.AgentService;
-import br.com.meli.dhprojetointegrador.service.WarehouseService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
 import javax.validation.Valid;
-import java.util.Optional;
-
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -32,9 +28,20 @@ public class AgentController {
             AgentResponseDTO agentResponse = modelMapper.map(agentCreated, AgentResponseDTO.class);
             return new ResponseEntity<>(agentResponse, HttpStatus.CREATED);
         } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    //@GetMapping("/agent")
+    @GetMapping("/agent")
+    public ResponseEntity<?> readAgent() {
+        try {
+            List<Agent> agents = agentService.getAll();
+            return new ResponseEntity<>(AgentCollection.convertToList(agents), HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 }
