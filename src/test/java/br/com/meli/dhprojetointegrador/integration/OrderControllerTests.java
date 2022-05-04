@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -26,6 +28,8 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ContextConfiguration
+@WithMockUser(username = "jooj", roles = {"BUYER"})
 public class OrderControllerTests extends BaseIntegrationControllerTests {
 
     @Autowired
