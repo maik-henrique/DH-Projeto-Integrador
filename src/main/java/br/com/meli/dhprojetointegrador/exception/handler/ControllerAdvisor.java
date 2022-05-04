@@ -5,9 +5,11 @@ import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
 import br.com.meli.dhprojetointegrador.exception.*;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -177,5 +179,28 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 				.build();
 
 		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(value= {JpaSystemException.class})
+	protected ResponseEntity<Object> handleIllegalArgumentException(JpaSystemException ex) {
+		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Invalid field")
+				.statusCode(HttpStatus.CONFLICT.value())
+				.description(ex.getMostSpecificCause().getMessage())
+				.build();
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(value= {DataIntegrityViolationException.class})
+	protected ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+
+		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Invalid field")
+				.statusCode(HttpStatus.CONFLICT.value())
+				.description(ex.getMostSpecificCause().getMessage())
+				.build();
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.CONFLICT);
 	}
 }
