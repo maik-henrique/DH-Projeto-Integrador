@@ -12,4 +12,6 @@ import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByCategory_Name(CategoryEnum category);
+
+    Product findByIdAndSeller_Id(Long idProduct, Long idSeller);
 }

@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import br.com.meli.dhprojetointegrador.enums.ProductStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +29,7 @@ import lombok.Setter;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private BigDecimal price;
@@ -39,9 +40,13 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
+    @JsonIgnore
     private Seller seller;
 
     @OneToMany(mappedBy = "products")
     private Set<BatchStock> batchStockList;
+
+    private ProductStatusEnum productStatusEnum;
+    private Boolean statusProduct;
 
 }
