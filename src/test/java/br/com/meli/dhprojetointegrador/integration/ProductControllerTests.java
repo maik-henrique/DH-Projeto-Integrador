@@ -8,7 +8,9 @@ import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.enums.DueDateEnum;
 import br.com.meli.dhprojetointegrador.repository.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
@@ -50,11 +53,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-@ActiveProfiles("test")
-@SpringBootTest
-@AutoConfigureMockMvc
+@WithMockUser(username = "jooj", roles = {"AGENT", "BUYER"})
 public class ProductControllerTests extends BaseIntegrationControllerTests {
 
     private final static LocalDate LOCAL_DATE_NOW_MOCK = LocalDate.of(2022, 4, 13);
@@ -72,9 +71,6 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
 
     @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    private BatchStockRepository batchStockRepository;
 
     @Autowired
     private SellerRepository sellerRepository;
@@ -172,7 +168,7 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
 
     }
     private Product setupProducts(String name, Float volume) throws Exception {
-        Product product = Product.builder().name(name).volume(volume).build();
+        Product product = Product.builder().name(name).volume(volume).price(BigDecimal.valueOf(22)).build();
         productRepository.save(product);
         return product;
     }
@@ -254,7 +250,7 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
 
             objectMapper.registerModule(javaTimeModule);
 
-            Agent agent = Agent.builder().name("Agente de warehouse").password("123").build();
+            Agent agent = Agent.builder().name("Agente de warehouse").build();
             Warehouse warehouse = Warehouse.builder().name("Centro de distribuição MELIMELI").agent(agent).build();
             agent.setWarehouse(warehouse);
 
@@ -288,11 +284,13 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
 
             BatchStockPostRequest frangoBatchStock = BatchStockPostRequest.builder().batchNumber(123L).currentQuantity(32)
                     .currentTemperature(17.0f).dueDate(notExpiredDueDate).initialQuantity(42).minimumTemperature(17.0f)
+                    .currentQuantity(21)
                     .productId(frangoManaged.getId()).manufacturingDate(LocalDate.of(2022, 3, 22))
                     .manufacturingTime(LocalDateTime.of(2022, 3, 22, 3, 22, 1)).build();
 
             BatchStockPostRequest carneBatchStock = BatchStockPostRequest.builder().batchNumber(124L).currentQuantity(32)
                     .currentTemperature(17.0f).dueDate(notExpiredDueDate).initialQuantity(42).minimumTemperature(17f)
+                    .currentQuantity(21)
                     .productId(carneManaged.getId()).manufacturingDate(LocalDate.of(2022, 3, 22))
                     .manufacturingTime(LocalDateTime.of(2022, 3, 22, 3, 22, 1)).build();
 

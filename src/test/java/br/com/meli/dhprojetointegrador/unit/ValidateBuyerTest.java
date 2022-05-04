@@ -6,12 +6,8 @@ import br.com.meli.dhprojetointegrador.repository.BuyerRepository;
 import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import javax.persistence.EntityNotFoundException;
-
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +20,6 @@ public class ValidateBuyerTest {
     Buyer buyer = Buyer.builder()
             .id(1L)
             .name("Bruno")
-            .password("123456")
             .email("bruno@email.com")
             .build();
 

@@ -12,14 +12,11 @@ import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import static org.mockito.Mockito.*;
 
 public class OrderServiceTest {
@@ -35,10 +32,10 @@ public class OrderServiceTest {
 
     LocalDate date = LocalDate.of(2021, 04, 25);
 
+
     Buyer buyer = Buyer.builder()
             .id(1L)
             .name("Bruno")
-            .password("123456")
             .email("bruno@email.com")
             .build();
 
