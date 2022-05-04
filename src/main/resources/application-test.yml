@@ -9,3 +9,8 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
+
+security:
+  jwt:
+    signing-key: abacate
+    token-duration-in-minutes: 60

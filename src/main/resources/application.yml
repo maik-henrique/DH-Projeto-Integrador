@@ -18,4 +18,7 @@ spring:
     port: 6379
     password: Redis!
 
-
+security:
+  jwt:
+    signing-key: ${SIGNING-KEY:abacate}
+    token-duration-in-minutes: ${TOKEN-DURATION-IN-MINUTES:60}
