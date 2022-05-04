@@ -31,7 +31,7 @@ public class Seller {
 
   private String name;
 
-  private Boolean statusActiveAccount = true;
+  private Boolean statusActiveAccount;
 
   @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
 //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

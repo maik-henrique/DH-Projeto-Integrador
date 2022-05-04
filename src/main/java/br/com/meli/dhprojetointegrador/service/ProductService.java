@@ -8,6 +8,7 @@ import java.util.Set;
 import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import br.com.meli.dhprojetointegrador.dto.response.WarehouseQuantity;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
+import br.com.meli.dhprojetointegrador.entity.Seller;
 import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,4 +94,20 @@ public class ProductService {
                 .warehouses(warehouseQuantitiesFinal)
                 .build();
     }
+
+    public Product saveProductWithSeller(Product product, Seller seller){
+
+        product.setSeller(seller);
+        return productRepository.save(product);
+    }
+
+    public Product findProductByIdAndSeller(Long product_id, Long id){
+
+        return productRepository.findByIdAndSeller_Id(product_id, id);
+    }
+
+//    public Product putProductStatus(Long id, Boolean newStatus){
+//
+//
+//    }
 }

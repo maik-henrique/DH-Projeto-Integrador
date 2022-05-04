@@ -1,79 +1,100 @@
 package br.com.meli.dhprojetointegrador.controller;
 
 
+import br.com.meli.dhprojetointegrador.dto.request.SellerPostRequest;
+import br.com.meli.dhprojetointegrador.dto.request.SellerProductPostRequest;
+import br.com.meli.dhprojetointegrador.dto.response.ProductResponseDto;
+import br.com.meli.dhprojetointegrador.dto.response.SellerResponseDTO;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.entity.Seller;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import br.com.meli.dhprojetointegrador.repository.SellerRepository;
+import br.com.meli.dhprojetointegrador.service.ProductService;
+import br.com.meli.dhprojetointegrador.service.SellerService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.Optional;
 import java.util.Set;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/seller")
+@RequestMapping(SellerController.baseUri)
 public class SellerController {
+
+    public static final String baseUri = "/api/v1/seller";
 
     SellerRepository sellerRepository;
     ProductRepository productRepository;
+    private final SellerService sellerService;
+    private final ProductService productService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<Set<Product>> findAllSellersProducts(@PathVariable Long id){
 
-//        Optional<Seller> op = sellerRepository.findById(id).get().getProducts();
-//        Seller seller = op.get();
+        Set<Product> products = sellerService.findSellerById(id).getProducts();
 
-        return ResponseEntity.ok().body(sellerRepository.findById(id).get().getProducts());
+        return products == null || products.isEmpty()?ResponseEntity.notFound().build():
+                ResponseEntity.ok(products);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Seller> registerSeller(@RequestBody Seller seller){
+    public ResponseEntity<Seller> registerSeller(@Valid @RequestBody SellerPostRequest sellerPostRequest,
+                                                 UriComponentsBuilder uriBuilder){
 
-        sellerRepository.save(seller);
+        Seller seller = modelMapper.map(sellerPostRequest, Seller.class);
+        SellerResponseDTO response = modelMapper.map(seller, SellerResponseDTO.class);
 
-        return ResponseEntity.ok().body(seller);
+        URI uri = uriBuilder
+                .path(baseUri.concat("/{id}"))
+                .buildAndExpand(response.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(sellerService.saveSeller(seller));
     }
 
-    @PostMapping("/{id}/products")
-    public ResponseEntity<Seller> registerSellerProduct(@PathVariable Long id,
-                                                        @RequestBody Product product){
+    @PostMapping("/{seller_id}/products")
+    public ResponseEntity<Seller> registerSellerProduct(@PathVariable Long seller_id,
+                                                        @Valid @RequestBody SellerProductPostRequest sellerProduct,
+                                                        UriComponentsBuilder uriBuilder){
 
-        Optional<Seller> op = sellerRepository.findById(id);
-        Seller seller = op.get();
-        product.setSeller(seller);
+        Product product = modelMapper.map(sellerProduct, Product.class);
+        Seller seller = sellerService.findSellerById(seller_id);
+        Long productId = productService.saveProductWithSeller(product,seller).getId();
+        Product productSaved = productService.findProductById(productId);
+        seller.getProducts().add(productSaved);
+        Seller sellerSaved = sellerService.saveSeller(seller);
 
-        Long productId = productRepository.save(product).getId();
-        Optional<Product> opProduct = productRepository.findById(productId);
+        URI uri = uriBuilder
 
+                .path(baseUri.concat("/{id}/products"))
+                .buildAndExpand(sellerSaved.getId())
+                .toUri();
 
-        seller.getProducts().add(opProduct.get());
-
-        sellerRepository.save(seller);
-
-        return ResponseEntity.ok().body(seller);
+        return ResponseEntity.created(uri).body(sellerSaved);
     }
 
     @PutMapping("/{id}/change-name")
-    public Seller changeSellerName(@PathVariable Long id,
-                                   @RequestParam(name = "name", required = false) String newName){
+    public ResponseEntity<Seller> changeSellerName(@PathVariable Long id,
+                                   @RequestParam(name = "name", required = true) String newName){
 
-        Seller seller = sellerRepository.getById(id);
-        seller.setName(newName);
-        sellerRepository.save(seller);
-
-        return seller;
+        return ResponseEntity.ok().body(sellerService.putSellerName(id, newName));
     }
 
     @PutMapping("/{id}/change-product-status/{product_id}")
     public ResponseEntity<Product> changeSellerProductStatus(@PathVariable Long id,
                                                             @PathVariable Long product_id,
-                                                            @RequestParam(name = "status", required = false) Boolean status){
+                                                            @RequestParam(name = "status", required = true) Boolean status){
 
-        Product product = productRepository.findByIdAndSeller_Id(product_id, id);
+        Product product = productService.findProductByIdAndSeller(product_id, id);
         product.setStatusProduct(status);
         productRepository.save(product);
         return ResponseEntity.ok().body(productRepository.findByIdAndSeller_Id(product_id, id));
@@ -81,13 +102,9 @@ public class SellerController {
 
     @PutMapping("/{id}/change-account-status")
     public ResponseEntity<Seller> changeSellerAccountStatus(@PathVariable Long id,
-                                       @RequestParam(name = "status", required = false) Boolean status){
+                                       @RequestParam(name = "status", required = true) Boolean status){
 
-        Seller seller = sellerRepository.getById(id);
-        seller.setStatusActiveAccount(status);
-        sellerRepository.save(seller);
-
-        return ResponseEntity.ok().body(seller);
+        return ResponseEntity.ok().body(sellerService.putSellerAccountStatus(id, status));
     }
 
 }
