@@ -6,6 +6,7 @@ import br.com.meli.dhprojetointegrador.entity.Category;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.entity.Seller;
 import br.com.meli.dhprojetointegrador.exception.BadRequestException;
+import br.com.meli.dhprojetointegrador.exception.NotfoundException;
 import br.com.meli.dhprojetointegrador.exception.ProductNotFoundException;
 import br.com.meli.dhprojetointegrador.exception.ResourceNotFound;
 import br.com.meli.dhprojetointegrador.repository.CategoryRepository;
@@ -14,6 +15,7 @@ import br.com.meli.dhprojetointegrador.repository.SellerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -28,21 +30,22 @@ public class SellerService {
     private CategoryRepository categoryRepository;
 
     private Seller checkSeller(Long sellerId) {
-        System.out.println(sellerId);
         try {
-            return sellerRepository.getById(sellerId);
-        } catch (Exception e) {
-            System.out.println(e);
-            throw new BadRequestException("Seller not found");
+            Seller seller = sellerRepository.getById(sellerId);
+            System.out.println(seller);
+            return seller;
+        } catch (EntityNotFoundException e) {
+            throw new NotfoundException("Seller not found");
         }
     }
 
     private Category checkCategory(Long categoryId) {
         try {
-            return categoryRepository.getById(categoryId);
-        } catch (Exception e) {
-            System.out.println(e);
-            throw new BadRequestException("Category not found");
+            Category category = categoryRepository.getById(categoryId);
+            System.out.println(category);
+            return category;
+        } catch (EntityNotFoundException e) {
+            throw new NotfoundException("Category not found");
         }
     }
 

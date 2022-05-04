@@ -44,13 +44,13 @@ public class SellerController {
      * Description: Controller para realizar a operação de recuperar produtos
      */
     @GetMapping
-    public ResponseEntity<List<FullProductResponse>> getProducts(@RequestParam(name = "sellerId") Long sellerId,
+    public ResponseEntity<List<FullProductResponse>> getProducts(@RequestParam(name = "sellerId") String sellerId,
                                                                           @RequestParam(name = "name", required = false) String name) {
         if (name == null) {
-            List<FullProductResponse> result = sellerService.getAllProducts(sellerId);
+            List<FullProductResponse> result = sellerService.getAllProducts(Long.decode(sellerId));
             return ResponseEntity.ok(result);
         } else {
-            List<FullProductResponse> result = sellerService.getAllProductsByName(sellerId, name);
+            List<FullProductResponse> result = sellerService.getAllProductsByName(Long.decode(sellerId), name);
             return ResponseEntity.ok(result);
         }
     }
@@ -61,10 +61,10 @@ public class SellerController {
      * Description: Controller para realizar a operação de atualizar nome e/ou preco de um produto
      */
     @PatchMapping
-    public ResponseEntity<FullProductResponse> updateProduct(@RequestParam(name = "productId") Long productId,
-                                                                    @RequestParam(name = "name", required = false) String name,
-                                                                    @RequestParam(name = "price", required = false) BigDecimal price) {
-        FullProductResponse result = sellerService.updateProduct(productId, name, price);
+    public ResponseEntity<FullProductResponse> updateProduct(@RequestParam(name = "productId") String productId,
+                                                             @RequestParam(name = "name", required = false) String name,
+                                                             @RequestParam(name = "price", required = false) String price) {
+        FullProductResponse result = sellerService.updateProduct(Long.valueOf(productId), name, BigDecimal.valueOf(Float.parseFloat(price)));
 
         return ResponseEntity.ok(result);
     }

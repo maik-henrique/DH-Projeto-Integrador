@@ -3,6 +3,7 @@ package br.com.meli.dhprojetointegrador.exception.handler;
 import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadDTO;
 import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
 import br.com.meli.dhprojetointegrador.exception.*;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,6 +85,23 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
 				.timestamp(LocalDateTime.now())
 				.title("Buyer Not Found")
+				.statusCode(HttpStatus.NOT_FOUND.value())
+				.description(exception.getMessage())
+				.build();
+
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.NOT_FOUND);
+	}
+
+	/**
+	 * Author: Bruno Mendes
+	 * Method: NotFoundException
+	 * Description: Handler para a exeption not found
+	 */
+	@ExceptionHandler(value = {NotfoundException.class})
+	protected ResponseEntity<Object> handleNotFoundException(NotfoundException exception) {
+		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+				.timestamp(LocalDateTime.now())
+				.title("Not Found")
 				.statusCode(HttpStatus.NOT_FOUND.value())
 				.description(exception.getMessage())
 				.build();
