@@ -16,23 +16,34 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(indexes = {@Index(columnList = "username")}, uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
 public class User implements UserDetails {
 
     private static final long serialVersionUID = 2623122358802563786L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotNull
     @Size(min = 5)
     private String username;
+
     @NotNull
     @Size(min = 5)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",
-            joinColumns = {@JoinColumn(name = "username")},
+            joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role")}
     )
     private Set<Role> role;
+
+    @OneToOne(mappedBy = "user")
+    private Buyer buyer;
+
+    @OneToOne(mappedBy = "user")
+    private Agent agent;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

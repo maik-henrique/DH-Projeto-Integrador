@@ -24,7 +24,6 @@ public class ValidateBuyerTest {
     Buyer buyer = Buyer.builder()
             .id(1L)
             .name("Bruno")
-            .password("123456")
             .email("bruno@email.com")
             .build();
 

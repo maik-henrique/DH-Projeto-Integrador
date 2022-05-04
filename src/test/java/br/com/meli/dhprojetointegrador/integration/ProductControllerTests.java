@@ -252,7 +252,7 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
 
             objectMapper.registerModule(javaTimeModule);
 
-            Agent agent = Agent.builder().name("Agente de warehouse").password("123").build();
+            Agent agent = Agent.builder().name("Agente de warehouse").build();
             Warehouse warehouse = Warehouse.builder().name("Centro de distribuição MELIMELI").agent(agent).build();
             agent.setWarehouse(warehouse);
 

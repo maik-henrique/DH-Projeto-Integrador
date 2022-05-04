@@ -24,7 +24,7 @@ public class JwtUserDetailsManager implements ICustomUserDetailsService<User> {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findById(username).orElseThrow(() ->
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("User with the username %s wasn't found", username)));
         log.debug("User with username {} was successfully found", user.getUsername());
         return user;
