@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.lang.reflect.Type;
 import java.util.List;
 
 
@@ -36,7 +35,6 @@ public class WarehouseController {
     }
 
     @PostMapping("warehouse")
-    @ResponseStatus()
     public ResponseEntity<?> createWarehouse(@Valid @RequestBody WarehouseRequest warehouseRequest) {
         try {
             Warehouse newWarehouse = modelMapper.map(warehouseRequest, Warehouse.class);

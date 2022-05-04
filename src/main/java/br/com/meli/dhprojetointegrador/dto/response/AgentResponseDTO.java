@@ -1,5 +1,6 @@
 package br.com.meli.dhprojetointegrador.dto.response;
 
+import br.com.meli.dhprojetointegrador.entity.Warehouse;
 import lombok.*;
 
 @Setter
@@ -7,7 +8,9 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WarehouseDTO {
+public class AgentResponseDTO {
     private Long id;
     private String name;
+
+    private String warehouseName;
 }

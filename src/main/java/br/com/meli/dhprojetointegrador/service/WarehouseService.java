@@ -9,12 +9,13 @@ import br.com.meli.dhprojetointegrador.repository.WarehouseRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class WarehouseService {
 
-    private WarehouseRepository warehouseRepository;
+    private final WarehouseRepository warehouseRepository;
 
     public Warehouse findWarehouseIdBySection(Section section) throws BusinessValidatorException {
         return warehouseRepository.findBySections(section)
@@ -27,5 +28,11 @@ public class WarehouseService {
 
     public Warehouse create(Warehouse warehouse){
         return warehouseRepository.save(warehouse);
+    }
+
+    public Warehouse findById(Long id) {
+        return warehouseRepository
+                .findById(id)
+                .orElseThrow(() -> new BusinessValidatorException(String.format("Warehouse with id %d not found", id)));
     }
 }
