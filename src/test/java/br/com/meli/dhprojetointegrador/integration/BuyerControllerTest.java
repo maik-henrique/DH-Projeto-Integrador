@@ -58,10 +58,11 @@ public class BuyerControllerTest {
     @Test
     public void deveListarTodasPurchasesDoBuyerAtivoStatusFinalizado() throws Exception{
 
-        setup();
+        Buyer buyer = setupBuyer(BuyerStatusEnum.ATIVO);
+        PurchaseOrder purchaseOrderFinalizado = setupPurchaseOrder(buyer,StatusEnum.FINALIZADO);
 
         MvcResult result = mock
-                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/buyer/4"))
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/buyer/{id}",purchaseOrderFinalizado.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
@@ -69,7 +70,7 @@ public class BuyerControllerTest {
         List<PurchaseOrder> response = objectMapper.readerForListOf(PurchaseOrder.class).readValue(responsePayload);
 
         assertNotNull(responsePayload);
-        assertEquals(response.get(0).getStatus(), BuyerStatusEnum.ATIVO);
+        assertEquals(response.get(0).getBuyer().getStatus(), BuyerStatusEnum.ATIVO);
         assertEquals(response.get(0).getStatus(), StatusEnum.FINALIZADO);
     }
 
@@ -79,23 +80,49 @@ public class BuyerControllerTest {
      * @Description: Listar todas as purchaseOrder referentes ao Buyer com um mesmo Status
      * @return
      */
-
     @Test
-    public void deveListarTodasPurchasesDoBuyerComMesmoStatus() throws Exception{
+    public void deveListarTodasPurchasesDoBuyerComMesmoStatusFinalizado() throws Exception {
 
-        setup();
+        Buyer buyer = setupBuyer(BuyerStatusEnum.ATIVO);
+        PurchaseOrder purchaseOrderFinalizado = setupPurchaseOrder(buyer, StatusEnum.FINALIZADO);
 
         MvcResult result = mock
-                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/buyer/4")
-                        .contentType("id").content("2"))
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/buyer")
+                        .param("id", buyer.getId().toString())
+                        .param("status", purchaseOrderFinalizado.getStatus().toString()))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
-        PurchaseOrder exceptionResponse = objectMapper.readValue(responsePayload, PurchaseOrder.class);
+        List<PurchaseOrder> response = objectMapper.readerForListOf(PurchaseOrder.class).readValue(responsePayload);
 
         assertNotNull(responsePayload);
-        assertEquals(exceptionResponse.getStatus(), StatusEnum.ABERTO);
-        assertEquals(exceptionResponse.getStatus(), BuyerStatusEnum.ATIVO);
+        assertEquals(response.get(0).getBuyer().getStatus(), BuyerStatusEnum.ATIVO);
+        assertEquals(response.get(0).getStatus(), StatusEnum.FINALIZADO);
+
+    }
+        /**
+         * @Author: David
+         * @Description: Listar todas as purchaseOrder referentes ao Buyer com um mesmo Status
+         * @return
+         */
+        @Test
+        public void deveListarTodasPurchasesDoBuyerComMesmoStatusAberto() throws Exception{
+
+            Buyer buyer = setupBuyer(BuyerStatusEnum.ATIVO);
+            PurchaseOrder purchaseOrderAberto = setupPurchaseOrder(buyer,StatusEnum.ABERTO);
+
+        MvcResult result2 = mock
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/buyer")
+                        .param("id", buyer.getId().toString())
+                        .param("status", purchaseOrderAberto.getStatus().toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        String responsePayload2 = result2.getResponse().getContentAsString();
+        List<PurchaseOrder> response2 = objectMapper.readerForListOf(PurchaseOrder.class).readValue(responsePayload2);
+
+        assertNotNull(responsePayload2);
+        assertEquals(response2.get(0).getBuyer().getStatus(), BuyerStatusEnum.ATIVO);
+        assertEquals(response2.get(0).getStatus(), StatusEnum.ABERTO);
     }
 
 
@@ -105,25 +132,24 @@ public class BuyerControllerTest {
      * @Description: Alterar os dados do buyer, pelo email/nome
      * @return
      */
-
     @Test
     public void deveAlterarDadosDoBuyer() throws Exception{
 
-        setup();
+        Buyer buyer = setupBuyer(BuyerStatusEnum.ATIVO);
 
         MvcResult result = mock
-                .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/buyer/4")
-                        .contentType("id").content("2"))
+                .perform(MockMvcRequestBuilders.put("/api/v1/fresh-products/buyer")
+                        .param("id", buyer.getId().toString())
+                        .param("name", "Cookie")
+                        .param("email", "meli@cookie.com"))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
-        Buyer exceptionResponse = objectMapper.readValue(responsePayload, Buyer.class);
+        Buyer response = objectMapper.readValue(responsePayload, Buyer.class);
 
         assertNotNull(responsePayload);
-        assertEquals(exceptionResponse.getStatus(), BuyerStatusEnum.ATIVO);
-        assertEquals(exceptionResponse.getName(), BuyerStatusEnum.ATIVO);
-        assertEquals(exceptionResponse.getEmail(), BuyerStatusEnum.ATIVO);
-
+        assertEquals(response.getName(), "Cookie");
+        assertEquals(response.getEmail(), "meli@cookie.com");
 
     }
 
@@ -133,34 +159,21 @@ public class BuyerControllerTest {
      * @Description: Desativar a conta a partir de email e password, setando Ativo e Inativo
      * @return
      */
-
     @Test
     public void deveDesativarUmBuyer() throws Exception{
 
-        setup();
+        Buyer buyer = setupBuyer(BuyerStatusEnum.ATIVO);
 
         MvcResult result = mock
-                .perform(MockMvcRequestBuilders.delete("/api/v1/fresh-products/buyer/4")
-                        .contentType("id").content("2"))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+                .perform(MockMvcRequestBuilders.delete("/api/v1/fresh-products/buyer/{id}", buyer.getId()))
+                .andExpect(MockMvcResultMatchers.status().isAccepted()).andReturn();
 
-        String responsePayload = result.getResponse().getContentAsString();
-        Buyer exceptionResponse = objectMapper.readValue(responsePayload, Buyer.class);
-
-        assertNotNull(responsePayload);
-        assertEquals(exceptionResponse.getStatus(), BuyerStatusEnum.ATIVO);
-    }
-
-    private void setup() {
-
-        Buyer buyer = setupBuyer(BuyerStatusEnum.ATIVO);
-        setupPurchaseOrder(buyer,StatusEnum.ABERTO, 3L);
-        setupPurchaseOrder(buyer, StatusEnum.FINALIZADO, 4L);
+        int respondeCode = result.getResponse().getStatus();
+        assertEquals(respondeCode, 202);
     }
 
     private Buyer setupBuyer(BuyerStatusEnum status) {
         Buyer buyer = Buyer.builder()
-                .id(4L)
                 .name("Bruno")
                 .password("1234567")
                 .email("bruno@email.com")
@@ -170,10 +183,9 @@ public class BuyerControllerTest {
         return buyerRepository.save(buyer);
     }
 
-    private PurchaseOrder setupPurchaseOrder(Buyer buyer, StatusEnum status, Long id){
+    private PurchaseOrder setupPurchaseOrder(Buyer buyer, StatusEnum status){
 
         PurchaseOrder purchaseOrder = PurchaseOrder.builder()
-                .id(id)
                 .buyer(buyer)
                 .status(status)
                 .date(LocalDate.of(2022,10,10))

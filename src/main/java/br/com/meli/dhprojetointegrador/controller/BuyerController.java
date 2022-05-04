@@ -31,7 +31,7 @@ public class BuyerController {
      * @Description: Listar todas as purchaseOrder referentes ao Buyer
      * @return
      */
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<List<PurchaseOrder>> listAllPurchases(@PathVariable Long id) {
         List<PurchaseOrder> purchaseOrders = buyerService.listAllPurchases(id);
         return ResponseEntity.ok(purchaseOrders);
@@ -45,9 +45,9 @@ public class BuyerController {
      * @return
      */
     @GetMapping()
-    public ResponseEntity<List<PurchaseOrder>> listAllPurchasesWithStatus(@RequestParam Long id,
-                                                                          @RequestParam StatusEnum status) {
-        List<PurchaseOrder> purchaseOrders = buyerService.listAllPurchasesWithStatus(id, status);
+    public ResponseEntity<List<PurchaseOrder>> listAllPurchasesWithStatus(@RequestParam String id,
+                                                                          @RequestParam String status) {
+        List<PurchaseOrder> purchaseOrders = buyerService.listAllPurchasesWithStatus(Long.valueOf(id), StatusEnum.valueOf(status));
         return ResponseEntity.ok((purchaseOrders));
     }
 
@@ -59,12 +59,11 @@ public class BuyerController {
      * @return
      */
     @PutMapping()
-        public ResponseEntity<?> updateDataBuyer(@Valid @RequestParam Long id,
+        public ResponseEntity<?> updateDataBuyer(@Valid @RequestParam String id,
                                                  @RequestParam String name,
                                                  @RequestParam String email){
 
-        //Buyer buyer = modelMapper.map(dto, Buyer.class);
-        Buyer updateBuyer = buyerService.updateDataBuyer(id, name, email);
+        Buyer updateBuyer = buyerService.updateDataBuyer(Long.valueOf(id), name, email);
 
         return ResponseEntity.ok().body(updateBuyer);
 
@@ -76,7 +75,7 @@ public class BuyerController {
      * @Description: Desativar a conta a partir de email e password, setando Ativo e Inativo
      * @return
      */
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deactivateBuyer(@PathVariable Long id) {
         buyerService.deactivateBuyer(id);
         return ResponseEntity.accepted().build();
