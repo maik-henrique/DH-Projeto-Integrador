@@ -27,10 +27,11 @@ public class Buyer implements Serializable {
     private Long id;
 
     private String name;
-
-    private String password;
-
     private String email;
+
+    @OneToOne
+    @JoinColumn(name = "fk_user_id")
+    private User user;
 
     @Enumerated(EnumType.STRING)
     private BuyerStatusEnum status;
