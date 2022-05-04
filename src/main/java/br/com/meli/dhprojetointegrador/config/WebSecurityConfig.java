@@ -12,12 +12,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
+/**
+ * Implementação das configurações de segurança da aplicação, só é ativado quando caso o valor configurado em
+ * 'security.jwt.enabled' for 'true' caso contrário não é utilizado na cadeia de filtros, resultando em um 'bypass'
+ * em relação às requisições.
+ * @author Maik
+ */
 @EnableWebSecurity
 @Configuration
 @AllArgsConstructor
 @ConditionalOnProperty(name = "security.jwt.enabled",
         havingValue = "true"
-
 )
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -31,8 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .addFilterBefore(filterChainExceptionHandler, LogoutFilter.class)
-                .cors().disable()
-                .csrf().disable()
                 .authorizeHttpRequests()
                 .antMatchers(HttpHeaders.ALLOW).permitAll()
                 .regexMatchers(".*/admin.*").hasRole(RoleType.ADMIN.name())

@@ -14,6 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Elemento da cadeia de responsabilidade do filtro que é recebe as exceções lançadas durante a validação de credenciais
+ * e os direciona para tratamento no ControllerAdvice.
+ * @author Maik
+ */
 @Slf4j
 @Component
 @AllArgsConstructor
@@ -22,9 +27,13 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter {
     @Qualifier("handlerExceptionResolver")
     private final HandlerExceptionResolver handlerExceptionResolver;
 
+    /**
+     * Repassa a tarefa de filtragem para o próximo elemento da cadeia, caso capture uma exceção, encaminha por meio
+     * do handlerExceptionResolver ao ControllerAdvice para tratamento e retorno de payload adequado
+     * @author Maik
+     */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         try {
             filterChain.doFilter(request, response);
         } catch (Exception e) {

@@ -22,11 +22,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Implementação do contrato para a operação de tokens JWT
+ * @author Maik
+ */
 @Service
 @AllArgsConstructor
 public class JwtTokenService implements ITokenService{
     private final SecurityProperties securityProperties;
 
+    /**
+     * A partir de um usuário, gera um token assinado pela chave secreta definida nas configurações da aplicação e
+     * que possui validade calculada como uma extensão em minutos do momento da criação
+     * @param userDetails usuário que terá um token gerado
+     * @return instância de JwtToken, com o token, data de expiração e seu tipo
+     */
     @Override
     public JwtToken generateToken(UserDetails userDetails) {
         Instant issuetAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
@@ -54,11 +64,18 @@ public class JwtTokenService implements ITokenService{
         return getClaimsFromToken(token, Claims::getSubject);
     }
 
+    /**
+     * Valida um token a partir da sua descontrução, comparação com os dados de um usuário e checagem da sua expiração
+     * @author Maik
+     * @param token token que se deseja validar
+     * @param userDetails usuário que será usado como base para comparação
+     * @return true se o token é válido
+     * @throws AuthException caso a validação do token falhe
+     */
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) throws AuthException {
         final String username = getUsernameFromToken(token);
         boolean isValidUsername = username.equals(userDetails.getUsername());
-//@TODO: extract to validator
         if (!isValidUsername) {
             throw new InvalidTokenException();
         }

@@ -21,6 +21,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Implementação de filtro de requisições JWT, só é habilitado para quando o valor de security.jwt.enabled é
+ * configurado como 'true' nas configurações da aplicação
+ * @author Maik
+ */
 @AllArgsConstructor
 @Configuration
 @ConditionalOnProperty(name = "security.jwt.enabled",
@@ -34,6 +39,14 @@ public class JwtFilter extends OncePerRequestFilter {
     private final static String AUTHORIZATION_HEADER = "Authorization";
     private final static String JWT_HEADER_PREFIX = "Bearer";
 
+    /**
+     * Obtém do header o token JWT e então valida com base no token se as credenciais são válidas, caso não sejam
+     * lança uma exceção.
+     *
+     * @author Maik
+     * @throws UsernameNotFoundException caso o um usário com as credenciais fornecidas não seja encontrado
+     * @throws AuthException caso um problema ocorra durante a validação das credenciais
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException, UsernameNotFoundException, AuthException {

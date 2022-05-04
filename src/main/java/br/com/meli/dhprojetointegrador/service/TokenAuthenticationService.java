@@ -10,6 +10,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Tem como objetivo ser um wrapper do UserDetailsManager, com foco em abstrair a autenticação e gerenciamento
+ * do usuário para oferecer pontos de acesso voltados ao cadastro e login
+ * @author Maik
+ */
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -19,9 +24,10 @@ public class TokenAuthenticationService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * Authenticates and returns a token, otherwise it throws an exception if the user's account is not enabled or credentials aren't valid
-     * @param user UserDetails, containing it's credentials
-     * @return JWT token
+     * Autnetica e retorna um token, caso contrário lança propaga exceções caso as credenciais fornecidas sejam inválidas
+     *
+     * @param user contém crendenciais e roles do usuário
+     * @return JwtToken caso a autenticação seja bem sucedida
      */
     public JwtToken authenticate(User user) throws UsernameNotFoundException, InvalidCredentialsException {
         UserDetails userDetails = userDetailsManager.loadUserByUsername(user.getUsername());

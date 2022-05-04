@@ -8,6 +8,7 @@ import br.com.meli.dhprojetointegrador.enums.RoleType;
 import br.com.meli.dhprojetointegrador.enums.TokenType;
 import br.com.meli.dhprojetointegrador.service.TokenAuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,6 +34,7 @@ public class AuthController extends BaseIntegrationControllerTests {
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("Login - Valida e retorna credenciais do usuário")
     public void login_shouldJwtToken_whenUserCredentialsAreValid() throws Exception {
         final String username = "joooj";
         final String password = "senha";
@@ -62,6 +64,7 @@ public class AuthController extends BaseIntegrationControllerTests {
     }
 
     @Test
+    @DisplayName("Login - Retorno de 401 caso as credenciais fornecidas sejam inválidas")
     public void login_shouldReturnUnauthorized_whenUserCredentialsAreInvalid() throws Exception {
         UserCredentialsRequest request = UserCredentialsRequest.builder()
                 .username("123456")
