@@ -2,6 +2,7 @@ package br.com.meli.dhprojetointegrador.config;
 
 import br.com.meli.dhprojetointegrador.enums.RoleType;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +15,10 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @EnableWebSecurity
 @Configuration
 @AllArgsConstructor
+@ConditionalOnProperty(name = "security.jwt.enabled",
+        havingValue = "true"
+
+)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtFilter jwtFilter;

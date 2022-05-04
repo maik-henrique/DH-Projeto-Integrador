@@ -5,6 +5,7 @@ import br.com.meli.dhprojetointegrador.exception.AuthException;
 import br.com.meli.dhprojetointegrador.service.ICustomUserDetailsService;
 import br.com.meli.dhprojetointegrador.service.ITokenService;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,10 @@ import java.io.IOException;
 
 @AllArgsConstructor
 @Configuration
+@ConditionalOnProperty(name = "security.jwt.enabled",
+        havingValue = "true"
+
+)
 public class JwtFilter extends OncePerRequestFilter {
 
     private final ICustomUserDetailsService<User> jwtUserDetailsManager;
