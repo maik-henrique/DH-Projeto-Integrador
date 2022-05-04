@@ -63,6 +63,7 @@ public class SectionController {
 
         Section section = SectionRequestDTO.map(sectionRequestDTO);
         sectionService.create(section, sectionRequestDTO.getWarehouseId(), sectionRequestDTO.getCategoryId());
+        SectionResponseDTO dto = SectionResponseDTO.map(section);
 
 
             URI uri = uriBuilder
@@ -70,8 +71,15 @@ public class SectionController {
                     .buildAndExpand(section.getId())
                     .toUri();
 
-            return ResponseEntity.created(uri).body(sectionRequestDTO);
+            return ResponseEntity.created(uri).body(dto);
     }
+
+    /**
+     * Author: Mariana Galdino
+     * Method: altera a capacidade de uma section
+     * Description: Serviço responsavel por alterar a capacidade de uma secao
+     * @return secao alterada e status
+     */
 
     @PatchMapping("/update-section")
     public ResponseEntity<?> updateSectionCapacity(@RequestBody SectionUpdateRequest sectionUpdateRequest){
@@ -79,7 +87,7 @@ public class SectionController {
         section.setCapacity(sectionUpdateRequest.getCapacity());
         sectionRepository.save(section);
 
-        return ResponseEntity.ok(section);
+        return ResponseEntity.ok(sectionUpdateRequest);
 
     }
 

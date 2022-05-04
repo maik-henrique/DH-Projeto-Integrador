@@ -1,3 +1,4 @@
+
 package br.com.meli.dhprojetointegrador.entity;
 
 import javax.persistence.*;

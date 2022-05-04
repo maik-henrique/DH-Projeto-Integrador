@@ -30,10 +30,7 @@ public class SectionRequestDTO {
     public static Section map(SectionRequestDTO sectionRequestDTO) {
         return Section.builder().name(sectionRequestDTO.getName()).capacity(sectionRequestDTO.getCapacity()).build();
     }
-//    public static SectionDto map(Section section) {
-//        return SectionDto.builder().
-//                name(section.getName()).capacity(section.getCapacity()).build();
-//    }
+
 
 
 }

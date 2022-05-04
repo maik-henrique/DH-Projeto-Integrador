@@ -5,7 +5,6 @@ import br.com.meli.dhprojetointegrador.entity.Warehouse;
 import br.com.meli.dhprojetointegrador.repository.CategoryRepository;
 import br.com.meli.dhprojetointegrador.repository.WarehouseRepository;
 import org.springframework.stereotype.Service;
-
 import br.com.meli.dhprojetointegrador.entity.Section;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.repository.SectionRepository;
@@ -21,6 +20,7 @@ public class SectionService {
     private final SectionRepository sectionRepository;
     private final WarehouseRepository warehouseRepository;
     private final CategoryRepository categoryRepository;
+
 
     public Section findSectionById(Long id) throws BusinessValidatorException {
         return sectionRepository.findById(id)
@@ -46,7 +46,6 @@ public class SectionService {
         if (warehouse.isPresent()){
             warehouse1 = warehouse.get();
         }
-
 
         Optional<Category> category = categoryRepository.findById(categoryId);
         Category category1 = null;

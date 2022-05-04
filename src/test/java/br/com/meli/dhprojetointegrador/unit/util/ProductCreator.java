@@ -1,7 +1,6 @@
 package br.com.meli.dhprojetointegrador.unit.util;
 
 import java.math.BigDecimal;
-
 import br.com.meli.dhprojetointegrador.entity.Category;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;

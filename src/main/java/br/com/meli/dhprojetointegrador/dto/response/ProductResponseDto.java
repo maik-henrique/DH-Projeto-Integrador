@@ -2,7 +2,6 @@ package br.com.meli.dhprojetointegrador.dto.response;
 
 import br.com.meli.dhprojetointegrador.entity.Product;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
