@@ -164,7 +164,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 				.description(exception.getMessage())
 				.build();
 
-		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNPROCESSABLE_ENTITY);
+		return new ResponseEntity<>(exceptionPayload, HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler(ExpiredJwtException.class)

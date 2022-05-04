@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
@@ -32,6 +33,7 @@ public class User implements UserDetails {
     @Size(min = 5)
     private String password;
 
+    @NotEmpty(message = "At least one role to the user must be provided")
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},

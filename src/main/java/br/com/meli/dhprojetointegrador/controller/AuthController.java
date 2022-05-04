@@ -32,12 +32,5 @@ public class AuthController {
 
         return ResponseEntity.ok(jwtToken);
     }
-
-    @PostMapping("/sign-up")
-    public ResponseEntity<?> singUp(@Valid @RequestBody UserCredentialsRequest userCredentialsRequest) {
-        User user = modelMapper.map(userCredentialsRequest, User.class);
-        user.setRole(Set.of(Role.builder().role(RoleType.ADMIN).build()));
-        tokenAuthenticationService.signUp(user);
-        return ResponseEntity.created(URI.create("/login")).build();
-    }
+    
 }
