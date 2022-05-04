@@ -8,6 +8,8 @@ import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
 import br.com.meli.dhprojetointegrador.repository.WarehouseRepository;
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class WarehouseService {
@@ -17,5 +19,8 @@ public class WarehouseService {
     public Warehouse findWarehouseIdBySection(Section section) throws BusinessValidatorException {
         return warehouseRepository.findBySections(section)
                 .orElseThrow(() -> new BusinessValidatorException("Warehouse not found, section id invalid"));
+    }
+    public List<Warehouse> findAllWarehouse(){
+        return warehouseRepository.findAll();
     }
 }

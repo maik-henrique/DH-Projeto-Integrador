@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Optional;
 
+import br.com.meli.dhprojetointegrador.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,6 +35,8 @@ public class SectionValidatorTests {
     private WarehouseRepository warehouseRepository;
     @Mock
     private SectionRepository sectionRepository;
+    @Mock
+    private CategoryRepository categoryRepository;
 
     @BeforeEach
     void setUp() {
@@ -54,7 +57,7 @@ public class SectionValidatorTests {
      */
     @Test
     public void validate_shouldNotThrowException_whenSectionIsValid() {
-        SectionService sectionService = new SectionService(sectionRepository);
+        SectionService sectionService = new SectionService(sectionRepository, warehouseRepository, categoryRepository);
 
         Category frios = Category.builder().name(CategoryEnum.FRIOS).build();
 
@@ -77,7 +80,7 @@ public class SectionValidatorTests {
      */
     @Test
     public void validate_shouldThrowBusinessValidatorException_whenSectionIsNotValid() {
-        SectionService sectionService = new SectionService(sectionRepository);
+        SectionService sectionService = new SectionService(sectionRepository, warehouseRepository, categoryRepository);
 
         sectionValidator = new SectionValidator(sectionService, null);
 
