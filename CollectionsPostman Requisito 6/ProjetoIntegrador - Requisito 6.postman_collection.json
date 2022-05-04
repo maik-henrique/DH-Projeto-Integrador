@@ -1,0 +1,132 @@
+{
+	"info": {
+		"_postman_id": "4a88b3da-2e59-48ff-b924-b23a4cd81e28",
+		"name": "ProjetoIntegrador - Requisito 6",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Requisito 6 - DELETE - David",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fresh-products/buyer/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"buyer",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 6 - PUT - David",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fresh-products/buyer?id=4&name=David Fernandes&email=cookie@cookie.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"buyer"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "4"
+						},
+						{
+							"key": "name",
+							"value": "David Fernandes"
+						},
+						{
+							"key": "email",
+							"value": "cookie@cookie.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 6 - GET - David",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fresh-products/buyer?id=4&status=FINALIZADO",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"buyer"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "4"
+						},
+						{
+							"key": "status",
+							"value": "FINALIZADO"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Requisito 6 - GET - David",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fresh-products/buyer/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"buyer",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
