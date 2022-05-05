@@ -12,11 +12,11 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class UserCredentialsRequest {
 
-    @NotBlank(message = "username must not be blank")
-    @Size(min = 5, message = "username must have at least 5 characters")
+    @NotBlank
+    @Size(min = 5)
     private String username;
 
-    @NotBlank(message = "password must not be blank")
-    @Size(min = 5, message = "password must have at least 5 characters")
+    @NotBlank
+    @Size(min = 5)
     private String password;
 }

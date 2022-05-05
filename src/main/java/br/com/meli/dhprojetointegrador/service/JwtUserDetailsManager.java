@@ -2,11 +2,10 @@ package br.com.meli.dhprojetointegrador.service;
 
 import br.com.meli.dhprojetointegrador.entity.Role;
 import br.com.meli.dhprojetointegrador.entity.User;
-import br.com.meli.dhprojetointegrador.enums.RoleType;
+import br.com.meli.dhprojetointegrador.enums.RoleEnum;
 import br.com.meli.dhprojetointegrador.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,7 +45,7 @@ public class JwtUserDetailsManager implements ICustomUserDetailsService<User> {
 
         Set<Role> roles = user.getAuthorities()
                 .stream()
-                .map(grantedAuthority -> Role.builder().role(RoleType.valueOfIgnoreCase(grantedAuthority.getAuthority())).build())
+                .map(grantedAuthority -> Role.builder().role(RoleEnum.valueOfIgnoreCase(grantedAuthority.getAuthority())).build())
                 .collect(Collectors.toSet());
 
         User userToBePersisted = User.builder()

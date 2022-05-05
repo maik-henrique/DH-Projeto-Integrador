@@ -1,6 +1,6 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import br.com.meli.dhprojetointegrador.enums.RoleType;
+import br.com.meli.dhprojetointegrador.enums.RoleEnum;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -19,7 +19,7 @@ public class Role implements GrantedAuthority {
 
     @Id
     @Enumerated(EnumType.STRING)
-    private RoleType role;
+    private RoleEnum role;
 
     @ManyToMany(mappedBy = "role")
     private Set<User> user;

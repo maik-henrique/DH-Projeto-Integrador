@@ -9,12 +9,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
-import br.com.meli.dhprojetointegrador.dto.request.ProductInput;
-import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
-import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
+import br.com.meli.dhprojetointegrador.dto.request.ProductRefactor;
+import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderRequest;
+import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateResponse;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.entity.Buyer;
 import br.com.meli.dhprojetointegrador.entity.CartProduct;
@@ -27,8 +25,8 @@ import br.com.meli.dhprojetointegrador.repository.CartProductRepository;
 import br.com.meli.dhprojetointegrador.repository.OrderRepository;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import br.com.meli.dhprojetointegrador.repository.PurchaseOrderRepository;
-import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
-import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
+import br.com.meli.dhprojetointegrador.service.validator.ProductValidator;
+import br.com.meli.dhprojetointegrador.service.validator.BuyerValidator;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -38,10 +36,10 @@ import lombok.NoArgsConstructor;
 public class OrderService {
 
     @Autowired
-    private ValidateBuyer validateBuyer;
+    private BuyerValidator buyerValidator;
 
     @Autowired
-    private ValidadeProduct validadeProduct;
+    private ProductValidator productValidator;
 
     @Autowired
     private CartProductRepository cartProductRepository;
@@ -127,10 +125,10 @@ public class OrderService {
      * Description: recebe uma lista de produtos e quantodades e retorna o valor
      * total do carrinho
      */
-    private Double calculateTotalCart(List<ProductInput> productInputList, List<Product> productList) {
+    private Double calculateTotalCart(List<ProductRefactor> productRefactorList, List<Product> productList) {
         AtomicReference<BigDecimal> totalPrice = new AtomicReference<>(new BigDecimal(0.00));
 
-        productInputList.forEach(cartProduct -> {
+        productRefactorList.forEach(cartProduct -> {
             BigDecimal price = productList.stream().filter(p -> p.getId().equals(cartProduct.getProductId()))
                     .findFirst().get().getPrice();
             totalPrice.updateAndGet(v -> v.add(price.multiply(BigDecimal.valueOf(cartProduct.getQuantity()))));
@@ -157,25 +155,25 @@ public class OrderService {
      * a compra e retorna o preço total do carrinho
      */
     //@CacheEvict(value = "createOrder", key = "#input")
-    public OrderIntermediateDTO createOrder(PurchaseOrderInput input) {
+    public OrderIntermediateResponse createOrder(PurchaseOrderRequest input) {
 
-        Buyer buyer = validateBuyer.getBuyer(input.getBuyerId());
+        Buyer buyer = buyerValidator.getBuyer(input.getBuyerId());
 
-        List<ProductInput> productInputList = input.getProducts();
-        List<Product> productList = productInputList.stream()
-                .map(o -> validadeProduct.validateQuantity(o.getQuantity(), o.getProductId()))
+        List<ProductRefactor> productRefactorList = input.getProducts();
+        List<Product> productList = productRefactorList.stream()
+                .map(o -> productValidator.validateQuantity(o.getQuantity(), o.getProductId()))
                 .collect(Collectors.toList());
 
         PurchaseOrder purchaseOrder = this.createPurchaseOrder(buyer, input.getDate());
 
-        productInputList.forEach(o -> {
+        productRefactorList.forEach(o -> {
             this.createCartProduct(o.getQuantity(), o.getProductId(), purchaseOrder);
             this.updateCurrentQuantity(o.getQuantity(), o.getProductId());
         });
 
-        Double totalPrice = this.calculateTotalCart(productInputList, productList);
+        Double totalPrice = this.calculateTotalCart(productRefactorList, productList);
 
-        return OrderIntermediateDTO.builder()
+        return OrderIntermediateResponse.builder()
                 .createdID(purchaseOrder.getId())
                 .totalPrice(totalPrice)
                 .build();

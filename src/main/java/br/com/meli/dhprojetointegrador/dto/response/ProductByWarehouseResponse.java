@@ -10,5 +10,5 @@ import java.util.List;
 @Setter
 public class ProductByWarehouseResponse {
     Long productId;
-    List<WarehouseQuantity> warehouses;
+    List<WarehouseQuantityResponse> warehouses;
 }

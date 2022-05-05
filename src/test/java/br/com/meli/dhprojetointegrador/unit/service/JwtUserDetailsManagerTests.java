@@ -3,7 +3,7 @@ package br.com.meli.dhprojetointegrador.unit.service;
 
 import br.com.meli.dhprojetointegrador.entity.Role;
 import br.com.meli.dhprojetointegrador.entity.User;
-import br.com.meli.dhprojetointegrador.enums.RoleType;
+import br.com.meli.dhprojetointegrador.enums.RoleEnum;
 import br.com.meli.dhprojetointegrador.repository.UserRepository;
 import br.com.meli.dhprojetointegrador.service.JwtUserDetailsManager;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ public class JwtUserDetailsManagerTests {
             .username("myemail@email.com")
             .password("12345")
             .id(1L)
-            .role(Set.of(Role.builder().role(RoleType.ADMIN).build()))
+            .role(Set.of(Role.builder().role(RoleEnum.ADMIN).build()))
             .build();
 
     @Test
