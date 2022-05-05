@@ -31,32 +31,45 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import br.com.meli.dhprojetointegrador.controller.ProductController;
 import br.com.meli.dhprojetointegrador.dto.request.BatchStockPostRequest;
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderPostRequest;
+import br.com.meli.dhprojetointegrador.dto.response.ProductDTO;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
 import br.com.meli.dhprojetointegrador.entity.Agent;
+import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.entity.Category;
+import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.entity.Product;
+import br.com.meli.dhprojetointegrador.entity.Section;
 import br.com.meli.dhprojetointegrador.entity.Seller;
 import br.com.meli.dhprojetointegrador.entity.Warehouse;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.enums.DueDateEnum;
+import br.com.meli.dhprojetointegrador.repository.BatchStockRepository;
 import br.com.meli.dhprojetointegrador.repository.CategoryRepository;
+import br.com.meli.dhprojetointegrador.repository.InboundOrderRepository;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import br.com.meli.dhprojetointegrador.repository.SectionRepository;
 import br.com.meli.dhprojetointegrador.repository.SellerRepository;
 import br.com.meli.dhprojetointegrador.repository.WarehouseRepository;
 
 @WithMockUser(username = "jooj", roles = { "AGENT", "BUYER" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class ProductControllerTests extends BaseIntegrationControllerTests {
 
         private final static LocalDate LOCAL_DATE_NOW_MOCK = LocalDate.of(2022, 4, 13);
@@ -80,8 +93,17 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
         @Autowired
         private ObjectMapper objectMapper;
 
+        @Autowired
+        private InboundOrderRepository inboundOrderRepository;
+
         @MockBean
         private Clock clock;
+
+        @Autowired
+        private ProductController productController;
+
+        @Autowired
+        private BatchStockRepository batchStockRepository;
 
         @BeforeEach
         public void setup() {
@@ -254,7 +276,7 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
                 Warehouse warehouse = Warehouse.builder().name("Centro de distribuição MELIMELI").agent(agent).build();
                 agent.setWarehouse(warehouse);
 
-                Warehouse warehouseManaged = warehouseRepository.save(warehouse);
+                warehouseRepository.save(warehouse);
 
                 Category category = Category.builder().maximumTemperature(22.0f).minimumTemperature(15.0f)
                                 .name(CategoryEnum.FRIOS).build();
@@ -328,4 +350,194 @@ public class ProductControllerTests extends BaseIntegrationControllerTests {
 
         }
 
+        private void setupList() {
+                Agent agent = Agent.builder().name("Agente de warehouse").build();
+                Warehouse warehouse = Warehouse.builder().name("Centro de distribuição MELIMELI").agent(agent).build();
+                agent.setWarehouse(warehouse);
+                Warehouse warehouseManaged = warehouseRepository.save(warehouse);
+
+                Category category = Category.builder()
+                                .name(CategoryEnum.FF)
+                                .minimumTemperature(-10)
+                                .maximumTemperature(10)
+                                .build();
+
+                Category categoryManaged = categoryRepository.save(category);
+
+                Section section = Section.builder().category(categoryManaged).warehouse(warehouseManaged)
+                                .name("section 1")
+                                .build();
+
+                sectionRepository.save(section);
+
+                InboundOrder inboundOrder = InboundOrder.builder().agent(agent).section(section).build();
+
+                InboundOrder inboundOrderManaged = inboundOrderRepository.save(inboundOrder);
+
+                Seller seller = Seller.builder().name("Seller 1").build();
+
+                sellerRepository.save(seller);
+
+                Product productOne = Product.builder()
+                                .name("Frango")
+                                .category(category)
+                                .seller(seller)
+                                .brand("Seara")
+                                .volume(1)
+                                .price(new BigDecimal(10))
+                                .build();
+
+                Product productTwo = Product.builder()
+                                .name("Patinho")
+                                .category(category)
+                                .seller(seller)
+                                .brand("JBS")
+                                .volume(1)
+                                .price(new BigDecimal(20))
+                                .build();
+
+                Product savedProductOne = productRepository.save(productOne);
+
+                Product savedProductTwo = productRepository.save(productTwo);
+
+                batchStockRepository.save(BatchStock.builder()
+                                .products(savedProductOne)
+                                .inboundOrder(inboundOrderManaged)
+                                .currentQuantity(20)
+                                .batchNumber(1L)
+                                .build());
+
+                batchStockRepository.save(BatchStock.builder()
+                                .products(savedProductTwo)
+                                .inboundOrder(inboundOrderManaged)
+                                .currentQuantity(20)
+                                .batchNumber(2L)
+                                .build());
+        }
+
+        @Test
+        @DisplayName("List products order by price desc when success")
+        public void shouldReturnProductOrderByPrice_WhenSuccess() throws Exception {
+                setupList();
+                MvcResult result = mockMvc
+                                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/list/price")
+                                                .param("price", "DESC"))
+                                .andExpect(MockMvcResultMatchers.status().isOk())
+                                .andReturn();
+
+                String responsePayload = result.getResponse().getContentAsString();
+
+                List<ProductDTO> products = objectMapper.readerForListOf(ProductDTO.class)
+                                .readValue(responsePayload);
+
+                assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+
+                assertFalse(products.isEmpty());
+                assertEquals(products.size(), 2);
+
+                BigDecimal isEqual = products.get(0).getPrice().stripTrailingZeros();
+
+                assertEquals(new BigDecimal("20").stripTrailingZeros(), isEqual);
+
+        }
+
+        @Test
+        @DisplayName("List products filter by max price when success")
+        public void shouldReturnProductFilterByMaxPrice_WhenSuccess() throws Exception {
+                setupList();
+                MvcResult result = mockMvc
+                                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/list/price")
+                                                .param("maxValue", "10"))
+                                .andExpect(MockMvcResultMatchers.status().isOk())
+                                .andReturn();
+
+                String responsePayload = result.getResponse().getContentAsString();
+
+                List<ProductDTO> products = objectMapper.readerForListOf(ProductDTO.class)
+                                .readValue(responsePayload);
+
+                assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+
+                assertFalse(products.isEmpty());
+                assertEquals(products.size(), 1);
+
+                BigDecimal isEqual = products.get(0).getPrice().stripTrailingZeros();
+
+                assertEquals(new BigDecimal("10").stripTrailingZeros(), isEqual);
+
+        }
+
+        @Test
+        @DisplayName("List products filter by min price when success")
+        public void shouldReturnProductFilterByMinPrice_WhenSuccess() throws Exception {
+                setupList();
+                MvcResult result = mockMvc
+                                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/list/price")
+                                                .param("minValue", "11"))
+                                .andExpect(MockMvcResultMatchers.status().isOk())
+                                .andReturn();
+
+                String responsePayload = result.getResponse().getContentAsString();
+
+                List<ProductDTO> products = objectMapper.readerForListOf(ProductDTO.class)
+                                .readValue(responsePayload);
+
+                assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+
+                assertFalse(products.isEmpty());
+                assertEquals(products.size(), 1);
+
+                BigDecimal isEqual = products.get(0).getPrice().stripTrailingZeros();
+
+                assertEquals(new BigDecimal("20").stripTrailingZeros(), isEqual);
+
+        }
+
+        @Test
+        @DisplayName("List products filter by name when success")
+        public void shouldReturnProductFilterByName_WhenSuccess() throws Exception {
+                setupList();
+                MvcResult result = mockMvc
+                                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/list/name/{name}",
+                                                "Frango"))
+                                .andExpect(MockMvcResultMatchers.status().isOk())
+                                .andReturn();
+
+                String responsePayload = result.getResponse().getContentAsString();
+
+                List<ProductDTO> products = objectMapper.readerForListOf(ProductDTO.class)
+                                .readValue(responsePayload);
+
+                assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+
+                assertFalse(products.isEmpty());
+                assertEquals(products.size(), 1);
+
+                assertEquals(products.get(0).getName(), "Frango");
+
+        }
+
+        @Test
+        @DisplayName("List products filter by brand when success")
+        public void shouldReturnProductFilterByBrand_WhenSuccess() throws Exception {
+                setupList();
+                MvcResult result = mockMvc
+                                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/list/brand/{brand}",
+                                                "JB"))
+                                .andExpect(MockMvcResultMatchers.status().isOk())
+                                .andReturn();
+
+                String responsePayload = result.getResponse().getContentAsString();
+
+                List<ProductDTO> products = objectMapper.readerForListOf(ProductDTO.class)
+                                .readValue(responsePayload);
+
+                assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+
+                assertFalse(products.isEmpty());
+                assertEquals(products.size(), 1);
+
+                assertEquals(products.get(0).getBrand(), "JBS");
+
+        }
 }
