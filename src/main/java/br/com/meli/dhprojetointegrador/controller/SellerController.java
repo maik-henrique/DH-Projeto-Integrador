@@ -51,6 +51,7 @@ public class SellerController {
                                                  UriComponentsBuilder uriBuilder){
 
         Seller seller = modelMapper.map(sellerPostRequest, Seller.class);
+        seller.setStatusActiveAccount(true);
         SellerResponseDTO response = modelMapper.map(seller, SellerResponseDTO.class);
 
         URI uri = uriBuilder
