@@ -58,7 +58,7 @@ public class BatchStockService {
     }
 
     private LocalDate addDaysInCurrentDate(Integer numberOfDays) {
-        return LocalDate.now().plusDays(numberOfDays);
+        return LocalDate.now(clock).plusDays(numberOfDays);
     }
 
     /**
