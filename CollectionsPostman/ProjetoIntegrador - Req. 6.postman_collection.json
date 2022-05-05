@@ -1,0 +1,85 @@
+{
+	"info": {
+		"_postman_id": "b0dab855-d7b8-4d24-aaf1-66d58740039e",
+		"name": "ProjetoIntegrador - Req. 6",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get AllProducts By Name and sellerId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/fresh-products/seller/products?sellerId=3&name=cenoura",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"seller",
+						"products"
+					],
+					"query": [
+						{
+							"key": "sellerId",
+							"value": "3"
+						},
+						{
+							"key": "name",
+							"value": "cenoura"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post new product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/fresh-products/seller/products",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"seller",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update a product",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/fresh-products/seller/products",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"seller",
+						"products"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
