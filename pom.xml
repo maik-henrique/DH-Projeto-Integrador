@@ -24,9 +24,6 @@
             **/repository/**/*,
             **/mapper/**/*,
             **/AuthController.java,
-            **/utils/**/*,
-            **/processamento/**/*,
-            **/entidades/**/*,
             **/DhProjetoIntegradorApplication.java
         </sonar.exclusions>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -150,54 +147,6 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${apache.poi.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-examples</artifactId>
-            <version>${apache.poi.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-excelant</artifactId>
-            <version>${apache.poi.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${apache.poi.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml-schemas</artifactId>
-            <version>${apache.poi.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-scratchpad</artifactId>
-            <version>${apache.poi.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-ws-client</artifactId>
-            <version>${sonar.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>${apache.commons}</version>
         </dependency>
 
     </dependencies>

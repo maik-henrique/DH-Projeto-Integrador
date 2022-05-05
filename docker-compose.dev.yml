@@ -62,7 +62,7 @@ services:
     ports:
       - "127.0.0.1:9000:9000"
     networks:
-      - sonarnet
+      - bridge
     #environment:
     #  SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
     #  SONAR_JDBC_USERNAME: admin
@@ -83,7 +83,7 @@ services:
       SWAGGER_JSON: /openapi.json
 
 networks:
-  sonarnet:
+  bridge:
 
 volumes:
   sonarqube_data:
