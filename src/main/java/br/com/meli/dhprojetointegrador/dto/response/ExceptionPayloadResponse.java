@@ -17,7 +17,6 @@ public class ExceptionPayloadResponse {
 
     private int statusCode;
     private String title;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
     private String description;
     @JsonInclude(JsonInclude.Include.NON_NULL)
