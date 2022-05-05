@@ -19,35 +19,35 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class BatchStockUpdateRequest {
-    @NotNull(message = "batchNumber must not be null")
+    @NotNull
     private Long batchNumber;
 
-    @NotNull(message = "productId must not be null")
+    @NotNull
     private Long productId;
 
-    @NotNull(message = "currentTemperature must not be null")
+    @NotNull
     private Float currentTemperature;
 
-    @NotNull(message = "minimumTemperature must not be null")
+    @NotNull
     private Float minimumTemperature;
 
-    @NotNull(message = "initialQuantity must not be null")
+    @NotNull
     private Integer initialQuantity;
 
-    @NotNull(message = "currentQuantity must not be null")
+    @NotNull
     private Integer currentQuantity;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull(message = "dueDate must not be null")
+    @NotNull
     private LocalDate dueDate;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull(message = "manufacturingDate must not be null")
+    @NotNull
     private LocalDate manufacturingDate;
 
-    @NotNull(message = "manufacturingTime must not be null")
+    @NotNull
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

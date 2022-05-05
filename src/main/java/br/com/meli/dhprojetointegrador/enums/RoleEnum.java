@@ -2,7 +2,7 @@ package br.com.meli.dhprojetointegrador.enums;
 
 import java.util.Arrays;
 
-public enum RoleType {
+public enum RoleEnum {
     ADMIN("ROLE_ADMIN"),
     BUYER("ROLE_BUYER"),
     SELLER("ROLE_SELLER"),
@@ -10,14 +10,14 @@ public enum RoleType {
 
     private String roleName;
 
-    public static RoleType valueOfIgnoreCase(String value) {
-        return Arrays.stream(RoleType.values())
+    public static RoleEnum valueOfIgnoreCase(String value) {
+        return Arrays.stream(RoleEnum.values())
                 .filter(v -> v.roleName.equals(value))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Role specified wasn`t found"));
     }
 
-    RoleType(String roleName) {
+    RoleEnum(String roleName) {
         this.roleName = roleName;
     }
 

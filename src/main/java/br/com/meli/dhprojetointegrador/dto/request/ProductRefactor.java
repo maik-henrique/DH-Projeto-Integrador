@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductInput {
+public class ProductRefactor {
 
     @NotNull
     @NumberFormat

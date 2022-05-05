@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InboundPostRequestBody {
+public class InboundPostRequest {
   private Date orderDate;
   private Long agentId;
   private Long sectionId;

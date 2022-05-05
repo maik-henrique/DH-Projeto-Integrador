@@ -11,19 +11,19 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductResponseDto {
+public class ProductResponseResponse {
 
     private String name;
     private BigDecimal price;
     private float volume;
 
 
-    public static ProductResponseDto map(Product product) {
-        return ProductResponseDto.builder().name(product.getName()).price(product.getPrice())
+    public static ProductResponseResponse map(Product product) {
+        return ProductResponseResponse.builder().name(product.getName()).price(product.getPrice())
                 .volume(product.getVolume()).build();
     }
 
-    public static List<ProductResponseDto> map(List<Product> products) {
+    public static List<ProductResponseResponse> map(List<Product> products) {
         return products.stream().map(e -> map(e)).collect(Collectors.toList());
     }
 }

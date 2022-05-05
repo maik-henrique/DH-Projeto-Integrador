@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class OrderIntermediateDTO {
+public class OrderIntermediateResponse {
     private Double totalPrice;
     private Long createdID;
 }

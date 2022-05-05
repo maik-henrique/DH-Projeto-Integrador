@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TotalPrice {
+public class TotalPriceResponse {
 
     private Double totalPrice;
 }
