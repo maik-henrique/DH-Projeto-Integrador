@@ -18,6 +18,11 @@
 
 ***
 
+# **Documentação da API**
+[Swagger Documentation API](http://localhost:8080/swagger-ui.html#/)
+
+***
+
 ##Tópicos  
 ##Descrição: 
 - API de produtos frescos realizando toda logística de disponibilidade de compra e venda
