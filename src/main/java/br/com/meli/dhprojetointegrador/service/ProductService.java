@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
-import br.com.meli.dhprojetointegrador.dto.response.WarehouseQuantity;
+import br.com.meli.dhprojetointegrador.dto.response.WarehouseQuantityResponse;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
-import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
+import br.com.meli.dhprojetointegrador.service.validator.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
@@ -24,7 +23,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     @Autowired
-    private ValidadeProduct validateProduct;
+    private ProductValidator validateProduct;
 
     //@Cacheable(value = "findProductById", key = "#id")
     public Product findProductById(Long id) {
@@ -72,19 +71,19 @@ public class ProductService {
     //@Cacheable(value = "getProductByWarehouse", key = "#id")
     public ProductByWarehouseResponse getProductByWarehouse(Long id) {
         Product product = validateProduct.validateQuantity(1, id);
-        List<WarehouseQuantity> warehouseQuantities = new ArrayList<>();
+        List<WarehouseQuantityResponse> warehouseQuantities = new ArrayList<>();
         Set<BatchStock> batchStockSet = product.getBatchStockList();
         batchStockSet.forEach(b-> {
-            WarehouseQuantity warehouseQuantity = WarehouseQuantity.builder()
+            WarehouseQuantityResponse warehouseQuantityResponse = WarehouseQuantityResponse.builder()
                     .totalQuantity(b.getCurrentQuantity())
                     .warehouseCode(b.getInboundOrder().getSection().getWarehouse().getId())
                     .build();
-            warehouseQuantities.add(warehouseQuantity);
+            warehouseQuantities.add(warehouseQuantityResponse);
         });
-        List<WarehouseQuantity> warehouseQuantitiesFinal = new ArrayList<>();
+        List<WarehouseQuantityResponse> warehouseQuantitiesFinal = new ArrayList<>();
         warehouseQuantities.stream().forEach( w -> {
             if (warehouseQuantitiesFinal.stream().anyMatch(ww-> ww.getWarehouseCode().equals(w.getWarehouseCode()))) {
-                WarehouseQuantity existing = warehouseQuantitiesFinal.stream().filter(ww-> ww.getWarehouseCode().equals(w.getWarehouseCode())).findFirst().get();
+                WarehouseQuantityResponse existing = warehouseQuantitiesFinal.stream().filter(ww-> ww.getWarehouseCode().equals(w.getWarehouseCode())).findFirst().get();
                 existing.setTotalQuantity(existing.getTotalQuantity() + w.getTotalQuantity());
             } else {
                 warehouseQuantitiesFinal.add(w);

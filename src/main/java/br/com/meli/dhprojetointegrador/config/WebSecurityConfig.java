@@ -1,6 +1,6 @@
 package br.com.meli.dhprojetointegrador.config;
 
-import br.com.meli.dhprojetointegrador.enums.RoleType;
+import br.com.meli.dhprojetointegrador.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
@@ -39,9 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .antMatchers(HttpHeaders.ALLOW).permitAll()
-                .regexMatchers(".*/admin.*").hasRole(RoleType.ADMIN.name())
-                .regexMatchers(AGENT_ENDPOINTS).hasAnyRole(RoleType.AGENT.name(), RoleType.ADMIN.name())
-                .regexMatchers(BUYER_ENDPOINTS).hasRole(RoleType.BUYER.name())
+                .regexMatchers(".*/admin.*").hasRole(RoleEnum.ADMIN.name())
+                .regexMatchers(AGENT_ENDPOINTS).hasAnyRole(RoleEnum.AGENT.name(), RoleEnum.ADMIN.name())
+                .regexMatchers(BUYER_ENDPOINTS).hasRole(RoleEnum.BUYER.name())
                 .antMatchers("/signup/*", "/login/*").permitAll()
                 .anyRequest().permitAll()
                 .and()

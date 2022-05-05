@@ -12,26 +12,26 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Builder
 @AllArgsConstructor
-public class BuyerDTO {
+public class BuyerResponse {
 
-    @NotNull(message = "O código id não pode ser nulo")
+    @NotNull
     private Long id;
 
-    @NotNull(message = "O campo name não pode ser nulo")
+    @NotNull
     private String name;
 
-    @NotNull(message = "O campo password não pode ser nulo")
+    @NotNull
     private String password;
 
-    @NotNull(message = "O campo email não pode ser nulo")
+    @NotNull
     @Email
     private String email;
 
-    @NotNull(message = "O campo status não pode ser nulo")
+    @NotNull
     private  BuyerStatusEnum statusEnum;
 
-    public static BuyerDTO map(Buyer buyer) {
-        return BuyerDTO.builder().name(buyer.getEmail()).name(buyer.getName()).build();
+    public static BuyerResponse map(Buyer buyer) {
+        return BuyerResponse.builder().name(buyer.getEmail()).name(buyer.getName()).build();
     }
 
 }

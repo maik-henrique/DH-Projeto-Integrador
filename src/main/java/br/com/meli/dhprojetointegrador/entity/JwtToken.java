@@ -1,6 +1,6 @@
 package br.com.meli.dhprojetointegrador.entity;
 
-import br.com.meli.dhprojetointegrador.enums.TokenType;
+import br.com.meli.dhprojetointegrador.enums.TokenTypeEnum;
 import lombok.*;
 
 @Getter
@@ -11,5 +11,5 @@ import lombok.*;
 public class JwtToken {
     private String token;
     private String expirationDate;
-    private TokenType tokenType;
+    private TokenTypeEnum tokenTypeEnum;
 }

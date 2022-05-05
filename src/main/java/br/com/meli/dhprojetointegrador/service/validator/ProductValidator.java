@@ -17,7 +17,7 @@ import java.util.Set;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidadeProduct {
+public class ProductValidator {
 
     @Autowired
     private ProductRepository productRepository;

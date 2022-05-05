@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-public class WarehouseQuantity {
+public class WarehouseQuantityResponse {
     Long warehouseCode;
     Integer totalQuantity;
 }

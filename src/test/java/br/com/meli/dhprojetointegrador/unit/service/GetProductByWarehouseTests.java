@@ -1,11 +1,11 @@
 package br.com.meli.dhprojetointegrador.unit.service;
 
 import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
-import br.com.meli.dhprojetointegrador.dto.response.WarehouseQuantity;
+import br.com.meli.dhprojetointegrador.dto.response.WarehouseQuantityResponse;
 import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.repository.*;
 import br.com.meli.dhprojetointegrador.service.ProductService;
-import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
+import br.com.meli.dhprojetointegrador.service.validator.ProductValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,12 +16,12 @@ import java.util.Set;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class GetProductByWarehouseTest {
+public class GetProductByWarehouseTests {
 
     ProductRepository productRepository = mock(ProductRepository.class);
-    ValidadeProduct validadeProduct = mock(ValidadeProduct.class);
+    ProductValidator productValidator = mock(ProductValidator.class);
 
-    private final ProductService productService = new ProductService(productRepository, validadeProduct);
+    private final ProductService productService = new ProductService(productRepository, productValidator);
 
     Warehouse warehouse = Warehouse.builder()
             .id(1L)
@@ -57,7 +57,7 @@ public class GetProductByWarehouseTest {
             .batchStockList(Set.of(batch1, batch2))
             .build();
 
-    WarehouseQuantity whQuantity = WarehouseQuantity.builder()
+    WarehouseQuantityResponse whQuantity = WarehouseQuantityResponse.builder()
             .totalQuantity(15)
             .warehouseCode(1L)
             .build();
@@ -75,7 +75,7 @@ public class GetProductByWarehouseTest {
     @Test
     @DisplayName("TestPI-43 Get products by warehouse")
     public void getProductsByWarehouse_should_return_ProductWarehouseResponse() {
-        when(validadeProduct.validateQuantity(1, 1L)).thenReturn(product1);
+        when(productValidator.validateQuantity(1, 1L)).thenReturn(product1);
 
         ProductByWarehouseResponse result = productService.getProductByWarehouse(1L);
 
