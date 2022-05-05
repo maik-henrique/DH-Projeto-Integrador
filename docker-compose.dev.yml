@@ -29,6 +29,8 @@ services:
     container_name: jenkins
     privileged: true
     user: root
+    networks:
+      - sonarnet
     ports:
       - 8081:8080
     environment:
@@ -62,11 +64,11 @@ services:
     ports:
       - "127.0.0.1:9000:9000"
     networks:
-      - bridge
+      - sonarnet
     #environment:
-    #  SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
-    #  SONAR_JDBC_USERNAME: admin
-    #  SONAR_JDBC_PASSWORD:
+     # - sonar.jdbc.username=sonar
+     # - sonar.jdbc.password=sonar
+     # - sonar.jdbc.url=jdbc:postgresql://db:5432/sonar
     volumes:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
@@ -83,7 +85,8 @@ services:
       SWAGGER_JSON: /openapi.json
 
 networks:
-  bridge:
+  sonarnet:
+    driver: bridge
 
 volumes:
   sonarqube_data:
