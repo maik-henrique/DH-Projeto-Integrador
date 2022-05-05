@@ -34,7 +34,6 @@ public class AgentService {
         Warehouse warehouse = warehouseRepository.getById(agent.getWarehouse().getId());
         Agent newAgent = Agent.builder()
                 .name(agent.getName())
-                .password(agent.getPassword())
                 .warehouse(warehouse)
                 .build();
         return agentRepository.save(newAgent);
