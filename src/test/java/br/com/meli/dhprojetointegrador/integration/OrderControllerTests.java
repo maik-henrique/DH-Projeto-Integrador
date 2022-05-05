@@ -120,7 +120,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
-        ExceptionPayloadDTO exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadDTO.class);
+        ExceptionPayloadResponse exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadResponse.class);
 
         assertNotNull(responsePayload);
         assertEquals(exceptionResponse.getTitle(), "Buyer Not Found");
@@ -150,7 +150,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
-        ExceptionPayloadDTO exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadDTO.class);
+        ExceptionPayloadResponse exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadResponse.class);
 
         assertNotNull(responsePayload);
         assertEquals(exceptionResponse.getTitle(), "Product Not Found");
@@ -180,7 +180,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
-        ExceptionPayloadDTO exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadDTO.class);
+        ExceptionPayloadResponse exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadResponse.class);
 
         assertNotNull(responsePayload);
         assertEquals(exceptionResponse.getTitle(), "Not Enough Products");
