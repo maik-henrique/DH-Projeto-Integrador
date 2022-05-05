@@ -108,7 +108,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 	 */
 	@ExceptionHandler(value = {NotfoundException.class})
 	protected ResponseEntity<Object> handleNotFoundException(NotfoundException exception) {
-		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
+		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
 				.timestamp(LocalDateTime.now())
 				.title("Not Found")
 				.statusCode(HttpStatus.NOT_FOUND.value())

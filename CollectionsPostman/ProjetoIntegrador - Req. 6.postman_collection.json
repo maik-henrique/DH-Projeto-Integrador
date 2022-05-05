@@ -11,7 +11,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/v1/fresh-products/seller/products?sellerId=3&name=cenoura",
+					"raw": "localhost:8080/api/v1/fresh-products/seller/products?sellerId=3",
 					"host": [
 						"localhost"
 					],
@@ -30,18 +30,194 @@
 						},
 						{
 							"key": "name",
-							"value": "cenoura"
+							"value": "cenoura",
+							"disabled": true
 						}
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Get AllProducts By Name and sellerId",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/fresh-products/seller/products?sellerId=3&name=cenoura",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"seller",
+								"products"
+							],
+							"query": [
+								{
+									"key": "sellerId",
+									"value": "3"
+								},
+								{
+									"key": "name",
+									"value": "cenoura"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 May 2022 22:40:12 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 6,\n        \"name\": \"cenoura\",\n        \"price\": 4.5,\n        \"volume\": 10,\n        \"category_id\": 4,\n        \"seller_id\": 3\n    }\n]"
+				},
+				{
+					"name": "Get AllProducts By Name and sellerId",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/fresh-products/seller/products?sellerId=3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"seller",
+								"products"
+							],
+							"query": [
+								{
+									"key": "sellerId",
+									"value": "3"
+								},
+								{
+									"key": "name",
+									"value": "cenoura",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 May 2022 22:40:39 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 2,\n        \"name\": \"batata\",\n        \"price\": 2.5,\n        \"volume\": 10,\n        \"category_id\": 4,\n        \"seller_id\": 3\n    },\n    {\n        \"id\": 6,\n        \"name\": \"cenoura\",\n        \"price\": 4.5,\n        \"volume\": 10,\n        \"category_id\": 4,\n        \"seller_id\": 3\n    },\n    {\n        \"id\": 11,\n        \"name\": \"geléia\",\n        \"price\": 15,\n        \"volume\": 0.25,\n        \"category_id\": 4,\n        \"seller_id\": 3\n    },\n    {\n        \"id\": 12,\n        \"name\": \"Sorvete\",\n        \"price\": 17.5,\n        \"volume\": 0.25,\n        \"category_id\": 4,\n        \"seller_id\": 3\n    },\n    {\n        \"id\": 13,\n        \"name\": \"Sorvete\",\n        \"price\": 17.5,\n        \"volume\": 0.25,\n        \"category_id\": 4,\n        \"seller_id\": 3\n    },\n    {\n        \"id\": 17,\n        \"name\": \"Sorvete\",\n        \"price\": 17.5,\n        \"volume\": 0.25,\n        \"category_id\": 4,\n        \"seller_id\": 3\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "Post new product",
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Sorvete\",\n    \"sellerId\": 3,\n    \"price\": 17.50,\n    \"categoryId\": 4,\n    \"volume\": 0.25\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "localhost:8080/api/v1/fresh-products/seller/products",
 					"host": [
@@ -57,7 +233,93 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Post new product",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Sorvete\",\n    \"sellerId\": 3,\n    \"price\": 17.50,\n    \"categoryId\": 4,\n    \"volume\": 0.25\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v1/fresh-products/seller/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"seller",
+								"products"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Location",
+							"value": "http://localhost:8080/api/v1/fresh-products/seller/products/18"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 May 2022 22:41:00 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 18,\n    \"name\": \"Sorvete\",\n    \"price\": 17.5,\n    \"volume\": 0.25,\n    \"category_id\": 4,\n    \"seller_id\": 3\n}"
+				}
+			]
 		},
 		{
 			"name": "update a product",
@@ -65,7 +327,7 @@
 				"method": "PATCH",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/v1/fresh-products/seller/products",
+					"raw": "localhost:8080/api/v1/fresh-products/seller/products?productId=18&name=geléia&price=15.00",
 					"host": [
 						"localhost"
 					],
@@ -76,10 +338,111 @@
 						"fresh-products",
 						"seller",
 						"products"
+					],
+					"query": [
+						{
+							"key": "productId",
+							"value": "18"
+						},
+						{
+							"key": "name",
+							"value": "geléia"
+						},
+						{
+							"key": "price",
+							"value": "15.00"
+						}
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "update a product",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/v1/fresh-products/seller/products?productId=18&name=geléia&price=15.00",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"seller",
+								"products"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "18"
+								},
+								{
+									"key": "name",
+									"value": "geléia"
+								},
+								{
+									"key": "price",
+									"value": "15.00"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 05 May 2022 22:41:17 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 18,\n    \"name\": \"geléia\",\n    \"price\": 15,\n    \"volume\": 0.25,\n    \"category_id\": 4,\n    \"seller_id\": 3\n}"
+				}
+			]
 		}
 	]
 }

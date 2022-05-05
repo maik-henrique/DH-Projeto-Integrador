@@ -212,5 +212,8 @@ Inicialize a aplicacao springboot na IDE e acessse os endpoints  utilizando Post
 @Pedro Henrique Dalpa
 
 
+##Requisito 6 
 
+O UserStory do requisito 6 está na pasta User History e diagrama de entidades.
+A collection para testar no postman está na pasta CollectionsPostman
 > 
