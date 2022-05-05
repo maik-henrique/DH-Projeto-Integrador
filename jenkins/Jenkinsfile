@@ -1,0 +1,35 @@
+def COLOR_MAP = ['SUCCESS': 'good', 'FAILURE': 'danger', 'UNSTABLE': 'danger', 'ABORTED': 'danger']
+
+pipeline {
+    agent any
+    tools {
+           maven 'MAVEN_HOME'
+           jdk 'JAVA_HOME'
+    }
+
+    stages {
+
+         stage('Initialize'){
+            steps {
+                  sh '''
+                      echo "PATH = ${PATH}"
+                      echo "MAVEN_HOME = ${MAVEN_HOME}"
+                  '''
+                  }
+            }
+
+        stage('Integration tests + Unit tests + Code Coverage'){
+            steps {
+                  sh 'mvn clean install'
+            }
+             post {
+                  success {
+                  junit 'target/surefire-reports/**/*.xml'
+                  jacoco execPattern: "**/target/jacoco.exec"
+                  cleanWs cleanWhenFailure: true
+                  }
+             }
+
+        }
+    }
+}
