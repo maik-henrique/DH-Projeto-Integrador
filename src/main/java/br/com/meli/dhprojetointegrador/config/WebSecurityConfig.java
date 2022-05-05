@@ -36,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .addFilterBefore(filterChainExceptionHandler, LogoutFilter.class)
+                .csrf().disable()
                 .authorizeHttpRequests()
                 .antMatchers(HttpHeaders.ALLOW).permitAll()
                 .regexMatchers(".*/admin.*").hasRole(RoleType.ADMIN.name())
