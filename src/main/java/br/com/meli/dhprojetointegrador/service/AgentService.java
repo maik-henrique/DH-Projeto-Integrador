@@ -24,9 +24,14 @@ public class AgentService {
                 new BusinessValidatorException(String.format("Agent with id %d not found", id)));
     }
 
+    /**
+     * @Author: Micaela Alves
+     * @Description: constrói um agente a partir dos dados recebidos e salva no banco de dados
+     * @param agent
+     * @return agente cadastrado
+     */
     public Agent create(Agent agent){
         Warehouse warehouse = warehouseRepository.getById(agent.getWarehouse().getId());
-        System.out.println(warehouse);
         Agent newAgent = Agent.builder()
                 .name(agent.getName())
                 .password(agent.getPassword())
@@ -35,6 +40,11 @@ public class AgentService {
         return agentRepository.save(newAgent);
     }
 
+    /**
+     * @Author: Micaela Alves
+     * @Description: recupera todos os agentes cadastrados no banco de dados
+     * @return lista de agentes
+     */
     public List<Agent> getAll() {
         return agentRepository.findAll();
     }

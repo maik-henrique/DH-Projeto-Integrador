@@ -24,6 +24,11 @@ public class WarehouseController {
     private final WarehouseService warehouseService;
     private final ModelMapper modelMapper;
 
+    /**
+     * @Author: Micaela Alves
+     * @Description: Consulta as warehouses cadastradas
+     * @return: lista de todas as warehouses
+     */
     @GetMapping("/warehouse")
     public ResponseEntity<?> findAllWarehouses(){
         try {
@@ -34,6 +39,12 @@ public class WarehouseController {
         }
     }
 
+    /**
+     * @Author: Micaela Alves
+     * @Description: realiza o cadastro de uma warehouse
+     * @param warehouseRequest
+     * @return warehouse cadastrada
+     */
     @PostMapping("warehouse")
     public ResponseEntity<?> createWarehouse(@Valid @RequestBody WarehouseRequest warehouseRequest) {
         try {

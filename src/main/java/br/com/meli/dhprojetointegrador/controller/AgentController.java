@@ -20,6 +20,12 @@ public class AgentController {
     private final AgentService agentService;
     private final ModelMapper modelMapper;
 
+    /**
+     * @Author: Micaela Alves
+     * @Description: cadastra um novo agente
+     * @param agentPostRequest
+     * @return agente cadastrado
+     */
     @PostMapping("/agent")
     public ResponseEntity<?> createAgent(@Valid @RequestBody AgentPostRequest agentPostRequest) {
         try {
@@ -32,6 +38,11 @@ public class AgentController {
         }
     }
 
+    /**
+     * @Author: Micaela Alves
+     * @Description: Consulta todos os agente cadastrados
+     * @return lista de agentes
+     */
     @GetMapping("/agent")
     public ResponseEntity<?> readAgent() {
         try {

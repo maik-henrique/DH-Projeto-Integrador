@@ -23,10 +23,19 @@ public class WarehouseService {
                 .orElseThrow(() -> new BusinessValidatorException("Warehouse not found, section id invalid"));
     }
 
+    /**
+     * @Author: Micaela Alves
+     * @return lista de warehouses
+     */
     public List<Warehouse> findAllWarehouses() {
         return warehouseRepository.findAll();
     }
 
+    /**
+     *
+     * @param warehouse
+     * @return
+     */
     public Warehouse create(Warehouse warehouse){
         return warehouseRepository.save(warehouse);
     }
