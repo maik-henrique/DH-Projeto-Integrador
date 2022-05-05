@@ -18,6 +18,18 @@ pipeline {
                   }
             }
 
+         stage('Mvn Package'){
+             steps{
+         		sh 'mvn clean package'
+         	}
+         }
+
+         /*stage('Test Sonar'){
+             steps {
+                   sh 'mvn sonar:sonar -Dsonar.projectKey=projetointegrador -Dsonar.host.url=http://127.0.0.1:9000 -Dsonar.login=f1aea35eeafbdbb6f77899838fb95826d1ddecf3'
+             }
+         }*/
+
         stage('Integration tests + Unit tests + Code Coverage'){
             steps {
                   sh 'mvn clean install'
