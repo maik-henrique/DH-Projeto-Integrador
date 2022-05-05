@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
 
-public class CartProductServiceTest {
+public class CartProductServiceTests {
 
     CartProductRepository repository = mock(CartProductRepository.class);
     private final CartProductService service = new CartProductService(repository);

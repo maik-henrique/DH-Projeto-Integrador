@@ -21,7 +21,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PurchaseOrderInput {
+public class PurchaseOrderRequest {
 
     @NotNull
     @DateTimeFormat
@@ -33,6 +33,6 @@ public class PurchaseOrderInput {
 
     private StatusEnum orderStatus;
 
-    private List<@Valid ProductInput> products;
+    private List<@Valid ProductRefactor> products;
 
 }

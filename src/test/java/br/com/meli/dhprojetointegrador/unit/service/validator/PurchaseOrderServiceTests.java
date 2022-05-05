@@ -1,11 +1,11 @@
-package br.com.meli.dhprojetointegrador.unit;
+package br.com.meli.dhprojetointegrador.unit.service.validator;
 
 import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
 import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import br.com.meli.dhprojetointegrador.repository.*;
 import br.com.meli.dhprojetointegrador.service.OrderService;
-import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
-import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
+import br.com.meli.dhprojetointegrador.service.validator.ProductValidator;
+import br.com.meli.dhprojetointegrador.service.validator.BuyerValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -15,17 +15,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 
 @ExtendWith(MockitoExtension.class)
-public class PurchaseOrderServiceTest {
+public class PurchaseOrderServiceTests {
 
 
     @InjectMocks
     private OrderService service;
 
     @Mock
-    private ValidateBuyer validateBuyer;
+    private BuyerValidator buyerValidator;
 
     @Mock
-    private ValidadeProduct validadeProduct;
+    private ProductValidator productValidator;
 
     @Mock
     private CartProductRepository cartProductRepository;

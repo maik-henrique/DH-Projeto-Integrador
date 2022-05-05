@@ -1,14 +1,14 @@
 package br.com.meli.dhprojetointegrador.controller;
 
 import br.com.meli.dhprojetointegrador.dto.request.freshproducts.FetchFreshProductsSortByRequest;
-import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockCollection;
+import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockCollectionResponse;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import java.util.List;
 import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import br.com.meli.dhprojetointegrador.dto.response.ProductResponseDto;
+import br.com.meli.dhprojetointegrador.dto.response.ProductResponseResponse;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.service.BatchStockService;
 import br.com.meli.dhprojetointegrador.service.ProductService;
@@ -37,11 +37,11 @@ public class ProductController {
      * @return lista de produtos
      */
     @GetMapping
-    public ResponseEntity<List<ProductResponseDto>> returnAllProducts() {
+    public ResponseEntity<List<ProductResponseResponse>> returnAllProducts() {
 
         List<Product> products = productService.returnAllProducts();
         return products == null || products.isEmpty()?ResponseEntity.notFound().build():
-                ResponseEntity.ok(ProductResponseDto.map(products));
+                ResponseEntity.ok(ProductResponseResponse.map(products));
     }
 
     /**
@@ -70,7 +70,7 @@ public class ProductController {
         }
 
         List<BatchStock> batchStockSorted = batchStockService.findByProductId(id, sortBy.getFieldName());
-        FreshProductsQueriedResponse response = modelMapper.map(BatchStockCollection.builder().batchStock(batchStockSorted).build(),
+        FreshProductsQueriedResponse response = modelMapper.map(BatchStockCollectionResponse.builder().batchStock(batchStockSorted).build(),
                 FreshProductsQueriedResponse.class);
 
         return ResponseEntity.ok(response);

@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidateBuyer {
+public class BuyerValidator {
 
     @Autowired
     private BuyerRepository buyerRepository;

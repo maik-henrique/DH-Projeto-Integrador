@@ -1,11 +1,11 @@
 package br.com.meli.dhprojetointegrador.enums;
 
-public enum TokenType {
+public enum TokenTypeEnum {
     BEARER("Bearer");
 
     private final String label;
 
-    TokenType(String label) {
+    TokenTypeEnum(String label) {
         this.label = label;
     }
 
