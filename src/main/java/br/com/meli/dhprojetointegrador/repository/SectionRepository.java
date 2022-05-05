@@ -16,4 +16,6 @@ public interface SectionRepository extends JpaRepository<Section, Long> {
 
     List<Section> findSectionByCategoryId(@Param("id")Long id);
 
+
+
 }

@@ -9,6 +9,7 @@ import br.com.meli.dhprojetointegrador.service.SectionService;
 import lombok.AllArgsConstructor;
 
 import lombok.NonNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -34,7 +35,7 @@ public class SectionController {
      * @return lista de sections
      */
     @GetMapping("/sections")
-    public ResponseEntity<List<SectionResponseDTO>> returnAllSections(@RequestParam(required = true) long warehouseId) {
+    public ResponseEntity<List<SectionResponseDTO>> returnAllSections(@RequestParam(name = "warehouseId", required = true) long warehouseId) {
         List<Section> sections = sectionService.returnAllSectionsByWarehouse(warehouseId);
         return ResponseEntity.ok(SectionResponseDTO.map(sections));
 
@@ -54,7 +55,7 @@ public class SectionController {
     }
     /**
      * Author: Mariana Galdino
-     * Method: Registra uma section  em uma categoria e warehouse
+     * Method: Registra uma section em uma categoria e warehouse
      * Description: Serviço responsavel por cadastrar uma secao com uma categoria e warehouse
      * @return secao cadastrada e status
      */

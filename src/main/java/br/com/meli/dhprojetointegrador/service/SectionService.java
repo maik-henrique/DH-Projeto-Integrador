@@ -37,7 +37,7 @@ public class SectionService {
     }
 
 
-    public void create(Section section, Long warehouseId, Long categoryId){
+    public Section create(Section section, Long warehouseId, Long categoryId) {
 
 
         Optional<Warehouse> warehouse = warehouseRepository.findById(warehouseId);
@@ -49,14 +49,17 @@ public class SectionService {
 
         Optional<Category> category = categoryRepository.findById(categoryId);
         Category category1 = null;
+
         if (category.isPresent()){
             category1 = category.get();
         }
+
         section.setWarehouse(warehouse1);
         section.setCategory(category1);
 
         sectionRepository.save(section);
 
+        return section;
     }
 
 

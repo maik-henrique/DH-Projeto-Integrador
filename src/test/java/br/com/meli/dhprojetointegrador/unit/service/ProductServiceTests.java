@@ -26,7 +26,7 @@ public class ProductServiceTests {
     @InjectMocks
     private ProductService productService;
 
-    private ProductRepository productRepository = mock(ProductRepository.class);;
+    private ProductRepository productRepository = mock(ProductRepository.class);
 
     Category categoryFF = Category.builder()
             .id(1L)
