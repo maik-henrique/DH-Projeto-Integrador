@@ -2,6 +2,7 @@ package br.com.meli.dhprojetointegrador.integration;
 
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
 import br.com.meli.dhprojetointegrador.entity.Category;
+import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.entity.Section;
 import br.com.meli.dhprojetointegrador.entity.Warehouse;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
@@ -15,12 +16,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+
+import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,13 +57,56 @@ public class ServiceControllerTest {
         Section section = setupSection(1L, "Section 1", 10f, warehouse, category);
 
         MvcResult result = mockMvc
-                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/sections").param("warehouseId", "1L"))
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/sections").queryParam("warehouseId", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
-        Section section1 = objectMapper.readValue(responsePayload, Section.class);
+        List<Section> section1 = objectMapper.readerForListOf(Section.class).readValue(responsePayload);
 
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+        assertNotNull(responsePayload);
+
+
+    }
+
+    @Test
+    @DisplayName( "Test02 - req02 - Return 404 not found")
+    public void shouldReturnHttpNotFound_whenNoOneWarehouse() throws Exception {
+
+        Product product1 = Product.builder().name("alface").price(new BigDecimal(12)).volume(5f).build();
+
+        String payload = objectMapper.writeValueAsString(product1);
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products")
+                        .contentType(MediaType.APPLICATION_JSON).content(payload))
+                .andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
+
+
+        String responsePayload = result.getResponse().getContentAsString();
+
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
+        assertTrue(responsePayload.isEmpty());
+
+    }
+
+    @Test
+    @DisplayName("Test Int Req 6 - return sections by Warehouse Id")
+    public void shouldReturnSectionsByIdCategory() throws Exception {
+        Warehouse warehouse = setupWarehouse(1L, "ware");
+        Category category = setupCategory(1L, CategoryEnum.FF);
+        Section section = setupSection(1L, "Section 1", 10f, warehouse, category);
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/sections-category").queryParam("categoryId", "1"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        String responsePayload = result.getResponse().getContentAsString();
+        List<Section> section1 = objectMapper.readerForListOf(Section.class).readValue(responsePayload);
+
+        assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+        assertNotNull(responsePayload);
 
 
     }

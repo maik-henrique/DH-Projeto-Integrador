@@ -35,7 +35,7 @@ public class SectionController {
      * @return lista de sections
      */
     @GetMapping("/sections")
-    public ResponseEntity<List<SectionResponseDTO>> returnAllSections(@RequestParam(name = "warehouseId", required = true) long warehouseId) {
+    public ResponseEntity<List<SectionResponseDTO>> returnAllSections(@RequestParam( required = true) long warehouseId) {
         List<Section> sections = sectionService.returnAllSectionsByWarehouse(warehouseId);
         return ResponseEntity.ok(SectionResponseDTO.map(sections));
 
