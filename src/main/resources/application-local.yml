@@ -18,10 +18,5 @@ logging:
         web: DEBUG
     hibernate: ERROR
 
-javax:
-  validation:
-    constraints:
-      NotNull:
-        message: 'must not be null'
 
 
