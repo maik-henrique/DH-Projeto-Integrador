@@ -36,8 +36,6 @@
         <sonar.version>5.1</sonar.version>
         <apache.commons>4.2</apache.commons>
 
-        <sonar.host.url>http://127.0.0.1:9000</sonar.host.url>
-
     </properties>
 
     <dependencies>
