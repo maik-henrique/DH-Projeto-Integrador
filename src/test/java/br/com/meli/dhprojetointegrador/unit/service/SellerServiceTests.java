@@ -30,28 +30,20 @@ public class SellerServiceTests {
 
     private SellerRepository sellerRepository = mock(SellerRepository.class);
 
-
-    Product product = Product.builder().name("Caneta").price(BigDecimal.valueOf(10)).volume(0.5f).build();
     Seller seller = Seller.builder().id(1l).name("Vendedor").statusActiveAccount(true).build();
-    Optional<Seller> op;
 
     @Test
-    @DisplayName("Test US:06")
+    @DisplayName("Test US:06 - findSellerById - Correct functioning")
     public void findSellerById_should_return_correct_seller(){
-
         when(sellerRepository.findById(1l)).thenReturn(Optional.of(seller));
-
-
         Seller result = sellerService.findSellerById(1l);
-
 
         assert result.equals(seller);
     }
 
     @Test
-    @DisplayName("Test US:06")
+    @DisplayName("Test US:06 - findSellerById - Generating exception")
     public void findSellerById_should_throw_correct_exception(){
-
         when(sellerRepository.findById(1l)).thenReturn(Optional.of(seller));
 
         try {
@@ -59,47 +51,41 @@ public class SellerServiceTests {
         } catch (BusinessValidatorException e) {
             assert true;
         }
-
     }
 
     @Test
-    @DisplayName("Test US:06")
+    @DisplayName("Test US:06 - saveSeller - Correct functioning")
     public void saveSeller_should_return_correct_seller(){
-
         when(sellerRepository.save(seller)).thenReturn(seller);
-
         Seller result = sellerService.saveSeller(seller);
 
-        assert result.getId().equals(1l);
         assert result.equals(seller);
     }
 
     @Test
-    @DisplayName("Test US:06")
+    @DisplayName("Test US:06 - putSellerName - Correct functioning")
     public void putSellerName_should_return_correct_seller(){
-
         when(sellerRepository.findById(1l)).thenReturn(Optional.of(seller));
         when(sellerRepository.save(seller)).thenReturn(seller);
 
         Seller result = sellerService.putSellerName(1l, "Novo vendedor");
+        seller.setName("Novo vendedor");
 
         assert result.getName().equals("Novo vendedor");
-
+        assert result.equals(seller);
     }
 
     @Test
-    @DisplayName("Test US:06")
+    @DisplayName("Test US:06 - putSellerAccountStatus - Correct functioning")
     public void putSellerAccountStatus_should_return_correct_seller(){
-
         when(sellerRepository.findById(1l)).thenReturn(Optional.of(seller));
         when(sellerRepository.save(seller)).thenReturn(seller);
 
         Seller result = sellerService.putSellerAccountStatus(1l, false);
+        seller.setStatusActiveAccount(false);
 
         assert result.getStatusActiveAccount().equals(false);
-
+        assert result.equals(seller);
     }
-
-
 
 }

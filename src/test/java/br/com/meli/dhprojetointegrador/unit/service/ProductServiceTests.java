@@ -2,6 +2,7 @@ package br.com.meli.dhprojetointegrador.unit.service;
 
 import br.com.meli.dhprojetointegrador.entity.Category;
 import br.com.meli.dhprojetointegrador.entity.Product;
+import br.com.meli.dhprojetointegrador.entity.Seller;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import br.com.meli.dhprojetointegrador.service.ProductService;
@@ -47,6 +48,17 @@ public class ProductServiceTests {
 
     List<Product> products = Arrays.asList(productFFa, productFFb);
 
+    Product product = Product.builder()
+            .id(1l)
+            .name("Coroa")
+            .statusProduct(true)
+            .build();
+
+    Seller seller = Seller.builder()
+            .id(1l)
+            .name("Vendedor")
+            .build();
+
     /**
      * @Author: Matheus Guerra
      * @Teste: Teste unitario função returnProductsByCategory
@@ -76,5 +88,32 @@ public class ProductServiceTests {
 
         assertThat(result, IsEmptyCollection.empty());
     }
+
+
+    @Test
+    @DisplayName("Test US:06 - saveProductWithSeller - Correct functioning")
+    public void saveProductWithSeller_should_return_correct_seller(){
+        when(productRepository.save(product)).thenReturn(product);
+
+        Product result = productService.saveProductWithSeller(product,seller);
+        product.setSeller(seller);
+
+        assert result.getSeller().getName().equals("Vendedor");
+        assert result.equals(product);
+    }
+
+    @Test
+    @DisplayName("Test US:06 - putProductStatus - Correct functioning")
+    public void sputProductStatus_should_return_correct_seller(){
+        when(productRepository.findByIdAndSeller_Id(1l,1l)).thenReturn(product);
+        when(productRepository.save(product)).thenReturn(product);
+
+        Product result = productService.putProductStatus(1l,1l,false);
+        product.setStatusProduct(false);
+
+        assert result.getStatusProduct().equals(false);
+        assert result.equals(product);
+    }
+
 
 }

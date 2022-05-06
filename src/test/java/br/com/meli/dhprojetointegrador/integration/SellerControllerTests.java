@@ -141,6 +141,67 @@ public class SellerControllerTests extends BaseIntegrationControllerTests {
 
     }
 
+    // Put
+    @Test
+    @DisplayName("US:06 - Seller creation test")
+    public void changeSellerName_shouldReturnSeller_with_correctName() throws Exception {
+
+        setupSeller("Carlos");
+        String newName = "Roberto";
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.put("/api/v1/seller/{id}/change-name", 1)
+                        .param("name", newName))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        String responsePayload = result.getResponse().getContentAsString();
+        Seller sellerResult = objectMapper.readValue(responsePayload,Seller.class);
+
+        assertNotNull(responsePayload);
+        assertEquals(sellerResult.getName(), newName);
+
+    }
+
+    // Put
+    @Test
+    @DisplayName("US:06 - Seller creation test")
+    public void changeSellerAccountStatus_shouldReturnSeller_with_correctAccountStatus() throws Exception {
+
+        setupSeller("Carlos");
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.put("/api/v1/seller/{id}/change-account-status", 1)
+                        .param("status", "false"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        String responsePayload = result.getResponse().getContentAsString();
+        Seller sellerResult = objectMapper.readValue(responsePayload,Seller.class);
+
+        assertNotNull(responsePayload);
+        assertEquals(sellerResult.getStatusActiveAccount(), false);
+
+    }
+
+    @Test
+    @DisplayName("US:06 - Seller creation test")
+    public void changeSellerProductStatus_shouldReturnProduct_with_correctAccountStatus() throws Exception {
+
+        Seller seller = setupSeller("Carlos");
+        Product product = setupProduct("Pingente", seller);
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.put("/api/v1/seller/{sellerId}/change-product-status/{productId}", 1, 2)
+                        .param("status", "false"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        String responsePayload = result.getResponse().getContentAsString();
+        Product productResult = objectMapper.readValue(responsePayload, Product.class);
+
+        assertNotNull(responsePayload);
+        assertEquals(productResult.getStatusProduct(), false);
+    }
+
+
 
     private SellerProductPostRequest setupSellerProduct(String name){
 
@@ -165,6 +226,7 @@ public class SellerControllerTests extends BaseIntegrationControllerTests {
                 .volume(5f)
                 .seller(seller)
                 .batchStockList(Collections.EMPTY_SET)
+                .statusProduct(true)
                 .build();
 
         productRepository.save(product);

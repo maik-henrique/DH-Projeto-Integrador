@@ -90,22 +90,21 @@ public class SellerController {
         return ResponseEntity.ok().body(sellerService.putSellerName(id, newName));
     }
 
-    @PutMapping("/{id}/change-product-status/{product_id}")
-    public ResponseEntity<Product> changeSellerProductStatus(@PathVariable Long id,
-                                                            @PathVariable Long product_id,
-                                                            @RequestParam(name = "status", required = true) Boolean status){
-
-        Product product = productService.findProductByIdAndSeller(product_id, id);
-        product.setStatusProduct(status);
-        productRepository.save(product);
-        return ResponseEntity.ok().body(productRepository.findByIdAndSeller_Id(product_id, id));
-    }
-
     @PutMapping("/{id}/change-account-status")
     public ResponseEntity<Seller> changeSellerAccountStatus(@PathVariable Long id,
-                                       @RequestParam(name = "status", required = true) Boolean status){
+                                                            @RequestParam(name = "status", required = true) Boolean status){
 
         return ResponseEntity.ok().body(sellerService.putSellerAccountStatus(id, status));
     }
+
+    @PutMapping("/{sellerId}/change-product-status/{productId}")
+    public ResponseEntity<Product> changeSellerProductStatus(@PathVariable Long sellerId,
+                                                            @PathVariable Long productId,
+                                                            @RequestParam(name = "status", required = true) Boolean status){
+
+        return ResponseEntity.ok().body(productService.putProductStatus(productId, sellerId, status));
+    }
+
+
 
 }

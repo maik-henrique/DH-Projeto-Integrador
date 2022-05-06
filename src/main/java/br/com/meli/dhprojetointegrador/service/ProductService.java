@@ -96,18 +96,16 @@ public class ProductService {
     }
 
     public Product saveProductWithSeller(Product product, Seller seller){
-
         product.setSeller(seller);
+
         return productRepository.save(product);
     }
 
-    public Product findProductByIdAndSeller(Long product_id, Long id){
+    public Product putProductStatus(Long productId, Long sellerId, Boolean newStatus){
 
-        return productRepository.findByIdAndSeller_Id(product_id, id);
+        Product product = productRepository.findByIdAndSeller_Id(productId, sellerId);
+        product.setStatusProduct(newStatus);
+
+        return productRepository.save(product);
     }
-
-//    public Product putProductStatus(Long id, Boolean newStatus){
-//
-//
-//    }
 }
