@@ -3,15 +3,15 @@ package br.com.meli.dhprojetointegrador.controller;
 import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
-import br.com.meli.dhprojetointegrador.dto.response.CartProductDTO;
+import br.com.meli.dhprojetointegrador.dto.response.CartProductResponse;
 import br.com.meli.dhprojetointegrador.entity.CartProduct;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
-import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
-import br.com.meli.dhprojetointegrador.dto.response.TotalPrice;
+import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderRequest;
+import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateResponse;
+import br.com.meli.dhprojetointegrador.dto.response.TotalPriceResponse;
 import br.com.meli.dhprojetointegrador.entity.PurchaseOrder;
 import br.com.meli.dhprojetointegrador.service.CartProductService;
 import lombok.AllArgsConstructor;
@@ -35,15 +35,15 @@ public class OrderController {
      * Description: Controller para realizar a operação de criar uma ordem de compra
      */
     @PostMapping("")
-    public ResponseEntity<TotalPrice> PurchaseOrderProductRegistration(@Valid @RequestBody PurchaseOrderInput input,
-            UriComponentsBuilder uriBuilder) {
-        OrderIntermediateDTO result = orderService.createOrder(input);
-        TotalPrice totalPrice = TotalPrice.builder().totalPrice(result.getTotalPrice()).build();
+    public ResponseEntity<TotalPriceResponse> PurchaseOrderProductRegistration(@Valid @RequestBody PurchaseOrderRequest input,
+                                                                               UriComponentsBuilder uriBuilder) {
+        OrderIntermediateResponse result = orderService.createOrder(input);
+        TotalPriceResponse totalPriceResponse = TotalPriceResponse.builder().totalPrice(result.getTotalPrice()).build();
         URI uri = uriBuilder
                 .path(baseUri.concat("/{id}"))
                 .buildAndExpand(result.getCreatedID())
                 .toUri();
-        return ResponseEntity.created(uri).body(totalPrice);
+        return ResponseEntity.created(uri).body(totalPriceResponse);
     }
 
     /**
@@ -69,6 +69,6 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<?> ShowProductsOrder(@RequestParam Long idOrder) {
         List<CartProduct> products = cartProductService.getProductsByOrderId(idOrder);
-        return new ResponseEntity<>(CartProductDTO.convertToProductList(products), HttpStatus.OK);
+        return new ResponseEntity<>(CartProductResponse.convertToProductList(products), HttpStatus.OK);
     }
 }

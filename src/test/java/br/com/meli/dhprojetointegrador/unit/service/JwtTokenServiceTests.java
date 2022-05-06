@@ -4,7 +4,7 @@ import br.com.meli.dhprojetointegrador.config.SecurityProperties;
 import br.com.meli.dhprojetointegrador.entity.JwtToken;
 import br.com.meli.dhprojetointegrador.entity.Role;
 import br.com.meli.dhprojetointegrador.entity.User;
-import br.com.meli.dhprojetointegrador.enums.RoleType;
+import br.com.meli.dhprojetointegrador.enums.RoleEnum;
 import br.com.meli.dhprojetointegrador.exception.AuthException;
 import br.com.meli.dhprojetointegrador.service.JwtTokenService;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ public class JwtTokenServiceTests {
             .username("myemail@email.com")
             .password("12345")
             .id(1L)
-            .role(Set.of(Role.builder().role(RoleType.ADMIN).build()))
+            .role(Set.of(Role.builder().role(RoleEnum.ADMIN).build()))
             .build();
 
     @Test
@@ -68,7 +68,7 @@ public class JwtTokenServiceTests {
                 .username("moutro@email.com")
                 .password("12345")
                 .id(1L)
-                .role(Set.of(Role.builder().role(RoleType.ADMIN).build()))
+                .role(Set.of(Role.builder().role(RoleEnum.ADMIN).build()))
                 .build();
 
         JwtToken generatedToken = tokenService.generateToken(user);

@@ -16,4 +16,5 @@ security:
   jwt:
     signing-key: abacate
     token-duration-in-minutes: 60
+    enabled: true
 
