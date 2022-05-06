@@ -1,7 +1,7 @@
 package br.com.meli.dhprojetointegrador.integration;
 
-import br.com.meli.dhprojetointegrador.dto.request.ProductInput;
-import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
+import br.com.meli.dhprojetointegrador.dto.request.ProductRefactor;
+import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderRequest;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.EvaluationDetailsRegistrationRequest;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.EvaluationUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.request.evaluation.PurchaseOrderEvaluationRegistrationRequest;
@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -32,6 +33,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithMockUser(username = "jooj", roles = {"BUYER"})
 public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationControllerTests {
 
     @Autowired
@@ -265,10 +267,10 @@ public class PurchaseOrderEvaluationControllerTests extends BaseIntegrationContr
     private void setupPurchaseOrder() throws Exception {
         LocalDate date = LocalDate.of(2021, 4, 25);
 
-        ProductInput product1 = ProductInput.builder().productId(1L).quantity(5).build();
-        ProductInput product2 = ProductInput.builder().productId(2L).quantity(5).build();
+        ProductRefactor product1 = ProductRefactor.builder().productId(1L).quantity(5).build();
+        ProductRefactor product2 = ProductRefactor.builder().productId(2L).quantity(5).build();
 
-        PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
+        PurchaseOrderRequest purchaseOrderInput = PurchaseOrderRequest.builder()
                 .date(date)
                 .products(List.of(product1, product2))
                 .buyerId(1L)
