@@ -146,7 +146,7 @@ Inicialize a aplicacao springboot na IDE e acessse os endpoints  utilizando Post
 `mvn tests`
 
 ##Para iniciar os testes no SonarQube: 
-mvn sonar:sonar -Dsonar.projectKey={KEY DO PROJETO CRIADO NO SONAR} - Dsonar.host.url=http://127.0.0.1:9000 -Dsonar.login={CHAVE DE  AUTENTICACAO DO SONAR}`
+`mvn sonar:sonar -Dsonar.projectKey={KEY DO PROJETO CRIADO NO SONAR} - Dsonar.host.url=http://127.0.0.1:9000 -Dsonar.login={CHAVE DE  AUTENTICACAO DO SONAR}`
 
 ***
 
