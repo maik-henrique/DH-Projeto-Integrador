@@ -2,11 +2,21 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  mvc:
+    log-request-details: true
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DATABASE_URL:jdbc:mysql://localhost:3307/meli-frescos?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true}
     username: ${DATABASE_USER:root}
     password: ${DATABASE_PASSWORD:password}
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+    hibernate: ERROR
+
 
 

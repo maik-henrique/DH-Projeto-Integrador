@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import br.com.meli.dhprojetointegrador.dto.request.BatchStockPostRequest;
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderPostRequest;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;

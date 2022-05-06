@@ -1,26 +1,26 @@
 package br.com.meli.dhprojetointegrador.config;
 
-import br.com.meli.dhprojetointegrador.dto.request.InboundOrderPostRequest;
+
 import br.com.meli.dhprojetointegrador.dto.request.InboundOrderUpdateRequest;
 import br.com.meli.dhprojetointegrador.dto.response.BatchStockResponse;
 import br.com.meli.dhprojetointegrador.dto.response.InboundOrderResponse;
-import br.com.meli.dhprojetointegrador.entity.*;
-import br.com.meli.dhprojetointegrador.mapper.freshproducts.BatchStockListToFreshProductsQueryResponseConverter;
-import lombok.AllArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import br.com.meli.dhprojetointegrador.dto.request.InboundOrderPostRequest;
+import br.com.meli.dhprojetointegrador.mapper.freshproducts.BatchStockListToFreshProductsQueryResponseConverter;
+import lombok.AllArgsConstructor;
 import br.com.meli.dhprojetointegrador.entity.Agent;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.entity.Section;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @AllArgsConstructor
 @Configuration

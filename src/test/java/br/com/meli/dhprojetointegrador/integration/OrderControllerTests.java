@@ -1,7 +1,7 @@
 package br.com.meli.dhprojetointegrador.integration;
 
-import br.com.meli.dhprojetointegrador.dto.request.ProductInput;
-import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
+import br.com.meli.dhprojetointegrador.dto.request.ProductRefactor;
+import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderRequest;
 import br.com.meli.dhprojetointegrador.dto.response.*;
 import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
@@ -13,19 +13,24 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
+ 
 
+@ContextConfiguration
+@WithMockUser(username = "jooj", roles = {"BUYER"})
 public class OrderControllerTests extends BaseIntegrationControllerTests {
 
     @Autowired
@@ -67,16 +72,17 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
         setup();
         LocalDate date = LocalDate.of(2021, 04, 25);
 
-        ProductInput product1 = ProductInput.builder().productId(1L).quantity(5).build();
-        ProductInput product2 = ProductInput.builder().productId(2L).quantity(5).build();
+        ProductRefactor product1 = ProductRefactor.builder().productId(1L).quantity(5).build();
+        ProductRefactor product2 = ProductRefactor.builder().productId(2L).quantity(5).build();
 
-        PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
+        PurchaseOrderRequest purchaseOrderRequest = PurchaseOrderRequest.builder()
                 .date(date)
+                .orderStatus(StatusEnum.ABERTO)
                 .products(List.of(product1, product2))
                 .buyerId(1L)
                 .build();
 
-        String payload = objectMapper.writeValueAsString(purchaseOrderInput);
+        String payload = objectMapper.writeValueAsString(purchaseOrderRequest);
 
         MvcResult result = mock
                 .perform(MockMvcRequestBuilders.post("/api/v1/fresh-products/orders/")
@@ -84,7 +90,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
-        TotalPrice totalPriceResponse = objectMapper.readValue(responsePayload, TotalPrice.class);
+        TotalPriceResponse totalPriceResponse = objectMapper.readValue(responsePayload, TotalPriceResponse.class);
 
         assertNotNull(responsePayload);
         assertEquals(totalPriceResponse.getTotalPrice(), 35.00);
@@ -96,16 +102,17 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
         setup();
         LocalDate date = LocalDate.of(2021, 04, 25);
 
-        ProductInput product1 = ProductInput.builder().productId(1L).quantity(5).build();
-        ProductInput product2 = ProductInput.builder().productId(2L).quantity(5).build();
+        ProductRefactor product1 = ProductRefactor.builder().productId(1L).quantity(5).build();
+        ProductRefactor product2 = ProductRefactor.builder().productId(2L).quantity(5).build();
 
-        PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
+        PurchaseOrderRequest purchaseOrderRequest = PurchaseOrderRequest.builder()
                 .date(date)
+                .orderStatus(StatusEnum.ABERTO)
                 .products(List.of(product1, product2))
                 .buyerId(10L)
                 .build();
 
-        String payload = objectMapper.writeValueAsString(purchaseOrderInput);
+        String payload = objectMapper.writeValueAsString(purchaseOrderRequest);
 
         MvcResult result = mock
                 .perform(MockMvcRequestBuilders.post("/api/v1/fresh-products/orders/")
@@ -113,7 +120,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
-        ExceptionPayloadDTO exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadDTO.class);
+        ExceptionPayloadResponse exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadResponse.class);
 
         assertNotNull(responsePayload);
         assertEquals(exceptionResponse.getTitle(), "Buyer Not Found");
@@ -125,16 +132,17 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
         setup();
         LocalDate date = LocalDate.of(2021, 04, 25);
 
-        ProductInput product1 = ProductInput.builder().productId(6L).quantity(5).build();
-        ProductInput product2 = ProductInput.builder().productId(2L).quantity(5).build();
+        ProductRefactor product1 = ProductRefactor.builder().productId(6L).quantity(5).build();
+        ProductRefactor product2 = ProductRefactor.builder().productId(2L).quantity(5).build();
 
-        PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
+        PurchaseOrderRequest purchaseOrderRequest = PurchaseOrderRequest.builder()
                 .date(date)
+                .orderStatus(StatusEnum.ABERTO)
                 .products(List.of(product1, product2))
                 .buyerId(1L)
                 .build();
 
-        String payload = objectMapper.writeValueAsString(purchaseOrderInput);
+        String payload = objectMapper.writeValueAsString(purchaseOrderRequest);
 
         MvcResult result = mock
                 .perform(MockMvcRequestBuilders.post("/api/v1/fresh-products/orders/")
@@ -142,7 +150,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
-        ExceptionPayloadDTO exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadDTO.class);
+        ExceptionPayloadResponse exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadResponse.class);
 
         assertNotNull(responsePayload);
         assertEquals(exceptionResponse.getTitle(), "Product Not Found");
@@ -150,20 +158,21 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
 
     @Test
     @DisplayName("Create Purchase Order - throws correct error when receive a quantity larger than in stock")
-    public void function_PurchaseOrderProductRegistration_should_trow_NotEnoughProductsException() throws Exception {
+    public void function_PurchaseOrderProductRegistration_should_throw_NotEnoughProductsException() throws Exception {
         setup();
         LocalDate date = LocalDate.of(2021, 04, 25);
 
-        ProductInput product1 = ProductInput.builder().productId(1L).quantity(25).build();
-        ProductInput product2 = ProductInput.builder().productId(2L).quantity(5).build();
+        ProductRefactor product1 = ProductRefactor.builder().productId(1L).quantity(25).build();
+        ProductRefactor product2 = ProductRefactor.builder().productId(2L).quantity(5).build();
 
-        PurchaseOrderInput purchaseOrderInput = PurchaseOrderInput.builder()
+        PurchaseOrderRequest purchaseOrderRequest = PurchaseOrderRequest.builder()
+                .orderStatus(StatusEnum.ABERTO)
                 .date(date)
                 .products(List.of(product1, product2))
                 .buyerId(1L)
                 .build();
 
-        String payload = objectMapper.writeValueAsString(purchaseOrderInput);
+        String payload = objectMapper.writeValueAsString(purchaseOrderRequest);
 
         MvcResult result = mock
                 .perform(MockMvcRequestBuilders.post("/api/v1/fresh-products/orders/")
@@ -171,7 +180,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn();
 
         String responsePayload = result.getResponse().getContentAsString();
-        ExceptionPayloadDTO exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadDTO.class);
+        ExceptionPayloadResponse exceptionResponse = objectMapper.readValue(responsePayload, ExceptionPayloadResponse.class);
 
         assertNotNull(responsePayload);
         assertEquals(exceptionResponse.getTitle(), "Not Enough Products");
@@ -201,7 +210,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
 
         String response = result.getResponse().getContentAsString();
 
-        List<CartProductDTO> products = objectMapper.readerForListOf(CartProductDTO.class).readValue(response);
+        List<CartProductResponse> products = objectMapper.readerForListOf(CartProductResponse.class).readValue(response);
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
         assertNotNull(response);
         assertFalse(products.isEmpty());
@@ -246,7 +255,6 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
         Buyer buyer = Buyer.builder()
                 .id(1L)
                 .name("Bruno")
-                .password("123456")
                 .email("bruno@email.com")
                 .build();
 
@@ -264,7 +272,10 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
     }
 
     private Warehouse setupWarehouse() {
-        Agent agent = Agent.builder().name("007").build();
+        Agent agent = Agent.builder()
+                .name("007")
+                .build();
+
         Warehouse warehouse = Warehouse.builder().id(1L).name("warehouse 01").agent(agent).build();
         agent.setWarehouse(warehouse);
 
@@ -272,7 +283,11 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
     }
 
     private Category setupCategory(CategoryEnum categoryEnum) {
-        Category category = Category.builder().name(categoryEnum).build();
+        Category category = Category.builder().name(categoryEnum)
+                .maximumTemperature(32.0F)
+                .minimumTemperature(-10.0F)
+                .maximumTemperature(-10.0F)
+                .build();
         return categoryRepository.save(category);
     }
 
@@ -288,6 +303,7 @@ public class OrderControllerTests extends BaseIntegrationControllerTests {
                 .batchNumber(batchNumber)
                 .currentQuantity(15).initialQuantity(15)
                 .currentTemperature(24f)
+                .minimumTemperature(32)
                 .manufacturingDate(LocalDate.of(2020, 4, 22))
                 .manufacturingTime(LocalDateTime.of(2016, 10, 30, 14, 23, 25)).dueDate(LocalDate.of(2022, 4, 22))
                 .products(managedProduct).build();

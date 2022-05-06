@@ -1,6 +1,6 @@
 package br.com.meli.dhprojetointegrador.mapper.freshproducts;
 
-import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockCollection;
+import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockCollectionResponse;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.BatchStockResponse;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.FreshProductsQueriedResponse;
 import br.com.meli.dhprojetointegrador.dto.response.freshproducts.SectionResponse;
@@ -9,15 +9,14 @@ import br.com.meli.dhprojetointegrador.entity.InboundOrder;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import org.modelmapper.AbstractConverter;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class BatchStockListToFreshProductsQueryResponseConverter extends AbstractConverter<BatchStockCollection, FreshProductsQueriedResponse> {
+public class BatchStockListToFreshProductsQueryResponseConverter extends AbstractConverter<BatchStockCollectionResponse, FreshProductsQueriedResponse> {
     @Override
-    protected FreshProductsQueriedResponse convert(BatchStockCollection source) {
+    protected FreshProductsQueriedResponse convert(BatchStockCollectionResponse source) {
         List<BatchStock> batchStockList = source.getBatchStock();
         BatchStock batchStock = batchStockList.stream().findAny().orElseThrow(() -> new RuntimeException("No Batchstock found"));
         Product product = batchStock.getProducts();

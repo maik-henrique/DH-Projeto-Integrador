@@ -1,7 +1,6 @@
 package br.com.meli.dhprojetointegrador.dto.response;
 
 import lombok.*;
-
 import java.util.List;
 
 @AllArgsConstructor
@@ -11,5 +10,5 @@ import java.util.List;
 @Setter
 public class ProductByWarehouseResponse {
     Long productId;
-    List<WarehouseQuantity> warehouses;
+    List<WarehouseQuantityResponse> warehouses;
 }

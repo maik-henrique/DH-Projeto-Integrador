@@ -38,5 +38,4 @@ public class Seller {
 //  @JsonIgnore
   private Set<Product> products;
 
-
 }

@@ -3,13 +3,11 @@ package br.com.meli.dhprojetointegrador.controller;
 import java.util.List;
 
 import br.com.meli.dhprojetointegrador.dto.BatchStockDTO;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.enums.CategoryEnum;
 import br.com.meli.dhprojetointegrador.exception.BusinessValidatorException;
@@ -37,7 +35,6 @@ public class BatchStockController {
    * @throws BusinessValidatorException se a seção nao for encontrada
    *
    */
-
   @GetMapping("/due-date")
   public ResponseEntity<List<BatchStockDTO>> filterStockBySection(@RequestParam(required = true) long sectionId,
                                                                   @RequestParam(defaultValue = "0", required = false) Integer numberOfDays,

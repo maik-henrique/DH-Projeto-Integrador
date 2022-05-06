@@ -1,12 +1,11 @@
+
 package br.com.meli.dhprojetointegrador.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+import br.com.meli.dhprojetointegrador.enums.BuyerStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,9 +27,13 @@ public class Buyer implements Serializable {
     private Long id;
 
     private String name;
-
-    private String password;
-
     private String email;
+
+    @OneToOne
+    @JoinColumn(name = "fk_user_id")
+    private User user;
+
+    @Enumerated(EnumType.STRING)
+    private BuyerStatusEnum status;
 
 }
