@@ -1,6 +1,6 @@
-#**Projeto Integrador - Bootcamp Mercado Livre **
+#**Projeto Integrador - Bootcamp Mercado Livre**
 
-#**MERCADO LIVRE - FRESCOS **
+#**MERCADO LIVRE - FRESCOS**
 
 ##Tecnologias utilizadas 
 - Java 
@@ -57,52 +57,55 @@ Construção de API para realizar a logística de produtos alimentícios em esta
 
 ##Layout ou Deploy da Aplicação
 
-- [EndPoint Requisito 1](http://localhost:8080/ap i/v1/fresh-products  /inboundorder/)
+- [EndPoint Requisito 1](http://localhost:8080/api/v1/fresh-products/inboundorder/)
 
-- [EndPoint Requisito 1](http://localhost:8080/ap i/v1/fresh-products  /inboundorder/)
+- [EndPoint Requisito 1](http://localhost:8080/api/v1/fresh-products/inboundorder/)
 
 ***
 
 ##EndPoint REQ2: 
-- [EndPoint Requisito 2](http://localhost:8080 /api/v1/fresh-products/)
+- [EndPoint Requisito 2](http://localhost:8080/api/v1/fresh-products/)
 
-- [EndPoint Requisito 2](http://localhost:8080 /api/v1/fresh-products /list?querytype=  [categoría producto])
+- [EndPoint Requisito 2](http://localhost:8080/api/v1/fresh-products/list?querytype=[categoríaproducto])
 
-- [EndPoint Requisito 2](http://localhost:8080 /api/v1/fresh-products /orders/)
+- [EndPoint Requisito 2](http://localhost:8080/api/v1/fresh-products/orders/)
 
-- [EndPoint Requisito 2](http://localhost:8080 /api/v1/fresh-products /orders/querytype=  [idOrder])
+- [EndPoint Requisito 2](http://localhost:8080/api/v1/fresh-products/orders/querytype=[idOrder])
 
-- [EndPoint Requisito 2](http://localhost:8080 /api/v1/fresh-products /orders/query param= [idOrder])
+- [EndPoint Requisito 2](http://localhost:8080/api/v1/fresh-products/orders/queryparam=[idOrder])
 
 ***
 
 ##EndPoint REQ3: 
-- [EndPoint Requisito 3](http://localhost:8080/api /v1/fresh-products/list? querytype=[idProducto])
+- [EndPoint Requisito 3](http://localhost:8080/api/v1/fresh-products/list?querytype=[idProducto])
 
-- [EndPoint Requisito 3](http://localhost:8080/api /v1/fresh-products/list? querytype=[idProducto] querytype=[L])
+- [EndPoint Requisito 3](http://localhost:8080/api/v1/fresh-products/list?querytype=[idProducto]querytype=[L])
 
 ***
 
 ##EndPoint REQ4: 
-- [EndPoint Requisito 4](http://localhost:8080 /api/v1/fresh-products /warehouse  /querytype=id product])
+- [EndPoint Requisito 4](http://localhost:8080/api/v1/fresh-products/warehouse/querytype=idproduct])
 
 ***
 
 ##EndPoint REQ5: 
-- [EndPoint Requisito 5](http://localhost:8080/api /v1/fresh-products/due date/queryparam=  [number of days]  queryparam=[section])
+- [EndPoint Requisito 5](http://localhost:8080/api/v1/fresh-products/duedate/queryparam=[numberofdays]queryparam=[section])
 
-- [EndPoint Requisito 5](http://localhost:8080/api /v1/fresh-products/due date/list?queryparam= [number of days]  queryparam=[category] queryparam=[asc])
+- [EndPoint Requisito 5](http://localhost:8080/api/v1/fresh-products/duedate/list?queryparam=[numberofdays]queryparam=[category] queryparam=[asc])
 
 ***
-
+#REQUISITO 6 - Micaela
+Esta feature propõe que o usuário possa cadastrar um novo armazém de distribuição e um novo 
+responsável como também consultar a lista dos existentes. Desta forma será possível fazer a 
+gestão do negócio e a sua expansão.
 ##EndPoint REQ6:
-- [EndPoint Requisito 6](http://localhost:8080/api/v1 /fresh-products/buyer/[id])
+- [EndPoint Requisito 6 - GET / Warehouses](http://localhost:8080/api/v1/fresh-products/admin/warehouse)
 
-- [EndPoint Requisito 6](http://localhost:8080/api/v1 /fresh-products/buyer?  queryparam[id]  &queryparam=[status])
+- [EndPoint Requisito 6 - POST / Warehouse](http://localhost:8080/api/v1/fresh-products/admin/warehouse)
 
-- [EndPoint Requisito 6](http://localhost:8080/api/v1 /fresh-products/buyer?  queryparam[id]  &queryparam[David]&query param[email])
+- [EndPoint Requisito 6 - GET / Agents](http://localhost:8080/api/v1/fresh-products/admin/agent)
 
-- [EndPoint Requisito 6](http://localhost:8080/api/v1 /fresh-products/buyer/[id])
+- [EndPoint Requisito 6 - POST / Agent](http://localhost:8080/api/v1/fresh-products/admin/agent)
 
 ***
 
@@ -140,10 +143,10 @@ Inicialize a aplicacao springboot na IDE e acessse os endpoints  utilizando Post
 
 ##Como rodar os testes:
 ##Para iniciar os testes em linha de comando utilizar: 
-- mvn tests 
+`mvn tests`
 
 ##Para iniciar os testes no SonarQube: 
-- mvn sonar:sonar -Dsonar.projectKey={KEY DO PROJETO CRIADO NO SONAR} - Dsonar.host.url=http://127.0.0.1:9000 -Dsonar.login={CHAVE DE  AUTENTICACAO DO SONAR} 
+mvn sonar:sonar -Dsonar.projectKey={KEY DO PROJETO CRIADO NO SONAR} - Dsonar.host.url=http://127.0.0.1:9000 -Dsonar.login={CHAVE DE  AUTENTICACAO DO SONAR}`
 
 ***
 
@@ -160,9 +163,9 @@ Inicialize a aplicacao springboot na IDE e acessse os endpoints  utilizando Post
 
 ***
 
-##niciando/Configurando banco de dados
+##Iniciando/Configurando banco de dados
 ##Para iniciar o servico de banco de dados no docker: 
-- docker-compose --file docker-compose.dev.yml up
+`docker-compose --file docker-compose.dev.yml up`
 
 
 ***
