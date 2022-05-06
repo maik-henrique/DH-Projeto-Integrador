@@ -7,7 +7,7 @@ import br.com.meli.dhprojetointegrador.dto.response.ProductByWarehouseResponse;
 import br.com.meli.dhprojetointegrador.dto.response.WarehouseQuantityResponse;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.entity.Seller;
-import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
+
 import br.com.meli.dhprojetointegrador.service.validator.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

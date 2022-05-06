@@ -3,7 +3,7 @@ package br.com.meli.dhprojetointegrador.controller;
 
 import br.com.meli.dhprojetointegrador.dto.request.SellerPostRequest;
 import br.com.meli.dhprojetointegrador.dto.request.SellerProductPostRequest;
-import br.com.meli.dhprojetointegrador.dto.response.ProductResponseDto;
+
 import br.com.meli.dhprojetointegrador.dto.response.SellerResponseDTO;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.entity.Seller;
