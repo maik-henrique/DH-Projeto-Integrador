@@ -11,7 +11,7 @@ import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import br.com.meli.dhprojetointegrador.repository.SellerRepository;
 import br.com.meli.dhprojetointegrador.service.ProductService;
 import br.com.meli.dhprojetointegrador.service.SellerService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Optional;
 import java.util.Set;
 
 @AllArgsConstructor

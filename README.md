@@ -53,6 +53,13 @@ Construção de API para realizar a logística de produtos alimentícios em esta
 - Representante pode consultar um produto em todos os armazéns para saber o estoque em cada armazém do referido produto
 - Representante pode consultar os produtos em estoque que estão prestes a expirar no almoxarifado, afim de aplicar alguma ação comercial  com eles
 
+### Funcionabilidade Requisito 6
+
+- Cadastrar vendedor
+- Alterar dados do vendedor
+- Cadastrar produto associado a um vendedor
+- Alterar status de venda de um produto associado a um vendedor
+- Desativar conta de um vendedor (soft delete)
 ***
 
 ##Layout ou Deploy da Aplicação
@@ -96,13 +103,17 @@ Construção de API para realizar a logística de produtos alimentícios em esta
 ***
 
 ##EndPoint REQ6:
-- [EndPoint Requisito 6](http://localhost:8080/api/v1 /fresh-products/buyer/[id])
+- [EndPoint Requisito 6 - Post] (http://localhost:8080/api/v1/seller/register)
 
-- [EndPoint Requisito 6](http://localhost:8080/api/v1 /fresh-products/buyer?  queryparam[id]  &queryparam=[status])
+- [EndPoint Requisito 6 - Post] (http://localhost:8080/api/v1/seller/{seller_id}/products)
 
-- [EndPoint Requisito 6](http://localhost:8080/api/v1 /fresh-products/buyer?  queryparam[id]  &queryparam[David]&query param[email])
+- [EndPoint Requisito 6 - Get] (http://localhost:8080/api/v1/seller/{id})
 
-- [EndPoint Requisito 6](http://localhost:8080/api/v1 /fresh-products/buyer/[id])
+- [EndPoint Requisito 6 - Put] (http://localhost:8080/api/v1/seller/{id}/change-name?name=newName)
+
+- [EndPoint Requisito 6 - Put] (http://localhost:8080/api/v1/seller/{id}/change-account-status?status=newStatus)
+
+- [EndPoint Requisito 6 - Put] (http://localhost:8080/api/v1/seller/{sellerId}/change-product-status/{productId}?status=newStatus)
 
 ***
 
