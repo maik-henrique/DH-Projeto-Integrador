@@ -1,17 +1,17 @@
-package br.com.meli.dhprojetointegrador.dto.response.freshproducts;
+package br.com.meli.dhprojetointegrador.dto.response;
 
+import java.util.List;
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
-
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BatchStockCollection {
-    private List<BatchStock> batchStock;
+public class InboundRegistrationResponse {
+  private List<BatchStock> bachStock;
+
 }

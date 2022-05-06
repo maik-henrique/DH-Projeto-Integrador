@@ -1,10 +1,10 @@
 package br.com.meli.dhprojetointegrador.exception.handler;
 
-import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadDTO;
 import br.com.meli.dhprojetointegrador.dto.response.ExceptionPayloadResponse;
 import br.com.meli.dhprojetointegrador.exception.*;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,7 +28,10 @@ import java.util.stream.Collectors;
  * Used to catch and return the proper response payload for exceptions thrown at the layers bellow the controllers.
  */
 @RestControllerAdvice
+@AllArgsConstructor
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
+
+	private final Clock clock;
 
 	/**
 	 * @param exception BusinessValidator thrown at the service layer
@@ -35,7 +40,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(BusinessValidatorException.class)
 	protected ResponseEntity<?> handleAuthException(BusinessValidatorException exception) {
 		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
-				.timestamp(LocalDateTime.now())
+				.timestamp(LocalDateTime.now(clock))
 				.title(exception.getErrorTitle())
 				.statusCode(exception.getHttpStatus().value())
 				.description(exception.getMessage())
@@ -57,7 +62,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 				.collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
 
 		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
-				.timestamp(LocalDateTime.now())
+				.timestamp(LocalDateTime.now(clock))
 				.title("Some fields are missing in the request payload")
 				.statusCode(HttpStatus.BAD_REQUEST.value())
 				.fieldToMessageMap(errorsMap)
@@ -69,8 +74,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(value = {PurchaseOrderNotFoundException.class})
 	protected ResponseEntity<Object> handlePurchaseOrderNotFoundException(PurchaseOrderNotFoundException exception) {
-		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
-				.timestamp(LocalDateTime.now())
+		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
+				.timestamp(LocalDateTime.now(clock))
 				.title("PurchaseOrder Not Found")
 				.statusCode(HttpStatus.NOT_FOUND.value())
 				.description(exception.getMessage())
@@ -86,8 +91,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 	 */
 	@ExceptionHandler(value = {BuyerNotFoundException.class})
 	protected ResponseEntity<Object> handleBuyerNotFoundException(BuyerNotFoundException exception) {
-		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
-				.timestamp(LocalDateTime.now())
+		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
+				.timestamp(LocalDateTime.now(clock))
 				.title("Buyer Not Found")
 				.statusCode(HttpStatus.NOT_FOUND.value())
 				.description(exception.getMessage())
@@ -105,8 +110,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 	 */
 	@ExceptionHandler(value = {NotEnoughProductsException.class})
 	protected ResponseEntity<Object> handleNotEnoughProductsException(NotEnoughProductsException exception) {
-		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
-				.timestamp(LocalDateTime.now())
+		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
+				.timestamp(LocalDateTime.now(clock))
 				.title("Not Enough Products")
 				.statusCode(HttpStatus.BAD_REQUEST.value())
 				.description(exception.getMessage())
@@ -122,8 +127,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 	 */
 	@ExceptionHandler(value = {ProductNotFoundException.class})
 	protected ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException exception) {
-		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
-				.timestamp(LocalDateTime.now())
+		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
+				.timestamp(LocalDateTime.now(clock))
 				.title("Product Not Found")
 				.statusCode(HttpStatus.NOT_FOUND.value())
 				.description(exception.getMessage())
@@ -134,8 +139,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(AuthException.class)
 	protected ResponseEntity<?> handleAuthException(AuthException exception) {
-		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
-				.timestamp(LocalDateTime.now())
+		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
+				.timestamp(LocalDateTime.now(clock))
 				.title(exception.getTitle())
 				.statusCode(exception.getHttpStatus().value())
 				.description(exception.getMessage())
@@ -146,8 +151,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(MalformedJwtException.class)
 	protected ResponseEntity<?> handleMalformedJwtException(MalformedJwtException exception) {
-		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
-				.timestamp(LocalDateTime.now())
+		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
+				.timestamp(LocalDateTime.now(clock))
 				.title("Malformed JWT token")
 				.statusCode(HttpStatus.BAD_REQUEST.value())
 				.description("The provided JWT token couldn't be read")
@@ -158,8 +163,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(UsernameNotFoundException.class)
 	protected ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException exception) {
-		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
-				.timestamp(LocalDateTime.now())
+		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
+				.timestamp(LocalDateTime.now(clock))
 				.title("User not found")
 				.statusCode(HttpStatus.UNAUTHORIZED.value())
 				.description(exception.getMessage())
@@ -170,8 +175,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(ExpiredJwtException.class)
 	protected ResponseEntity<?> handleExpiredJwtException(ExpiredJwtException exception) {
-		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
-				.timestamp(LocalDateTime.now())
+		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
+				.timestamp(LocalDateTime.now(clock))
 				.title("Token expirado")
 				.statusCode(HttpStatus.UNAUTHORIZED.value())
 				.description("Token fornecido é inválido")
@@ -182,8 +187,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(value= {JpaSystemException.class})
 	protected ResponseEntity<Object> handleIllegalArgumentException(JpaSystemException ex) {
-		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
-				.timestamp(LocalDateTime.now())
+		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
+				.timestamp(LocalDateTime.now(clock))
 				.title("Invalid field")
 				.statusCode(HttpStatus.CONFLICT.value())
 				.description(ex.getMostSpecificCause().getMessage())
@@ -194,8 +199,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value= {DataIntegrityViolationException.class})
 	protected ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
 
-		ExceptionPayloadDTO exceptionPayload = ExceptionPayloadDTO.builder()
-				.timestamp(LocalDateTime.now())
+		ExceptionPayloadResponse exceptionPayload = ExceptionPayloadResponse.builder()
+				.timestamp(LocalDateTime.now(clock))
 				.title("Invalid field")
 				.statusCode(HttpStatus.CONFLICT.value())
 				.description(ex.getMostSpecificCause().getMessage())

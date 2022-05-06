@@ -10,16 +10,16 @@ import java.util.stream.Collectors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartProductDTO {
+public class CartProductResponse {
     private Integer quantity;
     private String product;
 
-    public CartProductDTO(CartProduct cartProduct) {
+    public CartProductResponse(CartProduct cartProduct) {
         this.product = cartProduct.getProduct().getName();
         this.quantity = cartProduct.getQuantity();
     }
 
-    public static List<CartProductDTO> convertToProductList(List<CartProduct> cartProducts) {
-        return cartProducts.stream().map(CartProductDTO::new).collect(Collectors.toList());
+    public static List<CartProductResponse> convertToProductList(List<CartProduct> cartProducts) {
+        return cartProducts.stream().map(CartProductResponse::new).collect(Collectors.toList());
     }
 }

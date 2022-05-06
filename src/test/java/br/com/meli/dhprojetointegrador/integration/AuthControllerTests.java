@@ -4,8 +4,8 @@ import br.com.meli.dhprojetointegrador.dto.request.UserCredentialsRequest;
 import br.com.meli.dhprojetointegrador.entity.JwtToken;
 import br.com.meli.dhprojetointegrador.entity.Role;
 import br.com.meli.dhprojetointegrador.entity.User;
-import br.com.meli.dhprojetointegrador.enums.RoleType;
-import br.com.meli.dhprojetointegrador.enums.TokenType;
+import br.com.meli.dhprojetointegrador.enums.RoleEnum;
+import br.com.meli.dhprojetointegrador.enums.TokenTypeEnum;
 import br.com.meli.dhprojetointegrador.service.TokenAuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class AuthController extends BaseIntegrationControllerTests {
+public class AuthControllerTests extends BaseIntegrationControllerTests {
 
     @Autowired
     private MockMvc mvc;
@@ -58,7 +58,7 @@ public class AuthController extends BaseIntegrationControllerTests {
 
         JwtToken jwtToken = objectMapper.readValue(responsePayload, JwtToken.class);
 
-        assertEquals(TokenType.BEARER, jwtToken.getTokenType());
+        assertEquals(TokenTypeEnum.BEARER, jwtToken.getTokenTypeEnum());
         assertFalse(jwtToken.getToken().isBlank());
         assertFalse(jwtToken.getExpirationDate().isBlank());
     }
@@ -81,7 +81,7 @@ public class AuthController extends BaseIntegrationControllerTests {
     }
 
     private void setupUser(String username, String password) {
-        Role adminRole = Role.builder().role(RoleType.ADMIN).build();
+        Role adminRole = Role.builder().role(RoleEnum.ADMIN).build();
         User user = User.builder()
                 .role(Set.of(adminRole))
                 .username(username)

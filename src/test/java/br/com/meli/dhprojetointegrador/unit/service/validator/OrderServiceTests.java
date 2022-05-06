@@ -1,14 +1,14 @@
-package br.com.meli.dhprojetointegrador.unit;
+package br.com.meli.dhprojetointegrador.unit.service.validator;
 
-import br.com.meli.dhprojetointegrador.dto.request.ProductInput;
-import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderInput;
-import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateDTO;
+import br.com.meli.dhprojetointegrador.dto.request.ProductRefactor;
+import br.com.meli.dhprojetointegrador.dto.request.PurchaseOrderRequest;
+import br.com.meli.dhprojetointegrador.dto.response.OrderIntermediateResponse;
 import br.com.meli.dhprojetointegrador.entity.*;
 import br.com.meli.dhprojetointegrador.enums.StatusEnum;
 import br.com.meli.dhprojetointegrador.repository.*;
 import br.com.meli.dhprojetointegrador.service.OrderService;
-import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
-import br.com.meli.dhprojetointegrador.service.validator.ValidateBuyer;
+import br.com.meli.dhprojetointegrador.service.validator.ProductValidator;
+import br.com.meli.dhprojetointegrador.service.validator.BuyerValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,16 +19,16 @@ import java.util.Optional;
 import java.util.Set;
 import static org.mockito.Mockito.*;
 
-public class OrderServiceTest {
+public class OrderServiceTests {
     CartProductRepository cartProductRepository = mock(CartProductRepository.class);
     PurchaseOrderRepository purchaseOrderRepository = mock(PurchaseOrderRepository.class);
     ProductRepository productRepository = mock(ProductRepository.class);
     BatchStockRepository batchStockRepository = mock(BatchStockRepository.class);
-    ValidateBuyer validateBuyer = mock(ValidateBuyer.class);
-    ValidadeProduct validadeProduct = mock(ValidadeProduct.class);
+    BuyerValidator buyerValidator = mock(BuyerValidator.class);
+    ProductValidator productValidator = mock(ProductValidator.class);
     OrderRepository orderRepository = mock(OrderRepository.class);
 
-    private final OrderService orderService = new OrderService(validateBuyer, validadeProduct, cartProductRepository, purchaseOrderRepository, productRepository, batchStockRepository, orderRepository);
+    private final OrderService orderService = new OrderService(buyerValidator, productValidator, cartProductRepository, purchaseOrderRepository, productRepository, batchStockRepository, orderRepository);
 
     LocalDate date = LocalDate.of(2021, 04, 25);
 
@@ -98,23 +98,23 @@ public class OrderServiceTest {
             .quantity(5)
             .build();
 
-    ProductInput product1Input = ProductInput.builder()
+    ProductRefactor product1Input = ProductRefactor.builder()
             .productId(1L)
             .quantity(5)
             .build();
 
-    ProductInput product2Input = ProductInput.builder()
+    ProductRefactor product2Input = ProductRefactor.builder()
             .productId(2L)
             .quantity(5)
             .build();
 
-    PurchaseOrderInput orderInput = PurchaseOrderInput.builder()
+    PurchaseOrderRequest orderInput = PurchaseOrderRequest.builder()
             .date(date)
             .buyerId(1L)
             .products(Arrays.asList(product1Input, product2Input))
             .build();
 
-    OrderIntermediateDTO response = OrderIntermediateDTO.builder()
+    OrderIntermediateResponse response = OrderIntermediateResponse.builder()
             .totalPrice(35.00)
             .createdID(1L)
             .build();
@@ -136,11 +136,11 @@ public class OrderServiceTest {
         when(batchStockRepository.save(batch1Updated)).thenReturn(batch1Updated);
         when(batchStockRepository.save(batch2Updated)).thenReturn(batch2Updated);
         when(purchaseOrderRepository.save(Mockito.any(PurchaseOrder.class))).thenReturn(order1);
-        when(validateBuyer.getBuyer(1L)).thenReturn(buyer);
-        when(validadeProduct.validateQuantity(5, 1L)).thenReturn(product1);
-        when(validadeProduct.validateQuantity(5, 2L)).thenReturn(product2);
+        when(buyerValidator.getBuyer(1L)).thenReturn(buyer);
+        when(productValidator.validateQuantity(5, 1L)).thenReturn(product1);
+        when(productValidator.validateQuantity(5, 2L)).thenReturn(product2);
 
-        OrderIntermediateDTO result = orderService.createOrder(orderInput);
+        OrderIntermediateResponse result = orderService.createOrder(orderInput);
 
         assert result.getCreatedID().equals(1L);
         assert result.getTotalPrice().equals(35.00);

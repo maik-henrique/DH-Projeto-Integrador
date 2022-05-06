@@ -2,7 +2,7 @@ package br.com.meli.dhprojetointegrador.service;
 
 import br.com.meli.dhprojetointegrador.config.SecurityProperties;
 import br.com.meli.dhprojetointegrador.entity.JwtToken;
-import br.com.meli.dhprojetointegrador.enums.TokenType;
+import br.com.meli.dhprojetointegrador.enums.TokenTypeEnum;
 import br.com.meli.dhprojetointegrador.exception.AuthException;
 import br.com.meli.dhprojetointegrador.exception.ExpiredTokenException;
 import br.com.meli.dhprojetointegrador.exception.InvalidTokenException;
@@ -55,7 +55,7 @@ public class JwtTokenService implements ITokenService{
         return JwtToken.builder()
                 .token(token)
                 .expirationDate(expiration.toString())
-                .tokenType(TokenType.BEARER)
+                .tokenTypeEnum(TokenTypeEnum.BEARER)
                 .build();
     }
 

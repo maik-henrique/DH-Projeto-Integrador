@@ -16,16 +16,26 @@
 
     <properties>
         <java.version>11</java.version>
-        <sonar.exclusions>**/dto/**/*,
+        <sonar.exclusions>
+            **/dto/**/*,
             **/entity/*,
             **/config/**/*,
-            **/exception/*,
+            **/exception/**/*,
             **/repository/**/*,
             **/mapper/**/*,
+            **/AuthController.java,
             **/DhProjetoIntegradorApplication.java
         </sonar.exclusions>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <apache.poi.version>3.17</apache.poi.version>
+        <sonar.version>5.1</sonar.version>
+        <apache.commons>4.2</apache.commons>
+
     </properties>
 
     <dependencies>
@@ -138,6 +148,7 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -182,6 +193,7 @@
                                 <exclude>br/com/meli/dhprojetointegrador/config/**/*</exclude>
                                 <exclude>br/com/meli/dhprojetointegrador/exception/**/*</exclude>
                                 <exclude>br/com/meli/dhprojetointegrador/repository/**/*</exclude>
+                                <exclude>br/com/meli/dhprojetointegrador/controller/AuthController.java</exclude>
                                 <exclude>br/com/meli/dhprojetointegrador/mapper/**/*</exclude>
                                 <exclude>br/com/meli/dhprojetointegrador/DhProjetoIntegradorApplication.class</exclude>
                             </excludes>

@@ -7,7 +7,7 @@
 - Uma descrição mais detalhada da _user story_ pode ser encontrada em 'docs/Requisito 6 - Maik.pdf'
 - Uma coleção _postman_ foi fornecida na pasta _postman-collection_, porém vale salientar que a coleção assume que itens pré-existam no banco de dados, como um pedido, produto, etc.
 
-## Descrição 
+#**MERCADO LIVRE - FRESCOS **
 
 A ideia é possibilitar que, após um pedido seja finalizado, o comprador tenha a possibilidade de avaliar a sua experiência e compartilhar com a comunidade. De modo que também possa visualizar antes de a realização de uma compra a listagem das avaliações de um determinado produto.
 

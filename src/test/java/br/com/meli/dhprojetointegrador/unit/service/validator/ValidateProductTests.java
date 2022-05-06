@@ -1,26 +1,25 @@
-package br.com.meli.dhprojetointegrador.unit;
+package br.com.meli.dhprojetointegrador.unit.service.validator;
 
 import br.com.meli.dhprojetointegrador.entity.BatchStock;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.exception.NotEnoughProductsException;
 import br.com.meli.dhprojetointegrador.exception.ProductNotFoundException;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
-import br.com.meli.dhprojetointegrador.service.validator.ValidadeProduct;
+import br.com.meli.dhprojetointegrador.service.validator.ProductValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ValidateProductTest {
+public class ValidateProductTests {
 
     ProductRepository productRepository = mock(ProductRepository.class);
 
-    private ValidadeProduct validateProduct = new ValidadeProduct(productRepository);
+    private ProductValidator validateProduct = new ProductValidator(productRepository);
 
     BatchStock batch1 = BatchStock.builder()
             .batchNumber(1L)
