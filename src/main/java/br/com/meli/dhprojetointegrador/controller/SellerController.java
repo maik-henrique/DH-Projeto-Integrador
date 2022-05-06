@@ -153,6 +153,4 @@ public class SellerController {
         return ResponseEntity.ok().body(productService.putProductStatus(productId, sellerId, status));
     }
 
-
-
 }
