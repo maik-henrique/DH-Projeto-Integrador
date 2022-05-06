@@ -2,14 +2,11 @@ package br.com.meli.dhprojetointegrador.integration;
 
 import br.com.meli.dhprojetointegrador.dto.request.SellerPostRequest;
 import br.com.meli.dhprojetointegrador.dto.request.SellerProductPostRequest;
-import br.com.meli.dhprojetointegrador.dto.response.TotalPrice;
-import br.com.meli.dhprojetointegrador.entity.Category;
 import br.com.meli.dhprojetointegrador.entity.Product;
 import br.com.meli.dhprojetointegrador.entity.Seller;
 import br.com.meli.dhprojetointegrador.repository.ProductRepository;
 import br.com.meli.dhprojetointegrador.repository.SellerRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,12 +28,10 @@ import java.util.Collections;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
@@ -47,7 +42,6 @@ public class SellerControllerTests extends BaseIntegrationControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
-
 
     @Autowired
     private SellerRepository sellerRepository;
@@ -62,6 +56,12 @@ public class SellerControllerTests extends BaseIntegrationControllerTests {
     private  ModelMapper modelMapper;
 
     // Post
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste de integração do endpoint "/api/v1/seller/register"
+     * @Description: valida o funcionamento correto do endpoint:
+     *  Retorno de seller com propriedades iguais ao do seller cadastrado;
+     */
     @Test
     @DisplayName("US:06 - Seller creation test")
     public void registerSeller_shouldReturnStatusCreated_whenSellerIsRegistered() throws Exception {
@@ -89,6 +89,12 @@ public class SellerControllerTests extends BaseIntegrationControllerTests {
         assertThat(sellerResult, samePropertyValuesAs(seller));
     }
 
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste de integração do endpoint "/api/v1/seller/{seller_id}/products"
+     * @Description: valida o funcionamento correto do endpoint:
+     *  Retorno de seller com propriedades iguais ao do product cadastrado;
+     */
     @Test
     @DisplayName("US:06 - Seller's product creation test")
     public void registerSellerProduct_shouldReturnStatusCreated_whenProductIsRegistered() throws Exception {
@@ -118,8 +124,14 @@ public class SellerControllerTests extends BaseIntegrationControllerTests {
     }
 
     // Get
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste de integração do endpoint "/api/v1/seller/{id}"
+     * @Description: valida o funcionamento correto do endpoint:
+     *  Retorno de set de products com propriedades iguais ao do set cadastrado;
+     */
     @Test
-    @DisplayName("US:06 - Seller creation test")
+    @DisplayName("US:06 - Seller get products test")
     public void findAllSellersProducts_shouldReturnStatusOk_whenSellersProductsExists() throws Exception {
 
         Seller seller = setupSeller("Roberto");
@@ -142,8 +154,14 @@ public class SellerControllerTests extends BaseIntegrationControllerTests {
     }
 
     // Put
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste de integração do endpoint "/api/v1/seller/{id}/change-name"
+     * @Description: valida o funcionamento correto do endpoint:
+     *  Retorno de seller com a propriedade name corretamente alterada;
+     */
     @Test
-    @DisplayName("US:06 - Seller creation test")
+    @DisplayName("US:06 - Seller change name test")
     public void changeSellerName_shouldReturnSeller_with_correctName() throws Exception {
 
         setupSeller("Carlos");
@@ -162,9 +180,14 @@ public class SellerControllerTests extends BaseIntegrationControllerTests {
 
     }
 
-    // Put
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste de integração do endpoint "/api/v1/seller/{id}/change-account-status"
+     * @Description: valida o funcionamento correto do endpoint:
+     *  Retorno de seller com a propriedade statusActiveAccount corretamente alterada;
+     */
     @Test
-    @DisplayName("US:06 - Seller creation test")
+    @DisplayName("US:06 - Seller change statusActiveAccount test")
     public void changeSellerAccountStatus_shouldReturnSeller_with_correctAccountStatus() throws Exception {
 
         setupSeller("Carlos");
@@ -182,8 +205,14 @@ public class SellerControllerTests extends BaseIntegrationControllerTests {
 
     }
 
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste de integração do endpoint "/api/v1/seller/{sellerId}/change-product-status/{productId}"
+     * @Description: valida o funcionamento correto do endpoint:
+     *  Retorno de product com a propriedade statusProduct corretamente alterada;
+     */
     @Test
-    @DisplayName("US:06 - Seller creation test")
+    @DisplayName("US:06 - Seller's product change statusProduct test")
     public void changeSellerProductStatus_shouldReturnProduct_with_correctAccountStatus() throws Exception {
 
         Seller seller = setupSeller("Carlos");
@@ -200,8 +229,6 @@ public class SellerControllerTests extends BaseIntegrationControllerTests {
         assertNotNull(responsePayload);
         assertEquals(productResult.getStatusProduct(), false);
     }
-
-
 
     private SellerProductPostRequest setupSellerProduct(String name){
 
@@ -232,7 +259,4 @@ public class SellerControllerTests extends BaseIntegrationControllerTests {
         productRepository.save(product);
         return product;
     }
-
-
-
 }

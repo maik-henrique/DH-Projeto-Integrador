@@ -46,7 +46,6 @@ public class Product {
     @OneToMany(mappedBy = "products")
     private Set<BatchStock> batchStockList;
 
-    private ProductStatusEnum productStatusEnum;
     private Boolean statusProduct;
 
 }

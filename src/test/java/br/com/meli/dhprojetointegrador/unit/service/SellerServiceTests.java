@@ -32,6 +32,12 @@ public class SellerServiceTests {
 
     Seller seller = Seller.builder().id(1l).name("Vendedor").statusActiveAccount(true).build();
 
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste unitario função findSellerById
+     * @Description: valida que a função retorna um seller com as mesmas propriedades do seller com o id
+     * informado persistido no banco de dados
+     */
     @Test
     @DisplayName("Test US:06 - findSellerById - Correct functioning")
     public void findSellerById_should_return_correct_seller(){
@@ -41,6 +47,11 @@ public class SellerServiceTests {
         assert result.equals(seller);
     }
 
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste unitario função findSellerById
+     * @Description: valida que a função retorna excecao caso nao haja um seller persistido com o id informado
+     */
     @Test
     @DisplayName("Test US:06 - findSellerById - Generating exception")
     public void findSellerById_should_throw_correct_exception(){
@@ -53,6 +64,11 @@ public class SellerServiceTests {
         }
     }
 
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste unitario função saveSeller
+     * @Description: valida que a função retorna um seller com as mesmas propriedades do seller salvo no repositorio
+     */
     @Test
     @DisplayName("Test US:06 - saveSeller - Correct functioning")
     public void saveSeller_should_return_correct_seller(){
@@ -62,6 +78,11 @@ public class SellerServiceTests {
         assert result.equals(seller);
     }
 
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste unitario função putSellerName
+     * @Description: valida que a função retorna o seller com o atributo name alterado corretamente
+     */
     @Test
     @DisplayName("Test US:06 - putSellerName - Correct functioning")
     public void putSellerName_should_return_correct_seller(){
@@ -75,6 +96,11 @@ public class SellerServiceTests {
         assert result.equals(seller);
     }
 
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste unitario função putSellerAccountStatus
+     * @Description: valida que a função retorna o seller com o atributo statusActiveAccount alterado corretamente
+     */
     @Test
     @DisplayName("Test US:06 - putSellerAccountStatus - Correct functioning")
     public void putSellerAccountStatus_should_return_correct_seller(){

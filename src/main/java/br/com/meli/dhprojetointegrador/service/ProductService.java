@@ -95,14 +95,28 @@ public class ProductService {
                 .build();
     }
 
+    /**
+     * Author: Matheus Guerra
+     * Method: associa um Seller e persiste a instancia da Class Product no banco de dados
+     * @param product novo produto a ser persistido no banco de dados
+     * @param seller seller existente no banco de dados que sera associado a um novo produto
+     * @return instancia da Class product apos a persistencia no banco de dados
+     */
     public Product saveProductWithSeller(Product product, Seller seller){
         product.setSeller(seller);
 
         return productRepository.save(product);
     }
 
+    /**
+     * Author: Matheus Guerra
+     * Method: atualiza atributo statusProduct de uma instancia da Class Product persistida no banco de dados
+     * @param productId id do product existe a ser alterado
+     * @param sellerId id do seller existente associado ao produto a ser alterado
+     * @param newStatus novo valor de status para o produto
+     * @return product com o valor do atributo statusProduct alterado
+     */
     public Product putProductStatus(Long productId, Long sellerId, Boolean newStatus){
-
         Product product = productRepository.findByIdAndSeller_Id(productId, sellerId);
         product.setStatusProduct(newStatus);
 

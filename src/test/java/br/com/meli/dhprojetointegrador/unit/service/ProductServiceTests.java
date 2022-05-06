@@ -89,7 +89,11 @@ public class ProductServiceTests {
         assertThat(result, IsEmptyCollection.empty());
     }
 
-
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste unitario função saveProductWithSeller
+     * @Description: valida que a função retorna o seller cadastrado
+     */
     @Test
     @DisplayName("Test US:06 - saveProductWithSeller - Correct functioning")
     public void saveProductWithSeller_should_return_correct_seller(){
@@ -102,6 +106,11 @@ public class ProductServiceTests {
         assert result.equals(product);
     }
 
+    /**
+     * @Author: Matheus Guerra
+     * @Teste: Teste unitario função putProductStatus
+     * @Description: valida que a função retorna o product com o atributo statusProduct alterado corretamente
+     */
     @Test
     @DisplayName("Test US:06 - putProductStatus - Correct functioning")
     public void sputProductStatus_should_return_correct_seller(){
@@ -114,6 +123,4 @@ public class ProductServiceTests {
         assert result.getStatusProduct().equals(false);
         assert result.equals(product);
     }
-
-
 }
