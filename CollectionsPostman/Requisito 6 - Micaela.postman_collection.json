@@ -1,0 +1,486 @@
+{
+	"info": {
+		"_postman_id": "683f0f3a-466e-4ad4-809c-91ae6cc865f5",
+		"name": "Requisito 6 - Micaela",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Req6 - Micaela",
+			"item": [
+				{
+					"name": "GET - Warehouse",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZ2VudCIsImV4cCI6MTY1MTg1NDkwNiwiaWF0IjoxNjUxODUxMzA2fQ.O18_WFD3bQfv9Ry2cSL6chBypxF0FQScZZO5DuvmsVeYQ8pzjEon24NLZH2PvTwKXv-WLOPtzlVKVQY5KuZ4HQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/fresh-products/admin/warehouse",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"admin",
+								"warehouse"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GET - Warehouse",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZ2VudCIsImV4cCI6MTY1MTg1NDkwNiwiaWF0IjoxNjUxODUxMzA2fQ.O18_WFD3bQfv9Ry2cSL6chBypxF0FQScZZO5DuvmsVeYQ8pzjEon24NLZH2PvTwKXv-WLOPtzlVKVQY5KuZ4HQ",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/fresh-products/admin/warehouse",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"fresh-products",
+										"admin",
+										"warehouse"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 06 May 2022 15:35:33 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Warehouse 1\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "POST - Warehouse",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZ2VudCIsImV4cCI6MTY1MTg1NDkwNiwiaWF0IjoxNjUxODUxMzA2fQ.O18_WFD3bQfv9Ry2cSL6chBypxF0FQScZZO5DuvmsVeYQ8pzjEon24NLZH2PvTwKXv-WLOPtzlVKVQY5KuZ4HQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Warehouse Name\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/fresh-products/admin/warehouse",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"admin",
+								"warehouse"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "POST - Warehouse",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZ2VudCIsImV4cCI6MTY1MTg1NDkwNiwiaWF0IjoxNjUxODUxMzA2fQ.O18_WFD3bQfv9Ry2cSL6chBypxF0FQScZZO5DuvmsVeYQ8pzjEon24NLZH2PvTwKXv-WLOPtzlVKVQY5KuZ4HQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Warehouse Name\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/fresh-products/admin/warehouse",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"fresh-products",
+										"admin",
+										"warehouse"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 06 May 2022 15:36:20 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 2,\n    \"name\": \"Warehouse Name\"\n}"
+						}
+					]
+				},
+				{
+					"name": "POST - Agent",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZ2VudCIsImV4cCI6MTY1MTg1NDkwNiwiaWF0IjoxNjUxODUxMzA2fQ.O18_WFD3bQfv9Ry2cSL6chBypxF0FQScZZO5DuvmsVeYQ8pzjEon24NLZH2PvTwKXv-WLOPtzlVKVQY5KuZ4HQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Agent\",\n    \"password\": \"123456\",\n    \"warehouseId\":  \"2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/fresh-products/admin/agent",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"admin",
+								"agent"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "POST - Agent",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZ2VudCIsImV4cCI6MTY1MTg1NDkwNiwiaWF0IjoxNjUxODUxMzA2fQ.O18_WFD3bQfv9Ry2cSL6chBypxF0FQScZZO5DuvmsVeYQ8pzjEon24NLZH2PvTwKXv-WLOPtzlVKVQY5KuZ4HQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Agent\",\n    \"password\": \"123456\",\n    \"warehouseId\":  \"2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/fresh-products/admin/agent",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"fresh-products",
+										"admin",
+										"agent"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 06 May 2022 15:37:03 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 2,\n    \"name\": \"Agent\",\n    \"warehouse\": {\n        \"id\": 2,\n        \"name\": \"Warehouse Name\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "GET - Agents",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZ2VudCIsImV4cCI6MTY1MTg1NDkwNiwiaWF0IjoxNjUxODUxMzA2fQ.O18_WFD3bQfv9Ry2cSL6chBypxF0FQScZZO5DuvmsVeYQ8pzjEon24NLZH2PvTwKXv-WLOPtzlVKVQY5KuZ4HQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/fresh-products/admin/agent",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"admin",
+								"agent"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GET - Agents",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZ2VudCIsImV4cCI6MTY1MTg1NDkwNiwiaWF0IjoxNjUxODUxMzA2fQ.O18_WFD3bQfv9Ry2cSL6chBypxF0FQScZZO5DuvmsVeYQ8pzjEon24NLZH2PvTwKXv-WLOPtzlVKVQY5KuZ4HQ",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/fresh-products/admin/agent",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"fresh-products",
+										"admin",
+										"agent"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 06 May 2022 15:37:58 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Pedro\",\n        \"warehouse\": {\n            \"id\": 1,\n            \"name\": \"Warehouse 1\"\n        }\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Agent\",\n        \"warehouse\": {\n            \"id\": 2,\n            \"name\": \"Warehouse Name\"\n        }\n    }\n]"
+						}
+					]
+				}
+			]
+		}
+	]
+}
