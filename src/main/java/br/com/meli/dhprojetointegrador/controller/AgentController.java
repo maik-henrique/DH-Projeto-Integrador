@@ -4,12 +4,15 @@ import br.com.meli.dhprojetointegrador.dto.request.AgentPostRequest;
 import br.com.meli.dhprojetointegrador.dto.response.AgentCollection;
 import br.com.meli.dhprojetointegrador.dto.response.AgentResponseDTO;
 import br.com.meli.dhprojetointegrador.entity.Agent;
+import br.com.meli.dhprojetointegrador.enums.RoleEnum;
 import br.com.meli.dhprojetointegrador.service.AgentService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -44,6 +47,7 @@ public class AgentController {
      * @Description: Consulta todos os agente cadastrados
      * @return lista de agentes
      */
+
     @GetMapping("/agent")
     public ResponseEntity<?> readAgent() {
         try {
