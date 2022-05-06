@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -55,5 +56,13 @@ public class AgentServiceTests {
         assert result.equals(agent1);
         assert result.getName().equals("Agente");
 
+    }
+
+    @Test
+    @DisplayName("Test - findById")
+    public void return_agent_by_id_when_successful(){
+        when(agentRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(agent1));
+        Agent result = agentService.findAgentById(1L);
+        assert result.equals(agent1);
     }
 }
