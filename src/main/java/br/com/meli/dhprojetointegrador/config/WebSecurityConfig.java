@@ -28,9 +28,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtFilter jwtFilter;
     private final FilterChainExceptionHandler filterChainExceptionHandler;
-    private static final String[] BUYER_ENDPOINTS = {".*/fresh-products",".*/fresh-products/list.*", ".*/fresh-products/orders.*"};
-    private static final String[] AGENT_ENDPOINTS = {".*/inboundorder.*", ".*/fresh-products/due-date.*", ".*/fresh-products/list.*",
-            ".*/fresh-products/warehouse.*"};
+    private static final String[] BUYER_ENDPOINTS = {".*/fresh-products", ".*/fresh-products/orders.*"};
+    private static final String[] AGENT_ENDPOINTS = {".*/inboundorder.*", ".*/fresh-products/due-date.*", ".*/fresh-products/warehouse.*"};
+    private static final String[] COMMON_ENDPOINTS = { ".*/fresh-products/list.*"};
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -40,8 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeHttpRequests()
                 .antMatchers(HttpHeaders.ALLOW).permitAll()
                 .regexMatchers(".*/admin.*").hasRole(RoleEnum.ADMIN.name())
+                .regexMatchers(COMMON_ENDPOINTS).hasAnyRole(RoleEnum.BUYER.name(), RoleEnum.AGENT.name(), RoleEnum.ADMIN.name())
+                .regexMatchers(BUYER_ENDPOINTS).hasAnyRole(RoleEnum.BUYER.name())
                 .regexMatchers(AGENT_ENDPOINTS).hasAnyRole(RoleEnum.AGENT.name(), RoleEnum.ADMIN.name())
-                .regexMatchers(BUYER_ENDPOINTS).hasRole(RoleEnum.BUYER.name())
                 .antMatchers("/signup/*", "/login/*").permitAll()
                 .anyRequest().permitAll()
                 .and()

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3aafaaf4-c581-4b07-8143-65c85dcbe7be",
+		"_postman_id": "ca802ee6-9729-4d38-bc10-772c2156ad3d",
 		"name": "ProjetoIntegrador",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -202,34 +202,49 @@
 			"response": []
 		},
 		{
-			"name": "Requisito 1 - PUT",
+			"name": "Requisito 2 - GET - Mariana",
 			"request": {
-				"method": "PUT",
+				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "localhost:8080/api/v1/fresh-products",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products"
+					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Requisito 2 - GET",
+			"name": "Requisito 2 - GET - Maik e Matheus",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Requisito 2 - GET",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
+					"raw": "http://localhost:8080/api/v1/fresh-products/list?category=FF",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"list"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "FF"
+						}
+					]
 				}
 			},
 			"response": []
@@ -266,23 +281,30 @@
 			"response": []
 		},
 		{
-			"name": "Requisito 2 - GET",
+			"name": "Requisito 2 - GET - Micaela",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Requisito 3 - GET",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
+					"raw": "http://localhost:8080/api/v1/fresh-products/orders/?idOrder=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"orders",
+						""
+					],
+					"query": [
+						{
+							"key": "idOrder",
+							"value": "1"
+						}
+					]
 				}
 			},
 			"response": []
@@ -480,23 +502,41 @@
 			"response": []
 		},
 		{
-			"name": "Requisito 5 - GET",
+			"name": "Requisito 5 - GET - Mariana e Pedro",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Requisito 5 - GET",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": ""
+					"raw": "http://localhost:8080/api/v1/fresh-products/due-date?category=RF&numberOfDays=1&sectionId=1&ordination=ASC",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"due-date"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "RF"
+						},
+						{
+							"key": "numberOfDays",
+							"value": "1"
+						},
+						{
+							"key": "sectionId",
+							"value": "1"
+						},
+						{
+							"key": "ordination",
+							"value": "ASC"
+						}
+					]
 				}
 			},
 			"response": []
