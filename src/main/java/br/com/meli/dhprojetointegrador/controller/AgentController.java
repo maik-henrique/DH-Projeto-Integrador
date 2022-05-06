@@ -30,7 +30,8 @@ public class AgentController {
     public ResponseEntity<?> createAgent(@Valid @RequestBody AgentPostRequest agentPostRequest) {
         try {
             Agent newAgent = modelMapper.map(agentPostRequest, Agent.class);
-            Agent agentCreated = agentService.create(newAgent);
+            Long warehouseId = agentPostRequest.getWarehouseId();
+            Agent agentCreated = agentService.create(newAgent,warehouseId);
             AgentResponseDTO agentResponse = modelMapper.map(agentCreated, AgentResponseDTO.class);
             return new ResponseEntity<>(agentResponse, HttpStatus.CREATED);
         } catch (Exception e){

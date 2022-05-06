@@ -68,6 +68,7 @@ public class BatchStockServiceTests {
                 .thenReturn(List.of());
         assertThrows(BusinessValidatorException.class, () -> batchStockService.findByProductId(1L, "batchNumber"));
     }
+
     /**
      * Author: Pedro Dalpa
      * Author: Mariana Galdino

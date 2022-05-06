@@ -6,10 +6,11 @@ public class AgentCreator {
 
   public static Agent createValidAgent() {
     return Agent.builder()
-        .name("Agente")
-        .warehouse(WarehouseCreator.createValidWarehouse())
-        .id(1L)
-        .build();
+            .name("Agente")
+            .warehouse(WarehouseCreator.createValidWarehouse())
+            .id(1L)
+            .user(null)
+            .build();
   }
 
 }

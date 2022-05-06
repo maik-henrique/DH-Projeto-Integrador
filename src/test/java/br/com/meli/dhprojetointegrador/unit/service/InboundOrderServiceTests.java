@@ -57,7 +57,7 @@ public class InboundOrderServiceTests {
                 .capacity(2.2f)
                 .build();
         Agent agent = Agent.builder().id(1L).build();
-
+        
         when(sectionService.findSectionById(anyLong())).thenReturn(section);
         when(agentService.findAgentById(anyLong())).thenReturn(Agent.builder().build());
         when(warehouseService.findWarehouseIdBySection(any(Section.class)))

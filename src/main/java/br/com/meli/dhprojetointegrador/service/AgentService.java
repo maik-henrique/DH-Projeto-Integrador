@@ -29,8 +29,8 @@ public class AgentService {
      * @param agent
      * @return agente cadastrado
      */
-    public Agent create(Agent agent){
-        Warehouse warehouse = warehouseRepository.getById(agent.getWarehouse().getId());
+    public Agent create(Agent agent, Long warehouseId){
+        Warehouse warehouse = warehouseRepository.getById(warehouseId);
         Agent newAgent = Agent.builder()
                 .name(agent.getName())
                 .warehouse(warehouse)
